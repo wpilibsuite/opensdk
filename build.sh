@@ -43,6 +43,6 @@ bash ./makes/src/test/test.sh
 
 mkdir -p "./downloads" "./repack/${TOOLCHAIN_NAME}/"
 pushd "./downloads" || exit
-    # bash "${TOOLCHAIN_CFG}/download.sh"
+    bash "${TOOLCHAIN_CFG}/download.sh"
     bash "${TOOLCHAIN_CFG}/repack.sh" "${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
 popd || exit

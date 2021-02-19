@@ -3,29 +3,35 @@
 # Always ensure proper path
 cd "$(dirname "$0")" || exit
 
-HOST="${PWD}/hosts/$1.env"
-TOOLCHAIN="$2"
-TOOLCHAIN_DIR="${PWD}/targets/$TOOLCHAIN/"
+ROOT_DIR="${PWD}"
 
-if ! [ -r "$HOST" ]; then
-    echo "Cannot find selected host at $HOST"
+if [ "$#" != "2" ]; then
     exit 1
 fi
 
-if ! [ -d "$TOOLCHAIN_DIR" ]; then
-    echo "$TOOLCHAIN is not a supported toolchain"
+HOST_CFG="$(readlink -f "$1")"
+TOOLCHAIN_CFG="$(readlink -f "$2")"
+TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_CFG")"
+
+if ! [ -f "$HOST_CFG" ]; then
+    echo "Cannot find selected host at $HOST_CFG"
+    exit 1
+fi
+
+if ! [ -f "$TOOLCHAIN_CFG/version.env" ]; then
+    echo "$TOOLCHAIN_CFG is not a supported toolchain"
     exit 1
 fi
 
 # shellcheck source=hosts/linux_x86_64.env
-source "$HOST"
+source "$HOST_CFG"
 
 cat << EOF
 Host System Info
     OS: ${WPITARGET}
     Tuple: ${WPIHOSTTARGET}
 Toolchain Info:
-    Name: ${TOOLCHAIN}
+    Name: ${TOOLCHAIN_NAME}
 EOF
 
 bash scripts/check_sys_compiler.sh || exit
@@ -35,6 +41,8 @@ export CXX="${WPIHOSTTARGET}-g++"
 
 bash ./makes/src/test/test.sh
 
-mkdir -p "./downloads" && pushd "./downloads" || exit
-    # ${SHELL} "${TOOLCHAIN_DIR}/download.sh"
+mkdir -p "./downloads" "./repack/${TOOLCHAIN_NAME}/"
+pushd "./downloads" || exit
+    # bash "${TOOLCHAIN_CFG}/download.sh"
+    bash "${TOOLCHAIN_CFG}/repack.sh" "${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
 popd || exit

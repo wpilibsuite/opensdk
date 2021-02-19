@@ -1,0 +1,11 @@
+PREFIX ?= /usr
+
+all:
+
+install:
+	install -m 644 -D toolchain.cmake ${DESTDIR}${PREFIX}/arm-frc-linux-gnueabi/share/cmake/toolchain.cmake
+	install -D frc-cmake-toolchain ${DESTDIR}${PREFIX}/bin/frc-cmake-toolchain
+	install -D frcmake ${DESTDIR}${PREFIX}/bin/frcmake
+	
+clean:
+

@@ -28,12 +28,13 @@ Toolchain Info:
     Name: ${TOOLCHAIN}
 EOF
 
-${SHELL} scripts/check_sys_compiler.sh || exit
+bash scripts/check_sys_compiler.sh || exit
 
-CC="${WPIHOSTTARGET}-gcc"
-CXX="${WPIHOSTTARGET}-g++"
-export CC CXX
+export CC="${WPIHOSTTARGET}-gcc"
+export CXX="${WPIHOSTTARGET}-g++"
+
+bash ./makes/src/test/test.sh
 
 mkdir -p "./downloads" && pushd "./downloads" || exit
-    ${SHELL} "${TOOLCHAIN_DIR}/download.sh"
+    # ${SHELL} "${TOOLCHAIN_DIR}/download.sh"
 popd || exit

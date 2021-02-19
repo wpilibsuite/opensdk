@@ -18,21 +18,25 @@ function basic-download() {
     wget -nc -nv "$1" || return
 }
 
+function package-confirm() {
+    REPO_FILE="$1"
+    PACKAGE_FILE="$2"
+
+    PACKAGE="${PACKAGE_FILE//_*/}"
+    echo "testing package $PACKAGE"
+    BLOCK=$(sed -e '/Package: '"$PACKAGE"'$/,/Priority/!d' < "$REPO_FILE")
+    SHA=$(echo "$BLOCK" | grep 'SHA256' | sed -e 's/.*: //g')
+    echo "$SHA  $PACKAGE_FILE" | shasum -a 256 -c - || exit
+}
+
 function signed() {
     BASE_FILE=${2/*\//}
     basic-download "$2" || { echo "Could Not Download $BASE_FILE"; exit 1; }
     basic-download "$2.$1" || return 0 # Signature missing, skip
     gpg --verify "$BASE_FILE.$1" || { echo "Cannot Verify $BASE_FILE Download"; exit 1; }
-    rm "$BASE_FILE.$1" || { echo "Could Not Cleanup Download for $BASE_FILE"; exit 1; }
 }
 
 function signed-ni() {
-    BASE_FILE=${1/*\//}
-    PACKAGE=${BASE_FILE//_*/}
-    BLOCK=$(sed -e '/Package: '"$PACKAGE"'$/,/Priority/!d' < Packages) || { echo "Could Not Open Packages"; return; }
-    SHA=$(echo "$BLOCK" | grep 'SHA256' | sed -e 's/.*: //g')
-    basic-download "$1" || { echo "Could Not Download $BASE_FILE"; exit 1; }
-
-    # Requires two spaces
-    echo "$SHA  $BASE_FILE" | shasum -a 256 -c - || { echo "Cannot Verify $BASE_FILE Download"; exit 1; }
+    basic-download "$1" || exit
+    package-confirm "Packages" "$(basename "$1")" || exit
 }

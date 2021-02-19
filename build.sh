@@ -26,10 +26,6 @@ fi
 # shellcheck source=hosts/linux_x86_64.env
 source "$HOST_CFG"
 
-export ${WPITARGET}
-export ${WPIHOSTTARGET}
-export ${WPIPREFIX}
-
 cat << EOF
 Host System Info
     OS: ${WPITARGET}

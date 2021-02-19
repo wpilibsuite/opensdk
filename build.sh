@@ -43,10 +43,22 @@ bash ./makes/src/test/test.sh
 
 DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
 REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
+BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}"
 
 # Prep builds
+if ! $SKIP_PREP; then
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}" || exit
     bash "${TOOLCHAIN_CFG}/download.sh"
     bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
 popd || exit
+fi
+
+mkdir -p "${BUILD_DIR}"
+MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
+
+export ROOT_DIR
+export REPACK_DIR
+export TOOLCHAIN_NAME
+
+${MAKE} sysroot

@@ -13,8 +13,8 @@ sysroot:
 	cd ${M}; ${ROOT_DIR}/makes/src/sysroot
 
 binutils:
-	cd ${M}; tar xf ${PROJ_DIR}/binutils-$(V_BINUTILS).tar.bz2
-	cd ${M}; V_YEAR=$(V_YEAR) V_BINUTILS=$(V_BINUTILS) ${ROOT_DIR}/src/binutils
+	cd ${M}; tar xf ${DOWNLOAD_DIR}/binutils-$(V_BINUTILS).tar.bz2
+	cd ${M}; V_YEAR=$(V_YEAR) V_BINUTILS=$(V_BINUTILS) ${ROOT_DIR}/makes/src/binutils
 
 gdb:
 	cd ${M}; tar xf ${PROJ_DIR}/gdb-$(V_GDB).tar.gz

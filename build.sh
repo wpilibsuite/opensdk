@@ -26,6 +26,10 @@ fi
 # shellcheck source=hosts/linux_x86_64.env
 source "$HOST_CFG"
 
+export ${WPITARGET}
+export ${WPIHOSTTARGET}
+export ${WPIPREFIX}
+
 cat << EOF
 Host System Info
     OS: ${WPITARGET}
@@ -59,6 +63,8 @@ MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
 
 export ROOT_DIR
 export REPACK_DIR
+export DOWNLOAD_DIR
 export TOOLCHAIN_NAME
 
 ${MAKE} sysroot
+${MAKE} binutils

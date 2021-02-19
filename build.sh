@@ -41,8 +41,12 @@ export CXX="${WPIHOSTTARGET}-g++"
 
 bash ./makes/src/test/test.sh
 
-mkdir -p "./downloads" "./repack/${TOOLCHAIN_NAME}/"
-pushd "./downloads" || exit
+DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
+REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
+
+# Prep builds
+mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
+pushd "${DOWNLOAD_DIR}" || exit
     bash "${TOOLCHAIN_CFG}/download.sh"
-    bash "${TOOLCHAIN_CFG}/repack.sh" "${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
+    bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
 popd || exit

@@ -104,9 +104,10 @@ pushd "${REPACK_DIR}"/libstdc++6/
 popd
 
 # Make frcmake tarball
+cd "${REPACK_DIR}"
 rm -rf frcmake${V_YEAR}-${V_FRCMAKE}
-mkdir "${REPACK_DIR}"/frcmake${V_YEAR}-${V_FRCMAKE}
-pushd "${REPACK_DIR}"/frcmake${V_YEAR}-${V_FRCMAKE}
+mkdir frcmake${V_YEAR}-${V_FRCMAKE}
+pushd frcmake${V_YEAR}-${V_FRCMAKE}
 sed -e "s/frc/frc${V_YEAR}/g" "${SCRIPT_DIR}"/tools/frcmake > frcmake${V_YEAR}
 chmod a+x frcmake${V_YEAR}
 sed -e "s/frc/frc${V_YEAR}/g" "${SCRIPT_DIR}"/tools/frc-cmake-toolchain > frc${V_YEAR}-cmake-toolchain
@@ -114,4 +115,4 @@ chmod a+x frc${V_YEAR}-cmake-toolchain
 sed -e "s/frc/frc${V_YEAR}/g" "${SCRIPT_DIR}"/tools/toolchain.cmake > toolchain.cmake
 sed -e "s/frc/frc${V_YEAR}/g" -e "s/frc${V_YEAR}make/frcmake${V_YEAR}/g" "$SCRIPT_DIR"/tools/frcmake-nix-makefile > Makefile
 popd
-tar cjf "${REPACK_DIR}"/frcmake${V_YEAR}-${V_FRCMAKE}.tar.bz2 "${REPACK_DIR}"/frcmake${V_YEAR}-${V_FRCMAKE}
+tar cjf "${REPACK_DIR}"/frcmake${V_YEAR}-${V_FRCMAKE}.tar.bz2 frcmake${V_YEAR}-${V_FRCMAKE}

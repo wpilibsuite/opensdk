@@ -9,8 +9,8 @@ function find_in_path() {
 
 CC_COMMAND="${WPIHOSTTARGET}-gcc"
 CXX_COMMAND="${WPIHOSTTARGET}-g++"
-[ "${WPITARGET}" = "Mac" ] && CC_COMMAND="gcc"
-[ "${WPITARGET}" = "Mac" ] && CXX_COMMAND="g++"
+[ "${WPITARGET}" = "Mac" ] && CC_COMMAND="clang"
+[ "${WPITARGET}" = "Mac" ] && CXX_COMMAND="clang++"
 
 find_in_path "${CC_COMMAND}"
 find_in_path "${CXX_COMMAND}"

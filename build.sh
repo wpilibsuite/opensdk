@@ -49,8 +49,12 @@ fi
 
 bash scripts/check_sys_compiler.sh || exit
 
-export CC="${WPIHOSTTARGET}-gcc"
-export CXX="${WPIHOSTTARGET}-g++"
+
+CC="${WPIHOSTTARGET}-gcc"
+CXX="${WPIHOSTTARGET}-g++"
+[ "${WPITARGET}" = "Mac" ] && CC=clang
+[ "${WPITARGET}" = "Mac" ] && CXX=clang++
+export CC CXX
 
 bash ./makes/src/test/test.sh
 

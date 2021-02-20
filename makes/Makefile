@@ -11,18 +11,24 @@ sysroot:
 	cd ${M}/sysroot-libc-linux; tar xf ${REPACK_DIR}/libgcc1-frc$(V_YEAR)-armel-cross_$(Va_LIBGCC).orig.tar.bz2
 	cd ${M}/sysroot-libc-linux; tar xf ${REPACK_DIR}/libstdc++6-frc$(V_YEAR)-armel-cross_$(Va_LIBSTDCPP).orig.tar.bz2
 	cd ${M}; ${ROOT_DIR}/makes/src/sysroot
+sysroot-install:
+	cd ${M}; sudo cp -r ${BUILD_DIR}/sysroot-install/arm-frc$(V_YEAR)-linux-gnueabi/ "/usr/local/"
 
 binutils:
 	cd ${M}; tar xf ${DOWNLOAD_DIR}/binutils-$(V_BINUTILS).tar.bz2
 	cd ${M}; V_YEAR=$(V_YEAR) V_BINUTILS=$(V_BINUTILS) ${ROOT_DIR}/makes/src/binutils
+binutils-install:
+	cd ${M}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/usr/local/"
+
+gcc:
+	@# gcc does its own extraction
+	cd ${M}; ${ROOT_DIR}/makes/src/gcc
+gcc-install:
+	cd ${M}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/usr/local/"
 
 gdb:
 	cd ${M}; tar xf ${PROJ_DIR}/gdb-$(V_GDB).tar.gz
 	cd ${M}; V_YEAR=$(V_YEAR) V_GDB=$(V_GDB) ${ROOT_DIR}/src/gdb
-
-gcc:
-	@# gcc does its own extraction
-	cd ${M}; ${ROOT_DIR}/src/gcc
 
 tree:
 	cd ${M}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/src/tree

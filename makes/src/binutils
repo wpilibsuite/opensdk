@@ -15,6 +15,6 @@ cd binutils-build
     --enable-lto \
     --with-build-sysroot=${WPIPREFIX}/arm-frc${V_YEAR}-linux-gnueabi \
     --disable-werror
-make -j3
+make -j"$JOBS"
 DESTDIR=$PWD/../binutils-install make install
 cd ../binutils-install

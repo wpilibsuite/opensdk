@@ -1,0 +1,83 @@
+#!/bin/bash
+source ${ROOT_DIR}/consts.env
+source ${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env
+
+WPI_PATH="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/"
+
+export PATH="$PATH:${WPI_PATH}/binutils-install"
+
+set -e
+set -x
+
+if [ "$WPITARGET" != "Windows" ]; then
+    export _UNIX_CFLAGS="-fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
+    export _UNIX_CXXFLAGS="-fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
+fi
+
+export CFLAGS="-g -O2 $_UNIX_CFLAGS"
+export CPPFLAGS="-D_FORTIFY_SOURCE=2"
+export CXXFLAGS="-g -O2 $_UNIX_CXXFLAGS"
+export FFLAGS=-"g -O2"
+export LDFLAGS=""
+
+export CFLAGS_FOR_TARGET="-g -O2 --param=ssp-buffer-size=4 -Wformat -Wformat-security"
+# BUG: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61164
+# so we just disable it
+export CPPFLAGS_FOR_TARGET=""
+export CXXFLAGS_FOR_TARGET="-g -O2 --param=ssp-buffer-size=4 -Wformat -Wformat-security"
+export FFLAGS_FOR_TARGET="-g -O2"
+export LDFLAGS_FOR_TARGET="-Wl,-Bsymbolic-functions -Wl,-z,relro"
+
+echo "Extracting GCC..."
+tar xf ${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz
+echo "Extracting MPFR..."
+tar xf ${DOWNLOAD_DIR}/mpfr-${V_MPFR}.tar.bz2
+echo "Extracting MPC..."
+tar xf ${DOWNLOAD_DIR}/mpc-${V_MPC}.tar.gz
+echo "Extracting GMP..."
+tar xf ${DOWNLOAD_DIR}/gmp-${V_GMP}.tar.bz2
+echo "Extracting CLOOG..."
+tar xf ${DOWNLOAD_DIR}/cloog-${V_CLOOG}.tar.gz
+echo "Extracting ISL..."
+tar xf ${DOWNLOAD_DIR}/isl-${V_ISL}.tar.bz2
+
+# echo "Patching GCC..."
+# patch -p0 < ../patches/config
+
+rm -rf gcc-${V_GCC}/{cloog,isl,mpfr,mpc,gmp}/
+
+mv cloog-${V_CLOOG} gcc-${V_GCC}/cloog
+mv isl-${V_ISL} gcc-${V_GCC}/isl
+mv mpfr-${V_MPFR} gcc-${V_GCC}/mpfr
+mv mpc-${V_MPC} gcc-${V_GCC}/mpc
+mv gmp-${V_GMPf} gcc-${V_GCC}/gmp
+
+rm -rf ${BUILD_DIR}/gcc-{build,install}
+mkdir -p ${BUILD_DIR}/gcc-{build,install}
+cd ${BUILD_DIR}/gcc-build
+${BUILD_DIR}/gcc-${V_GCC}/configure \
+    $([ "$WPITARGET" != "Mac" ] && echo "--host=${WPIHOSTTARGET}") \
+    --enable-threads=posix \
+    --target=arm-frc${V_YEAR}-linux-gnueabi \
+    --with-cpu=cortex-a9 \
+    --with-float=softfp \
+    --with-fpu=vfpv3 \
+    --with-specs='%{save-temps: -fverbose-asm} %{funwind-tables|fno-unwind-tables|mabi=*|ffreestanding|nostdlib:;:-funwind-tables}' \
+    --enable-languages=c,c++,fortran \
+    --enable-shared \
+    --enable-lto \
+    --disable-nls \
+    "--with-pkgversion=GCC for FRC ${V_YEAR}" \
+    --with-cloog \
+    --disable-multilib \
+    --disable-multiarch \
+    --prefix="$WPIPREFIX" \
+    --with-sysroot="$WPIPREFIX/arm-frc${V_YEAR}-linux-gnueabi" \
+    --enable-poison-system-directories \
+    --disable-libmudflap \
+    --with-build-sysroot="/usr/local/arm-frc${V_YEAR}-linux-gnueabi" \
+    --libdir="$WPIPREFIX"/arm-frc${V_YEAR}-linux-gnueabi/usr/lib \
+    --with-gxx-include-dir="$WPIPREFIX"/arm-frc${V_YEAR}-linux-gnueabi/usr/include/c++/7.3.0 \
+    $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) 
+make -j"$JOBS" all-gcc all-target-libgfortran
+DESTDIR=${BUILD_DIR}/gcc-install make install-gcc install-target-libgfortran

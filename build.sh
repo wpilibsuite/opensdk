@@ -30,6 +30,7 @@ cat << EOF
 Host System Info
     OS: ${WPITARGET}
     Tuple: ${WPIHOSTTARGET}
+    Prefix: ${WPIPREFIX}
 Toolchain Info:
     Name: ${TOOLCHAIN_NAME}
 EOF
@@ -57,10 +58,19 @@ fi
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
 
+export JOBS=$(nproc --ignore=1)
 export ROOT_DIR
+export BUILD_DIR
 export REPACK_DIR
 export DOWNLOAD_DIR
 export TOOLCHAIN_NAME
 
+
 ${MAKE} sysroot
+[ "${WPITARGET}" = "Windows" ] || ${MAKE} sysroot-install
 ${MAKE} binutils
+export PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
+[ "${WPITARGET}" = "Windows" ] || ${MAKE} binutils-install
+${MAKE} gcc
+export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
+[ "${WPITARGET}" = "Windows" ] || ${MAKE} gcc-install

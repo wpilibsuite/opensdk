@@ -1,0 +1,29 @@
+#!/bin/bash
+
+mkdir gdb-build
+mkdir gdb-install
+cd gdb-build
+../gdb-"${V_GDB}"/configure \
+    --host="${FRCHOSTTARGET}" \
+    --prefix="${FRCPREFIX}" \
+    --target="arm-frc${V_YEAR}-linux-gnueabi" \
+    --enable-plugins \
+    --with-pkgversion="GDB for FRC ${V_YEAR}" \
+    --disable-nls \
+    --with-libexpat-prefix="$PWD/../expat-install/usr/local/" \
+    --with-sysroot="${FRCPREFIX}/arm-frc${V_YEAR}-linux-gnueabi/" \
+    --enable-lto \
+    $([ "${FRCTARGET}" = "Windows" ] && echo "--with-expat") \
+    $([ "${FRCTARGET}" != "Windows" ] && echo "--datadir=${FRCPREFIX}/share/frc") \
+    $([ "${FRCTARGET}" != "Windows" ] && echo "--with-system-gdbinit=${FRCPREFIX}/share/frc/gdb/gdbinit") \
+    || exit $?
+make|| exit $?
+DESTDIR=$PWD/../gdb-install make install|| exit $?
+cd ../gdb-install
+
+# if [ "${FRCTARGET}" = "Windows" ]; then
+# "${FRCHOSTTARGET}"-strip \
+#     --remove-section=.comment \
+#     --remove-section=.note \
+#     --strip-unneeded ./**/*.exe
+# fi

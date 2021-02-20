@@ -74,3 +74,4 @@ export PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
 ${MAKE} gcc
 export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
 [ "${WPITARGET}" = "Windows" ] || ${MAKE} gcc-install
+${STOP_AT_GCC} && exit 0

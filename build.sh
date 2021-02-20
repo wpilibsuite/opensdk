@@ -9,8 +9,8 @@ if [ "$#" != "2" ]; then
     exit 1
 fi
 
-HOST_CFG="$(readlink -f "$1")"
-TOOLCHAIN_CFG="$(readlink -f "$2")"
+HOST_CFG="$(readlink "$1")"
+TOOLCHAIN_CFG="$(readlink "$2")"
 TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_CFG")"
 
 if ! [ -f "$HOST_CFG" ]; then

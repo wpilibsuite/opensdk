@@ -12,8 +12,8 @@ fi
 RLINK=readlink
 [ "${WPITARGET}" = "Mac" ] && RLINK="greadlink"
 
-HOST_CFG="$(readlink -f "$1")"
-TOOLCHAIN_CFG="$(readlink -f "$2")"
+HOST_CFG="$($RLINK -f "$1")"
+TOOLCHAIN_CFG="$($RLINK -f "$2")"
 TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_CFG")"
 
 if ! [ -f "$HOST_CFG" ]; then

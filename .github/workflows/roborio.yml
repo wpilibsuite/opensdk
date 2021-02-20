@@ -1,0 +1,28 @@
+name: RoboRIO CI
+
+on: [pull_request, push]
+
+jobs:
+  build-linux:
+    name: "Build - Linux"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: ./build-docker.sh 14.04 hosts/linux_x86_64.env targets/roborio
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Linux
+          path: roborio-*-Linux*.tar.gz
+
+  build-windows:
+    name: "Build - Windows"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: ./build-docker.sh 18.04 hosts/windows_i686.env targets/roborio
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Windows
+          path: roborio-*-Windows*.zip

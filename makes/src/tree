@@ -2,32 +2,22 @@
 
 rm -rf tree-install
 mkdir tree-install
-rsync gcc-install/ tree-install -a --copy-links
-rsync binutils-install/ tree-install -a --copy-links
-rsync sysroot-install/ tree-install -a --copy-links
-rsync gdb-install/ tree-install -a --copy-links
-if [ "$FRCTARGET" = "Windows" ]; then
-    cd tree-install/c/Users/Public/frc${V_YEAR}/roborio
-else
-    cd tree-install/
-fi
+for dir in {gcc,binutils,sysroot,gdb}-install; do
+    echo "$dir"
+    rsync $dir tree-install -a --copy-links
+done
+cd tree-install
 du -hs .
 if [ "$FRCTARGET" = "Windows" ]; then
-    "$FRCHOSTTARGET"-strip bin/*.exe
-    "$FRCHOSTTARGET"-strip arm-frc*/bin/*.exe
+    cd "${WPIPREFIX}"
+    find bin -name \*.exe | xargs "$FRCHOSTTARGET"-strip
+    find arm-frc*/bin -name \*.exe | xargs "$FRCHOSTTARGET"-strip
     find libexec -name \*.exe | xargs "$FRCHOSTTARGET"-strip
     rm -rf share/info share/man
-    pushd arm-frc${V_YEAR}-linux-gnueabi/usr/include
-    patch -p4 < ../../../../../../../../../makes/case-sensitive-includes.diff
-    popd
     rm -rf lib/xtables
-
-    pushd bin
-    cp ../../../../../../../../tools/make.exe frc${V_YEAR}-make.exe
-    popd
 else
     strip usr/local/bin/*
     strip usr/local/arm-frc*/bin/*
-    find usr/local/libexec -type f |xargs strip
+    find usr/local/libexec -type f | xargs strip
 fi
 du -hs .

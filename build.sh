@@ -82,4 +82,4 @@ export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
 [ "${WPITARGET}" = "Windows" ] || ${MAKE} gcc-install
 ${STOP_AT_GCC:-false} && exit 0
 
-${MAKE} expat gdb
+${MAKE} expat gdb tree

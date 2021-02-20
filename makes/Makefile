@@ -35,7 +35,7 @@ gdb:
 	cd ${M}; V_YEAR=$(V_YEAR) V_GDB=$(V_GDB) ${ROOT_DIR}/makes/src/gdb
 
 tree:
-	cd ${M}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/src/tree
+	cd ${M}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree
 
 tarpkg:
 	cd ${M}; mkdir -p frc$(V_YEAR)

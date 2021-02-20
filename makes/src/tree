@@ -3,8 +3,8 @@
 rm -rf tree-install
 mkdir tree-install
 for dir in {gcc,binutils,sysroot,gdb}-install; do
-    echo "$dir"
-    rsync $dir tree-install -a --copy-links
+    echo "$dir/"
+    rsync "$dir/" tree-install -a --copy-links
 done
 cd tree-install
 du -hs .

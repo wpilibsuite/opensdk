@@ -26,9 +26,13 @@ gcc:
 gcc-install:
 	cd ${M}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/usr/local/"
 
+expat:
+	cd ${M}; tar xf ${DOWNLOAD_DIR}/expat-$(Vw_EXPAT).tar.bz2
+	cd ${M}; Vw_EXPAT=$(Vw_EXPAT) ${ROOT_DIR}/makes/src/expat
+
 gdb:
-	cd ${M}; tar xf ${PROJ_DIR}/gdb-$(V_GDB).tar.gz
-	cd ${M}; V_YEAR=$(V_YEAR) V_GDB=$(V_GDB) ${ROOT_DIR}/src/gdb
+	cd ${M}; tar xf ${DOWNLOAD_DIR}/gdb-$(V_GDB).tar.gz
+	cd ${M}; V_YEAR=$(V_YEAR) V_GDB=$(V_GDB) ${ROOT_DIR}/makes/src/gdb
 
 tree:
 	cd ${M}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/src/tree

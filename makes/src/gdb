@@ -1,25 +1,27 @@
 #!/bin/bash
 
-mkdir gdb-build
-mkdir gdb-install
-cd gdb-build
-../gdb-"${V_GDB}"/configure \
-    --host="${FRCHOSTTARGET}" \
-    --prefix="${FRCPREFIX}" \
-    --target="arm-frc${V_YEAR}-linux-gnueabi" \
+set -x
+set -e
+
+mkdir -p "${BUILD_DIR}"/gdb-{build,install}
+cd "${BUILD_DIR}"/gdb-build
+"${BUILD_DIR}"/gdb-"${V_GDB}"/configure \
+    --host="${WPIHOSTTARGET}" \
+    --prefix="${WPIPREFIX}" \
+    --target="${TARGET_TUPLE}" \
     --enable-plugins \
     --with-pkgversion="GDB for FRC ${V_YEAR}" \
     --disable-nls \
-    --with-libexpat-prefix="$PWD/../expat-install/usr/local/" \
-    --with-sysroot="${FRCPREFIX}/arm-frc${V_YEAR}-linux-gnueabi/" \
+    --with-libexpat-prefix="${BUILD_DIR}/expat-install/usr/local/" \
+    --with-sysroot="${FRCPREFIX}/${TARGET_TUPLE}/" \
     --enable-lto \
-    $([ "${FRCTARGET}" = "Windows" ] && echo "--with-expat") \
+    --with-expat \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--datadir=${FRCPREFIX}/share/frc") \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--with-system-gdbinit=${FRCPREFIX}/share/frc/gdb/gdbinit") \
     || exit $?
-make|| exit $?
-DESTDIR=$PWD/../gdb-install make install|| exit $?
-cd ../gdb-install
+make -j"$JOBS" || exit $?
+DESTDIR="${BUILD_DIR}"/gdb-install make install || exit $?
+cd "${BUILD_DIR}"/gdb-install
 
 # if [ "${FRCTARGET}" = "Windows" ]; then
 # "${FRCHOSTTARGET}"-strip \

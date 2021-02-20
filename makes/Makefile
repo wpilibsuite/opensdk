@@ -41,7 +41,11 @@ tarpkg:
 	cd ${M}; mkdir -p frc$(V_YEAR)
 	cd ${M}; mkdir -p frc$(V_YEAR)/roborio
 	cd ${M}; cp -R tree-install/usr/local/* frc$(V_YEAR)/roborio/
-	cd ${M}; tar czf FRC-$(V_YEAR)-$(FRCTARGET)-Toolchain-$(V_GCC).tar.gz frc$(V_YEAR)
+	cd ${M}; tar czf $(TOOLCHAIN_NAME)-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC).tar.gz frc$(V_YEAR)
+
+zip:
+	cd ${BUILD_DIR}/tree-install/c/Users/Public \
+		&& zip -r ../../../../$(TOOLCHAIN_NAME)-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC).zip .
 
 clean:
 	cd ${M}; rm -rf binutils* roborio* sysroot* gcc* tree-install gdb* *-Toolchain-*.tar.gz

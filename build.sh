@@ -63,13 +63,9 @@ fi
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
+JOBS=$(nproc --ignore=1)
 
-export JOBS=$(nproc --ignore=1)
-export ROOT_DIR
-export BUILD_DIR
-export REPACK_DIR
-export DOWNLOAD_DIR
-export TOOLCHAIN_NAME
+export JOBS ROOT_DIR BUILD_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
 
 
 ${MAKE} sysroot
@@ -83,3 +79,9 @@ export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
 ${STOP_AT_GCC:-false} && exit 0
 
 ${MAKE} expat gdb tree
+
+if [ "$WPITARGET" != "Windows" ]; then
+    ${MAKE} tarpkg
+else
+    ${MAKE} zip
+fi

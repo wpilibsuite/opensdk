@@ -9,8 +9,11 @@ if [ "$#" != "2" ]; then
     exit 1
 fi
 
-HOST_CFG="$(realpath "$1")"
-TOOLCHAIN_CFG="$(realpath "$2")"
+RLINK=readlink
+[ "${WPITARGET}" = "Mac" ] && RLINK="greadlink"
+
+HOST_CFG="$(readlink -f "$1")"
+TOOLCHAIN_CFG="$(readlink -f "$2")"
 TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_CFG")"
 
 if ! [ -f "$HOST_CFG" ]; then

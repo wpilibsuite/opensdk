@@ -31,6 +31,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install coreutils
+        run: brew install coreutils
       - name: Build
         run: ./build.sh hosts/macos_generic.env targets/roborio
       - uses: actions/upload-artifact@v2

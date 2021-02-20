@@ -41,6 +41,12 @@ Toolchain Info:
     Tuple: ${TARGET_TUPLE}
 EOF
 
+if [ "${WPITARGET}" = "Windows" ]; then
+    # Recursivly build to setup host to help the canadian build
+    STOP_AT_GCC=true "${SHELL}" \
+        "$0" "hosts/linux_x86_64.env" "$2" || exit
+fi
+
 bash scripts/check_sys_compiler.sh || exit
 
 export CC="${WPIHOSTTARGET}-gcc"
@@ -50,7 +56,7 @@ bash ./makes/src/test/test.sh
 
 DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
 REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
-BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}"
+BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/${WPITARGET}/"
 
 # Prep builds
 if [ "$SKIP_PREP" != true ]; then
@@ -76,9 +82,10 @@ export PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
 ${MAKE} gcc
 export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
 [ "${WPITARGET}" = "Windows" ] || ${MAKE} gcc-install
-${STOP_AT_GCC:-false} && exit 0
+${STOP_AT_GCC:-false} && exit
 
 ${MAKE} expat gdb tree
+${MAKE} tree
 
 if [ "$WPITARGET" != "Windows" ]; then
     ${MAKE} tarpkg

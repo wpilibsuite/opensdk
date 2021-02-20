@@ -1,6 +1,7 @@
 #!/bin/sh
 
-mkdir -p "${BUILD_DIR}"/expat-{build,install}
+mkdir -p "${BUILD_DIR}"/expat-build
+mkdir -p "${BUILD_DIR}"/expat-install
 cd "${BUILD_DIR}"/expat-build
 "${BUILD_DIR}"/expat-${Vw_EXPAT}/configure \
     --host=${FRCHOSTTARGET}

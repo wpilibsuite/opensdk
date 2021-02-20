@@ -6,14 +6,14 @@ cd binutils-build
 ../binutils-${V_BINUTILS}/configure \
     --host=${WPIHOSTTARGET} \
     --prefix=${WPIPREFIX} \
-    --target=arm-frc${V_YEAR}-linux-gnueabi \
+    --target=${TARGET_TUPLE} \
     "--with-pkgversion=GNU Binutils for FRC ${V_YEAR}" \
     --enable-poison-system-directories \
-    --with-sysroot=${WPIPREFIX}/arm-frc${V_YEAR}-linux-gnueabi \
+    --with-sysroot=${WPIPREFIX}/${TARGET_TUPLE} \
     --enable-plugins \
     --disable-nls \
     --enable-lto \
-    --with-build-sysroot=${WPIPREFIX}/arm-frc${V_YEAR}-linux-gnueabi \
+    --with-build-sysroot=${WPIPREFIX}/${TARGET_TUPLE} \
     --disable-werror
 make -j"$JOBS"
 DESTDIR=$PWD/../binutils-install make install

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 source "${ROOT_DIR}"/consts.env
+source "${ROOT_DIR}"/targets/"${TOOLCHAIN_NAME}"/info.env
 source "${ROOT_DIR}"/targets/"${TOOLCHAIN_NAME}"/version.env
 
-mkdir -p sysroot-install/${FRCPREFIX}/arm-frc${V_YEAR}-linux-gnueabi
+mkdir -p sysroot-install/${FRCPREFIX}/${TARGET_TUPLE}
 mkdir -p sysroot-libc-linux/{usr,lib}
 cp -a sysroot-libc-linux/linux-libc-${Va_LINUX}/usr sysroot-libc-linux/
 cp -a sysroot-libc-linux/libc6-${Va_LIBC}/libc6-dev/usr sysroot-libc-linux/

@@ -24,7 +24,11 @@ if ! [ -f "$TOOLCHAIN_CFG/version.env" ]; then
 fi
 
 # shellcheck source=hosts/linux_x86_64.env
-source "$HOST_CFG"
+source "${HOST_CFG}"
+# shellcheck source=consts.env
+source "${ROOT_DIR}/consts.env"
+# shellcheck source=targets/roborio/info.env
+source "${TOOLCHAIN_CFG}/info.env"
 
 cat << EOF
 Host System Info
@@ -33,6 +37,8 @@ Host System Info
     Prefix: ${WPIPREFIX}
 Toolchain Info:
     Name: ${TOOLCHAIN_NAME}
+    CPU: ${TARGET_CPU}
+    Tuple: ${TARGET_TUPLE}
 EOF
 
 bash scripts/check_sys_compiler.sh || exit

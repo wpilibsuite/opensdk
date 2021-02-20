@@ -58,11 +58,11 @@ cd ${BUILD_DIR}/gcc-build
 ${BUILD_DIR}/gcc-${V_GCC}/configure \
     $([ "$WPITARGET" != "Mac" ] && echo "--host=${WPIHOSTTARGET}") \
     --enable-threads=posix \
-    --target=arm-frc${V_YEAR}-linux-gnueabi \
-    --with-cpu=cortex-a9 \
-    --with-float=softfp \
-    --with-fpu=vfpv3 \
-    --with-specs='%{save-temps: -fverbose-asm} %{funwind-tables|fno-unwind-tables|mabi=*|ffreestanding|nostdlib:;:-funwind-tables}' \
+    --target=${TARGET_TUPLE} \
+    --with-cpu=${TARGET_CPU} \
+    --with-float=${TARGET_FLOAT} \
+    --with-fpu=${TARGET_FPU} \
+    --with-specs="${TARGET_SPECS}" \
     --enable-languages=c,c++,fortran \
     --enable-shared \
     --enable-lto \
@@ -72,12 +72,12 @@ ${BUILD_DIR}/gcc-${V_GCC}/configure \
     --disable-multilib \
     --disable-multiarch \
     --prefix="$WPIPREFIX" \
-    --with-sysroot="$WPIPREFIX/arm-frc${V_YEAR}-linux-gnueabi" \
+    --with-sysroot="$WPIPREFIX/$TARGET_TUPLE" \
     --enable-poison-system-directories \
     --disable-libmudflap \
-    --with-build-sysroot="/usr/local/arm-frc${V_YEAR}-linux-gnueabi" \
-    --libdir="$WPIPREFIX"/arm-frc${V_YEAR}-linux-gnueabi/usr/lib \
-    --with-gxx-include-dir="$WPIPREFIX"/arm-frc${V_YEAR}-linux-gnueabi/usr/include/c++/7.3.0 \
+    --with-build-sysroot="/usr/local/$TARGET_TUPLE" \
+    --libdir="$WPIPREFIX/$TARGET_TUPLE"/usr/lib \
+    --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE"/usr/include/c++/7.3.0 \
     $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) 
 make -j"$JOBS" all-gcc all-target-libgfortran
 DESTDIR=${BUILD_DIR}/gcc-install make install-gcc install-target-libgfortran

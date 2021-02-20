@@ -53,7 +53,7 @@ REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}"
 
 # Prep builds
-if ! $SKIP_PREP; then
+if [ "$SKIP_PREP" != true ]; then
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}" || exit
     bash "${TOOLCHAIN_CFG}/download.sh"

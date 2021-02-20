@@ -10,7 +10,7 @@ if [ "$#" != "2" ]; then
 fi
 
 RLINK=readlink
-[ "${WPITARGET}" = "Mac" ] && RLINK="greadlink"
+[[ "$OSTYPE" == "darwin"* ]] && RLINK="g$RLINK"
 
 HOST_CFG="$($RLINK -f "$1")"
 TOOLCHAIN_CFG="$($RLINK -f "$2")"

@@ -13,7 +13,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Linux
-          path: roborio-*-Linux*.tar.gz
+          path: build/roborio/Linux/roborio-*-Linux*.tar.gz
 
   build-windows:
     name: "Build - Windows"
@@ -25,4 +25,15 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Windows
-          path: roborio-*-Windows*.zip
+          path: build/roborio/Windows/roborio-*-Windows*.zip
+  build-macos:
+    name: "Build - MacOS"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: ./build.sh hosts/macos_generic.env targets/roborio
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Windows
+          path: build/roborio/Mac/roborio-*-Mac*.tar.gz

@@ -3,18 +3,6 @@
 source "$(dirname "$0")/version.env" || exit
 source "$(dirname "$0")/../../scripts/downloads_tools.sh" || exit
 
-PUB_KEYS=(
-    3AB00996FC26A641 # gcc
-    C3126D3B4AE55E93 # binutils
-    980C197698C3739D # mpfr
-    F7D5C9BF765C61E3 # mpc
-    F3599FF828C67298 # gmp
-    92EDB04BFF325CF3 # gdb
-    B00BC66A401A1600 # expat
-)
-
-import-pgp-keys "${PUB_KEYS[@]}" || exit
-
 signed sig https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz
 signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
 signed sig https://ftp.gnu.org/gnu/mpfr/mpfr-${V_MPFR}.tar.bz2

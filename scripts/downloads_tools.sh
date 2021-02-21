@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 
+# Propogates to any tool that sources this file
+set -e
+
 function import-pgp-keys() {
     for KEY in "$@"
     do
@@ -11,6 +14,19 @@ function import-pgp-keys() {
             gpg --import || { echo "Could not import 0x${KEY} into gpg"; exit 1; }
     done
 }
+
+PUB_KEYS=(
+    3AB00996FC26A641 # gcc
+    A328C3A2C3C45C06 # gcc-alt
+    C3126D3B4AE55E93 # binutils
+    980C197698C3739D # mpfr
+    F7D5C9BF765C61E3 # mpc
+    F3599FF828C67298 # gmp
+    92EDB04BFF325CF3 # gdb
+    B00BC66A401A1600 # expat
+)
+
+import-pgp-keys "${PUB_KEYS[@]}" || exit
 
 function basic-download() {
     FILE="${1/*\//}"

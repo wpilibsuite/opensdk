@@ -64,22 +64,21 @@ bash ./makes/src/test/test.sh
 DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
 REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/${WPITARGET}/"
+JOBS=$(nproc --ignore=1)
+
+export JOBS ROOT_DIR BUILD_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
 
 # Prep builds
 if [ "$SKIP_PREP" != true ]; then
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}" || exit
-    bash "${TOOLCHAIN_CFG}/download.sh"
-    bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
+    bash "${TOOLCHAIN_CFG}/download.sh" || exit
+    bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
 popd || exit
 fi
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
-JOBS=$(nproc --ignore=1)
-
-export JOBS ROOT_DIR BUILD_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
-
 
 ${MAKE} sysroot
 [ "${WPITARGET}" = "Windows" ] || ${MAKE} sysroot-install

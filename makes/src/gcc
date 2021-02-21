@@ -77,7 +77,7 @@ ${BUILD_DIR}/gcc-${V_GCC}/configure \
     --disable-libmudflap \
     --with-build-sysroot="/usr/local/$TARGET_TUPLE" \
     --libdir="$WPIPREFIX/$TARGET_TUPLE"/usr/lib \
-    --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE"/usr/include/c++/7.3.0 \
+    --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE"/usr/include/c++/${V_GCC} \
     $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) 
 make -j"$JOBS" all-gcc all-target-libgfortran
 DESTDIR=${BUILD_DIR}/gcc-install make install-gcc install-target-libgfortran

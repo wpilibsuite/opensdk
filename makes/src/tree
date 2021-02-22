@@ -17,7 +17,6 @@ mkdir -p "${WPI_TREE_OUT}"
 rsync -a "./${TARGET_TUPLE}"/ "${WPI_TREE_OUT}/${TARGET_TUPLE}"
 rsync -a "./${WPIPREFIX}"/ "${WPI_TREE_OUT}/"
 rm -rf "./${WPIPREFIX}/"
-bash
 
 pushd "${WPI_TREE_OUT}"
 

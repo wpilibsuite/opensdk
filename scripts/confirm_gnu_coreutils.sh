@@ -23,6 +23,8 @@ done
 
 if "$IS_GNU"; then
     echo "All tools are part of GNU coreutils"
+    exit 0
 else
     echo "Some tools cannot be confirmed to be part of GNU coreutils"
+    exit 1
 fi

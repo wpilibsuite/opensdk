@@ -73,7 +73,7 @@ export JOBS ROOT_DIR BUILD_DIR PATCH_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
 if [ "$SKIP_PREP" != true ]; then
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}" || exit
-    # bash "${TOOLCHAIN_CFG}/download.sh" || exit
+    bash "${TOOLCHAIN_CFG}/download.sh" || exit
     bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
 popd || exit
 fi

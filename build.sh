@@ -9,11 +9,12 @@ if [ "$#" != "2" ]; then
     exit 1
 fi
 
-RLINK=readlink
-[[ "$OSTYPE" == "darwin"* ]] && RLINK="g$RLINK"
+[[ "$OSTYPE" == "darwin"* ]] &&
+    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH
 
-HOST_CFG="$($RLINK -f "$1")"
-TOOLCHAIN_CFG="$($RLINK -f "$2")"
+HOST_CFG="$(readlink -f "$1")"
+TOOLCHAIN_CFG="$(readlink -f "$2")"
 TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_CFG")"
 
 if ! [ -f "$HOST_CFG" ]; then
@@ -33,7 +34,7 @@ source "${ROOT_DIR}/consts.env"
 # shellcheck source=targets/roborio/info.env
 source "${TOOLCHAIN_CFG}/info.env"
 
-cat << EOF
+cat <<EOF
 Host System Info
     OS: ${WPITARGET}
     Tuple: ${WPIHOSTTARGET}
@@ -51,7 +52,6 @@ if [ "${WPITARGET}" = "Windows" ]; then
 fi
 
 bash scripts/check_sys_compiler.sh || exit
-
 
 # CC="${WPIHOSTTARGET}-gcc"
 # CXX="${WPIHOSTTARGET}-g++"
@@ -71,11 +71,11 @@ export JOBS ROOT_DIR BUILD_DIR PATCH_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
 
 # Prep builds
 if [ "$SKIP_PREP" != true ]; then
-mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
-pushd "${DOWNLOAD_DIR}" || exit
+    mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
+    pushd "${DOWNLOAD_DIR}" || exit
     bash "${TOOLCHAIN_CFG}/download.sh" || exit
     bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
-popd || exit
+    popd || exit
 fi
 
 mkdir -p "${BUILD_DIR}"

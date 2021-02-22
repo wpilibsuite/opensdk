@@ -1,11 +1,8 @@
 #! /usr/bin/env bash
 
-RLINK=readlink
-[[ "$OSTYPE" == "darwin"* ]] && RLINK="g$RLINK"
-
 function unpack-deb {
     REPACK_DIR="$1"
-    DEB_FILE="$($RLINK -f "$2")"
+    DEB_FILE="$(readlink -f "$2")"
     OUT_DIR="$(basename "${DEB_FILE/.deb}")"
     cd "$REPACK_DIR"
     mkdir .work_dir/ || exit # fail if dir exists

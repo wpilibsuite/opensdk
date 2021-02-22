@@ -13,6 +13,8 @@ fi
     PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH
 
+bash "${PWD}/scripts/confirm_gnu_coreutils.sh"
+
 HOST_CFG="$(readlink -f "$1")"
 TOOLCHAIN_CFG="$(readlink -f "$2")"
 TOOLCHAIN_NAME="$(basename "$TOOLCHAIN_CFG")"

@@ -1,23 +1,45 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
-rm -rf tree-install
-mkdir tree-install
+rm -rf tree-{build,install}
+mkdir tree-{build,install}
 for dir in {gcc,binutils,sysroot,gdb}-install; do
     echo "$dir/"
-    rsync "$dir/" tree-install -a --copy-links
+    rsync "$dir/" tree-build -a --copy-links
 done
-cd tree-install
+pushd tree-build
 du -hs .
-if [ "$FRCTARGET" = "Windows" ]; then
-    cd "${WPIPREFIX}"
-    find bin -name \*.exe | xargs "$FRCHOSTTARGET"-strip
-    find arm-frc*/bin -name \*.exe | xargs "$FRCHOSTTARGET"-strip
-    find libexec -name \*.exe | xargs "$FRCHOSTTARGET"-strip
-    rm -rf share/info share/man
-    rm -rf lib/xtables
-else
-    strip usr/local/bin/*
-    strip usr/local/arm-frc*/bin/*
-    find usr/local/libexec -type f | xargs strip
-fi
+
+WPI_TREE_OUT="frc${V_YEAR}/${TOOLCHAIN_NAME}/"
+
+rm -rf "${WPI_TREE_OUT}"
+mkdir -p "${WPI_TREE_OUT}"
+
+rsync -a "./${TARGET_TUPLE}"/ "${WPI_TREE_OUT}/${TARGET_TUPLE}"
+rsync -a "./${WPIPREFIX}"/ "${WPI_TREE_OUT}/"
+rm -rf "./${WPIPREFIX}/"
+bash
+
+pushd "${WPI_TREE_OUT}"
+
+function strip-executables() {
+    STRIP="strip --strip-unneeded"
+    [ "$WPITARGET" != "Mac" ] && STRIP="${WPIHOSTTARGET}-${STRIP}"
+    pushd "$1"
+    find -type f -exec file -i {} \; |
+        cut -d: -f 1 | xargs -I {} -- sh -c "$STRIP {} || true"
+    popd
+}
+
+# Attempt to strip everything
+strip-executables "${PWD}/bin"
+strip-executables "${PWD}/libexec"
+
+rm -rf share/info share/man
+rm -rf lib/xtables
+
 du -hs .
+
+popd # frcYYYY/
+popd # tree-build
+
+mv "tree-build/frc${V_YEAR}/" "tree-install/frc${V_YEAR}"

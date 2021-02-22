@@ -51,15 +51,15 @@ fix-links "${REPACK_DIR}" "${REPACK_DIR}"/usr/lib/$TARGET_TUPLE
 fix-links "${REPACK_DIR}" "${REPACK_DIR}"/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}
 
 # Stage 6: Patch in relative paths
-pushd "${REPACK_DIR}"/usr/lib/aarch64-linux-gnu
-SED="sed -i"
-[[ `gcc -dumpmachine` == *apple* ]] && SED="$SED ''"
+# pushd "${REPACK_DIR}"/usr/lib/aarch64-linux-gnu
+# SED="sed -i"
+# [[ `gcc -dumpmachine` == *apple* ]] && SED="$SED ''"
 
-$SED -e "s/\/usr\/lib\/{$TARGET_TUPLE}\///g" libc.so
-$SED -e 's/\/lib\//..\/..\/..\/lib\//g' libc.so
-$SED -e "s/\/usr\/lib\/${TARGET_TUPLE}\///g" libpthread.so
-$SED -e 's/\/lib\//..\/..\/..\/lib\//g' libpthread.so
-popd
+# $SED -e "s/\/usr\/lib\/{$TARGET_TUPLE}\///g" libc.so
+# $SED -e 's/\/lib\//..\/..\/..\/lib\//g' libc.so
+# $SED -e "s/\/usr\/lib\/${TARGET_TUPLE}\///g" libpthread.so
+# $SED -e 's/\/lib\//..\/..\/..\/lib\//g' libpthread.so
+# popd
 
 # Stage 7: Package
 pushd "/tmp"

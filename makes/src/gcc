@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 source ${ROOT_DIR}/consts.env
 source ${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env
 
@@ -9,16 +9,11 @@ export PATH="$PATH:${WPI_PATH}/binutils-install"
 set -e
 set -x
 
-if [ "$WPITARGET" != "Windows" ]; then
-    export _UNIX_CFLAGS="-fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
-    export _UNIX_CXXFLAGS="-fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
-fi
-
-export CFLAGS="-g -O2 $_UNIX_CFLAGS"
-export CPPFLAGS="-D_FORTIFY_SOURCE=2"
-export CXXFLAGS="-g -O2 $_UNIX_CXXFLAGS"
-export FFLAGS=-"g -O2"
-export LDFLAGS=""
+# export CFLAGS="-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
+# export CPPFLAGS="-D_FORTIFY_SOURCE=2"
+# export CXXFLAGS="-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
+# export FFLAGS=-"g -O2"
+# export LDFLAGS=""
 
 export CFLAGS_FOR_TARGET="-g -O2 --param=ssp-buffer-size=4 -Wformat -Wformat-security"
 # BUG: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61164
@@ -44,6 +39,12 @@ tar xf ${DOWNLOAD_DIR}/isl-${V_ISL}.tar.bz2
 # echo "Patching GCC..."
 # patch -p0 < ../patches/config
 
+pushd "${BUILD_DIR}/gcc-${V_GCC}/"
+for file in "${PATCH_DIR}"/gcc_*.patch; do
+patch -p0 < $file || true # Allow patch to fail
+done
+popd
+
 rm -rf gcc-${V_GCC}/{cloog,isl,mpfr,mpc,gmp}/
 
 mv cloog-${V_CLOOG} gcc-${V_GCC}/cloog
@@ -55,22 +56,24 @@ mv gmp-${V_GMPf} gcc-${V_GCC}/gmp
 rm -rf ${BUILD_DIR}/gcc-{build,install}
 mkdir -p ${BUILD_DIR}/gcc-{build,install}
 cd ${BUILD_DIR}/gcc-build
+BINUTILS_PREFIX="${BUILD_DIR}/binutils-install/${WPIPREFIX}/bin/${TARGET_PREFIX}"
 ${BUILD_DIR}/gcc-${V_GCC}/configure \
-    $([ "$WPITARGET" != "Mac" ] && echo "--host=${WPIHOSTTARGET}") \
+    $( [ "$WPITARGET" = "Windows" ]&& echo --host=${WPIHOSTTARGET}) \
     --enable-threads=posix \
     --target=${TARGET_TUPLE} \
     --with-cpu=${TARGET_CPU} \
     --with-float=${TARGET_FLOAT} \
     --with-fpu=${TARGET_FPU} \
     --with-specs="${TARGET_SPECS}" \
+    --program-prefix="${TARGET_PREFIX}" \
     --enable-languages=c,c++,fortran \
     --enable-shared \
     --enable-lto \
     --disable-nls \
+    --enable-libstdcxx-time=yes \
+    --with-default-libstdcxx-abi=new \
     "--with-pkgversion=GCC for FRC ${V_YEAR}" \
     --with-cloog \
-    --disable-multilib \
-    --disable-multiarch \
     --prefix="$WPIPREFIX" \
     --with-sysroot="$WPIPREFIX/$TARGET_TUPLE" \
     --enable-poison-system-directories \

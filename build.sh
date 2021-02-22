@@ -53,8 +53,8 @@ fi
 bash scripts/check_sys_compiler.sh || exit
 
 
-CC="${WPIHOSTTARGET}-gcc"
-CXX="${WPIHOSTTARGET}-g++"
+# CC="${WPIHOSTTARGET}-gcc"
+# CXX="${WPIHOSTTARGET}-g++"
 [ "${WPITARGET}" = "Mac" ] && CC=clang
 [ "${WPITARGET}" = "Mac" ] && CXX=clang++
 export CC CXX
@@ -63,16 +63,17 @@ bash ./makes/src/test/test.sh
 
 DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
 REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
+PATCH_DIR="${ROOT_DIR}/patches/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/${WPITARGET}/"
 JOBS=$(nproc --ignore=1)
 
-export JOBS ROOT_DIR BUILD_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
+export JOBS ROOT_DIR BUILD_DIR PATCH_DIR REPACK_DIR DOWNLOAD_DIR TOOLCHAIN_NAME
 
 # Prep builds
 if [ "$SKIP_PREP" != true ]; then
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}" || exit
-    bash "${TOOLCHAIN_CFG}/download.sh" || exit
+    # bash "${TOOLCHAIN_CFG}/download.sh" || exit
     bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
 popd || exit
 fi
@@ -80,17 +81,19 @@ fi
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
 
-${MAKE} sysroot
-[ "${WPITARGET}" = "Windows" ] || ${MAKE} sysroot-install
-${MAKE} binutils
-export PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
-[ "${WPITARGET}" = "Windows" ] || ${MAKE} binutils-install
-${MAKE} gcc
-export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
-[ "${WPITARGET}" = "Windows" ] || ${MAKE} gcc-install
-${STOP_AT_GCC:-false} && exit
+set -e
 
-${MAKE} expat gdb tree
+# ${MAKE} sysroot
+# [ "${WPITARGET}" = "Windows" ] || ${MAKE} sysroot-install
+# ${MAKE} binutils
+# export PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
+# [ "${WPITARGET}" = "Windows" ] || ${MAKE} binutils-install
+# ${MAKE} gcc
+# export PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
+# [ "${WPITARGET}" = "Windows" ] || ${MAKE} gcc-install
+# ${STOP_AT_GCC:-false} && exit
+
+# ${MAKE} expat gdb
 ${MAKE} tree
 
 if [ "$WPITARGET" != "Windows" ]; then

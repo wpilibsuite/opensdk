@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 set -x
 set -e
@@ -11,6 +11,7 @@ cd "${BUILD_DIR}"/gdb-build
     --target="${TARGET_TUPLE}" \
     --enable-plugins \
     --with-pkgversion="GDB for FRC ${V_YEAR}" \
+    --program-prefix="${TARGET_PREFIX}" \
     --disable-nls \
     --with-libexpat-prefix="${BUILD_DIR}/expat-install/usr/local/" \
     --with-sysroot="${FRCPREFIX}/${TARGET_TUPLE}/" \

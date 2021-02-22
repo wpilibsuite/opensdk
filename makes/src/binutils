@@ -7,6 +7,7 @@ cd binutils-build
     --host=${WPIHOSTTARGET} \
     --prefix=${WPIPREFIX} \
     --target=${TARGET_TUPLE} \
+    --program-prefix="${TARGET_PREFIX}" \
     "--with-pkgversion=GNU Binutils for FRC ${V_YEAR}" \
     --enable-poison-system-directories \
     --with-sysroot=${WPIPREFIX}/${TARGET_TUPLE} \

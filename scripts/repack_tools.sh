@@ -49,16 +49,16 @@ function fix-headers {
 }
 
 function fix-links {
-    REPACK_DIR="$1"
-    WORK_DIR="$2"
-    pushd "${REPACK_DIR}"/usr/lib/aarch64-linux-gnu
+    SYSROOT_DIR="$1"
+    pushd "${SYSROOT_DIR}/usr/lib/aarch64-linux-gnu" > /dev/null
     BROKEN_LINKS=( $(find ./ -maxdepth 1 -type l -exec file {} \; | grep broken | sed 's/:.*//g;s/\.\///g') )
     for LIB in "${BROKEN_LINKS[@]}"; do
         link_info="$(readlink "$LIB" | sed 's/\///')"
-        link_info_relative="$(realpath --relative-to=. "${REPACK_DIR}/${link_info}")"
+        link_info_relative="$(realpath --relative-to=. "${SYSROOT_DIR}/${link_info}")"
         [ -f "$link_info_relative" ] || { echo "err $LIB"; continue; }
+        echo "$link_info_relative"
         rm "$LIB"
         ln -s "$link_info_relative" "$LIB"
     done
-    popd
+    popd > /dev/null
 }

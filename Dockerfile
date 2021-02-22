@@ -2,6 +2,7 @@
 # For installation, see https://docs.docker.com/install/linux/docker-ce/ubuntu/
 ARG BASE
 FROM docker.io/ubuntu:${BASE}
+ARG BASE
 
 RUN apt-get update && apt-get install -y tzdata && apt-get install -y \
     autoconf \
@@ -50,6 +51,7 @@ RUN apt-get update && apt-get install -y tzdata && apt-get install -y \
     pkg-config \
     python-all-dev \
     quilt \
+    $([ "${BASE}" = "14.04" ] && echo "realpath" ) \
     rsync \
     subversion \
     sudo \

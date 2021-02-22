@@ -8,9 +8,9 @@ if ! [[ " ${TAGS[@]} " =~ " $1 " ]]; then
     exit 1
 fi
 docker build \
+    --build-arg BASE="$1" \
     -t "wpilib/toolchain-builder:$1" \
-    --build-arg BASE="$tag" .
-
+    .
 
 [ "$CI" != true ] && DOCKER_ARG="-it"
 

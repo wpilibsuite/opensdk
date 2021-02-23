@@ -28,10 +28,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build on docker
-        if: ${{ matrix.host.docker == 'true' }}
+        if: ${{ matrix.host.docker }}
         run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target}}
       - name: Build on native
-        if: ${{ matrix.host.docker == 'false' }}
+        if: ${{ !matrix.host.docker }}
         run: ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target}}
       - uses: actions/upload-artifact@v2
         with:

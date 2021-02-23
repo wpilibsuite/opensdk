@@ -9,11 +9,8 @@ if [ "$#" != "2" ]; then
     exit 1
 fi
 
-[[ "$OSTYPE" == "darwin"* ]] &&
-    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH
-
-bash "${PWD}/scripts/confirm_gnu_coreutils.sh" || exit
+source "${PWD}/scripts/macos_setup.sh" # Sets PATH and such
+bash "${PWD}/scripts/confirm_gnu_coreutils.sh" || exit 
 
 HOST_CFG="$(readlink -f "$1")"
 TOOLCHAIN_CFG="$(readlink -f "$2")"

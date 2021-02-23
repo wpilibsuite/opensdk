@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install coreutils
-        run: brew install coreutils
+        run: brew install coreutils gnu-tar
       - name: Build
         run: ./build.sh hosts/macos_generic.env targets/roborio
       - uses: actions/upload-artifact@v2

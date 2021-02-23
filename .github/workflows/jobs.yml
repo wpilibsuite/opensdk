@@ -5,6 +5,7 @@ on: [pull_request, push]
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         target: [aarch64-xenial, roborio]
         host: [{

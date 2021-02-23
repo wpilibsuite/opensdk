@@ -7,8 +7,12 @@ $IS_MAC && PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 $IS_MAC && PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
 # Clang appears to have issues
-$IS_MAC && CC="gcc-10"
-$IS_MAC && CXX="g++-10"
+GCC_VER=10
+$IS_MAC && CC="gcc-${GCC_VER}"
+$IS_MAC && CXX="g++-${GCC_VER}"
+$IS_MAC && CPP="cpp-${GCC_VER}"
+$IS_MAC && LD="gcc-${GCC_VER}"
+unset GCC_VER 
 
 # MacOS Flags
 $IS_MAC && CFLAGS="-fbracket-depth=512 -fPIC"

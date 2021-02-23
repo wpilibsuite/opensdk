@@ -6,4 +6,9 @@ IS_MAC=false
 $IS_MAC && PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 $IS_MAC && PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
-export PATH
+# Clang Specific
+$IS_MAC && CFLAGS="-fbracket-depth=512"
+$IS_MAC && CXXFLAGS="-fbracket-depth=512"
+
+unset IS_MAC
+export PATH CFLAGS CXXFLAGS

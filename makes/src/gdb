@@ -5,6 +5,7 @@ set -e
 
 mkdir -p "${BUILD_DIR}"/gdb-{build,install}
 cd "${BUILD_DIR}"/gdb-build
+# --with-libexpat-prefix="${BUILD_DIR}/expat-install/${FRCPREFIX}/" \
 "${BUILD_DIR}"/gdb-"${V_GDB}"/configure \
     --host="${WPIHOSTTARGET}" \
     --prefix="${WPIPREFIX}" \
@@ -13,10 +14,9 @@ cd "${BUILD_DIR}"/gdb-build
     --with-pkgversion="GDB for FRC ${V_YEAR}" \
     --program-prefix="${TARGET_PREFIX}" \
     --disable-nls \
-    --with-libexpat-prefix="${BUILD_DIR}/expat-install/usr/local/" \
     --with-sysroot="${FRCPREFIX}/${TARGET_TUPLE}/" \
     --enable-lto \
-    --with-expat \
+    --without-expat \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--datadir=${FRCPREFIX}/share/frc") \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--with-system-gdbinit=${FRCPREFIX}/share/frc/gdb/gdbinit") \
     || exit $?

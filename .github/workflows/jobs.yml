@@ -1,0 +1,39 @@
+name: Build CI
+
+on: [pull_request, push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        target: [aarch64-xenial, roborio]
+        host: [{
+          os-cfg: linux_x86_64,
+          runner: ubuntu-latest,
+          docker: true,
+          docker-img: 14.04
+        }, {
+          os-cfg: windows_i686,
+          runner: ubuntu-latest,
+          docker: true,
+          docker-img: 18.04
+        }, {
+          os-cfg: macos_generic,
+          runner: macos-latest,
+          docker: false,
+          docker-img:
+        }]
+    name: Build ${{ matrix.target }} for ${{ matrix.host.os-cfg }}
+    runs-on: ${{ matrix.host.runner }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build on docker
+        if: ${{ matrix.host.docker == 'true' }}
+        run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target}}
+      - name: Build on native
+        if: ${{ matrix.host.docker == 'false' }}
+        run: ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target}}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{matrix.target}}-${{matrix.host.os-cfg}}
+          path: build/${{matrix.target}}/*/${{matrix.target}}-*-*.*

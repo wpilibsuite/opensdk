@@ -52,12 +52,6 @@ fi
 
 bash scripts/check_sys_compiler.sh || exit
 
-# CC="${WPIHOSTTARGET}-gcc"
-# CXX="${WPIHOSTTARGET}-g++"
-[ "${WPITARGET}" = "Mac" ] && CC=clang
-[ "${WPITARGET}" = "Mac" ] && CXX=clang++
-export CC CXX
-
 bash ./makes/src/test/test.sh
 
 DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"

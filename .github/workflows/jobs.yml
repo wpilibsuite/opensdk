@@ -28,6 +28,9 @@ jobs:
     runs-on: ${{ matrix.host.runner }}
     steps:
       - uses: actions/checkout@v2
+      - name: Prep MacOS
+        if: ${{ !matrix.host.docker }}
+        run: brew install coreutils gnu-tar
       - name: Build on docker
         if: ${{ matrix.host.docker }}
         run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target}}

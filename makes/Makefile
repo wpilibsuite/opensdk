@@ -1,6 +1,9 @@
 include ${ROOT_DIR}/consts.env
 include ${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env
 
+basic: sysroot-install binutils-install gcc-install
+extended: basic gdb tree
+
 all: clean test-cc sysroot binutils gcc gdb tree tarpkg
 
 sysroot:
@@ -18,20 +21,26 @@ else
 	cd ${BUILD_DIR}/; mv sysroot-libc-linux/ sysroot-install/$(TARGET_TUPLE)
 endif
 
-sysroot-install:
-	cd ${M}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/usr/local/"
+sysroot-install: sysroot
+ifneq (${WPITARGET}, Windows)
+	cd ${M}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/$(WPIPREFIX)/"
+endif
 
-binutils:
+binutils: sysroot
 	cd ${M}; tar xf ${DOWNLOAD_DIR}/binutils-$(V_BINUTILS).tar.bz2
 	cd ${M}; V_YEAR=$(V_YEAR) V_BINUTILS=$(V_BINUTILS) ${ROOT_DIR}/makes/src/binutils
-binutils-install:
-	cd ${M}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/usr/local/"
+binutils-install: binutils
+ifneq (${WPITARGET}, Windows)
+	cd ${M}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
+endif
 
-gcc:
+gcc: sysroot binutils
 	@# gcc does its own extraction
 	cd ${M}; ${ROOT_DIR}/makes/src/gcc
-gcc-install:
-	cd ${M}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/usr/local/"
+gcc-install: gcc
+ifneq (${WPITARGET}, Windows)
+	cd ${M}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
+endif
 
 expat:
 	cd ${M}; tar xf ${DOWNLOAD_DIR}/expat-$(Vw_EXPAT).tar.bz2
@@ -41,15 +50,23 @@ gdb:
 	cd ${M}; tar xf ${DOWNLOAD_DIR}/gdb-$(V_GDB).tar.gz
 	cd ${M}; V_YEAR=$(V_YEAR) V_GDB=$(V_GDB) ${ROOT_DIR}/makes/src/gdb
 
-tree:
+tree: basic gdb
 	cd ${M}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree
 
 TREEOUT_TEMPLATE=$(TOOLCHAIN_NAME)-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC)
 tarpkg:
 	cd ${M}/tree-install/frc$(V_YEAR); tar czf ${M}/$(TREEOUT_TEMPLATE).tar.gz .
 
-zip:
+zippkg:
 	cd ${M}/tree-install/frc$(V_YEAR); zip -r $(M)/$(TREEOUT_TEMPLATE).zip .
+
+pkg: tree
+ifeq ($(WPITARGET), Windows)
+	$(MAKE) zippkg
+else
+	$(MAKE) tarpkg
+endif
+
 print-treeout:
 	@echo $(TREEOUT_TEMPLATE)
 

@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
 
-cd "$(dirname "$0")" || exit
+set -e -x
 
-echo "Simple C compiler test begin"
-"$CC" ./main.c -o a.out || exit $?
+cd "$(dirname "$0")"
+
+"$CC" ./main.c -o a.out
 file a.out
-rm a.out || exit $?
-echo "Simple C compiler test passed"
+rm a.out

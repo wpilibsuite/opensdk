@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y \
     file \
     flex \
     gawk \
-    gcc-mingw-w64 \
+    mingw-w64 \
     m4 \
     rsync \
     sudo \

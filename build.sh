@@ -3,9 +3,7 @@
 # Always ensure proper path
 cd "$(dirname "$0")" || exit
 
-set -x
-
-ROOT_DIR="${PWD}"
+ROOT_DIR="${PWD}" && export ROOT_DIR
 source "$ROOT_DIR/scripts/setup.sh"
 bash ./makes/src/test/test.sh || exit
 
@@ -25,7 +23,7 @@ if [ "$SKIP_PREP" != true ]; then
 fi
 
 mkdir -p "${BUILD_DIR}"
-MAKE="make -C ${PWD}/makes/ M=${BUILD_DIR}"
+MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
 
 set -e
 

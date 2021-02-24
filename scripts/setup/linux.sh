@@ -1,14 +1,11 @@
 #! /usr/bin/env bash
 
-# Do not continue if MacOS
-is-mac && return 0
-
-CC="${WPIHOSTTARGET}-gcc"
-CXX="${WPIHOSTTARGET}-g++"
-CPP="${WPIHOSTTARGET}-cpp"
-LD="${WPIHOSTTARGET}-ld"
+is-linux && CC="${WPIHOSTTARGET}-gcc"
+is-linux && CXX="${WPIHOSTTARGET}-g++"
+is-linux && CPP="${WPIHOSTTARGET}-cpp"
+is-linux && LD="${WPIHOSTTARGET}-ld"
 export CC CXX CPP LD
 
-CFLAGS=""
-CXXFLAGS=""
+is-linux && CFLAGS=""
+is-linux && CXXFLAGS=""
 export CFLAGS CXXFLAGS

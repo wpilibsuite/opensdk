@@ -3,8 +3,9 @@
 # Always ensure proper path
 cd "$(dirname "$0")" || exit
 
-ROOT_DIR="${PWD}"
+set -x
 
+ROOT_DIR="${PWD}"
 source "$ROOT_DIR/scripts/setup.sh"
 bash ./makes/src/test/test.sh || exit
 

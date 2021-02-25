@@ -1,9 +1,11 @@
-#!/bin/sh
+#! /usr/bin/env bash
 
-mkdir binutils-build
-mkdir binutils-install
-cd binutils-build
+rm -rf binutils-{build,install}
+mkdir binutils-{build,install} || exit # fail if existent
+
+pushd binutils-build
 ../binutils-${V_BINUTILS}/configure \
+    --build="$(${BUILD_DIR}/binutils-${V_BINUTILS}/config.guess)" \
     --host=${WPIHOSTTARGET} \
     --prefix=${WPIPREFIX} \
     --target=${TARGET_TUPLE} \
@@ -15,7 +17,7 @@ cd binutils-build
     --disable-nls \
     --enable-lto \
     --with-build-sysroot=${WPIPREFIX}/${TARGET_TUPLE} \
-    --disable-werror
-make -j"$JOBS"
-DESTDIR=$PWD/../binutils-install make install
-cd ../binutils-install
+    --disable-werror || exit
+make -j"$JOBS" || exit
+DESTDIR=$PWD/../binutils-install make install || exit
+popd

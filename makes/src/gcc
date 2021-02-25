@@ -6,72 +6,58 @@ WPI_PATH="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/"
 
 export PATH="$PATH:${WPI_PATH}/binutils-install"
 
-set -e
-set -x
+set -e -x
 
-# export CFLAGS="-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
-# export CPPFLAGS="-D_FORTIFY_SOURCE=2"
-# export CXXFLAGS="-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security"
-# export FFLAGS=-"g -O2"
-# export LDFLAGS=""
+CFLAGS_FOR_TARGET="-g -O2 -Wformat -Wformat-security"
+CXXFLAGS_FOR_TARGET="-g -O2 -Wformat -Wformat-security"
+FFLAGS_FOR_TARGET="-g -O2"
+LDFLAGS_FOR_TARGET="-Wl,-Bsymbolic-functions -Wl,-z,relro"
+export {C,CXX,F,LD}FLAGS_FOR_TARGET
 
-export CFLAGS_FOR_TARGET="-g -O2 --param=ssp-buffer-size=4 -Wformat -Wformat-security"
-# BUG: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61164
-# so we just disable it
-export CPPFLAGS_FOR_TARGET=""
-export CXXFLAGS_FOR_TARGET="-g -O2 --param=ssp-buffer-size=4 -Wformat -Wformat-security"
-export FFLAGS_FOR_TARGET="-g -O2"
-export LDFLAGS_FOR_TARGET="-Wl,-Bsymbolic-functions -Wl,-z,relro"
-
+rm -rf "${BUILD_DIR}/gcc-${V_GCC}"
 echo "Extracting GCC..."
 tar xf ${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz
-echo "Extracting MPFR..."
-tar xf ${DOWNLOAD_DIR}/mpfr-${V_MPFR}.tar.bz2
-echo "Extracting MPC..."
-tar xf ${DOWNLOAD_DIR}/mpc-${V_MPC}.tar.gz
-echo "Extracting GMP..."
-tar xf ${DOWNLOAD_DIR}/gmp-${V_GMP}.tar.bz2
-echo "Extracting CLOOG..."
-tar xf ${DOWNLOAD_DIR}/cloog-${V_CLOOG}.tar.gz
-echo "Extracting ISL..."
-tar xf ${DOWNLOAD_DIR}/isl-${V_ISL}.tar.bz2
-
-# echo "Patching GCC..."
-# patch -p0 < ../patches/config
 
 pushd "${BUILD_DIR}/gcc-${V_GCC}/"
+./contrib/download_prerequisites
 for file in "${PATCH_DIR}"/gcc_*.patch; do
-patch -p0 < $file || true # Allow patch to fail
+    patch -p0 <$file || true # Allow patch to fail
 done
 popd
 
-rm -rf gcc-${V_GCC}/{cloog,isl,mpfr,mpc,gmp}/
+BUILD_TUPLE="$(gcc -dumpmachine)" # Builder
+HOST_TUPLE="${WPIHOSTTARGET}"
 
-mv cloog-${V_CLOOG} gcc-${V_GCC}/cloog
-mv isl-${V_ISL} gcc-${V_GCC}/isl
-mv mpfr-${V_MPFR} gcc-${V_GCC}/mpfr
-mv mpc-${V_MPC} gcc-${V_GCC}/mpc
-mv gmp-${V_GMPf} gcc-${V_GCC}/gmp
+bash
+
+# No Canadian Build on MacOS
+if [ -n "${WPITARGET}" ]; then
+    # If tuple mismatch then confirm if there is first pass
+    if [ "$BUILD_TUPLE" != "$HOST_TUPLE" ]; then
+        command -v "$WPIHOSTTARGET-gcc" || exit
+        command -v "$TARGET_TUPLE-gcc" || exit
+        unset CC CXX CPP LD 
+    fi
+fi
 
 rm -rf ${BUILD_DIR}/gcc-{build,install}
 mkdir -p ${BUILD_DIR}/gcc-{build,install}
-cd ${BUILD_DIR}/gcc-build
+pushd ${BUILD_DIR}/gcc-build
 BINUTILS_PREFIX="${BUILD_DIR}/binutils-install/${WPIPREFIX}/bin/${TARGET_PREFIX}"
 ${BUILD_DIR}/gcc-${V_GCC}/configure \
-    $( [ "$WPITARGET" = "Windows" ]&& echo --host=${WPIHOSTTARGET}) \
+    --build="${BUILD_TUPLE}" \
+    --host="${WPIHOSTTARGET}" \
+    --target="${TARGET_TUPLE}" \
     --enable-threads=posix \
-    --target=${TARGET_TUPLE} \
     --with-cpu=${TARGET_CPU} \
     --with-float=${TARGET_FLOAT} \
     --with-fpu=${TARGET_FPU} \
     --with-specs="${TARGET_SPECS}" \
     --program-prefix="${TARGET_PREFIX}" \
-    --enable-languages=c,c++,fortran \
+    --enable-languages=c,c++ \
     --enable-shared \
     --enable-lto \
     --disable-nls \
-    --enable-libstdcxx-time=yes \
-    --with-default-libstdcxx-abi=new \
     "--with-pkgversion=GCC for FRC ${V_YEAR}" \
     --with-cloog \
     --prefix="$WPIPREFIX" \
@@ -79,8 +65,10 @@ ${BUILD_DIR}/gcc-${V_GCC}/configure \
     --enable-poison-system-directories \
     --disable-libmudflap \
     --with-build-sysroot="/usr/local/$TARGET_TUPLE" \
-    --libdir="$WPIPREFIX/$TARGET_TUPLE"/usr/lib \
-    --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE"/usr/include/c++/${V_GCC} \
-    $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) 
-make -j"$JOBS" all-gcc all-target-libgfortran
-DESTDIR=${BUILD_DIR}/gcc-install make install-gcc install-target-libgfortran
+    --libdir="$WPIPREFIX/$TARGET_TUPLE/usr/lib" \
+    --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}" \
+    $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib)
+bash
+make -j"$JOBS" all-gcc
+DESTDIR=${BUILD_DIR}/gcc-install make install-gcc
+popd

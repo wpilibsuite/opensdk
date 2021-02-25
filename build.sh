@@ -9,7 +9,7 @@ bash ./makes/src/test/test.sh || exit
 
 if [ "${WPITARGET}" = "Windows" ]; then
     # Recursivly build to setup host to help the canadian build
-    STOP_AT_GCC=true "${SHELL}" \
+    STOP_AT_GCC=true bash \
         "$0" "hosts/linux_x86_64.env" "$2" || exit
 fi
 

@@ -27,18 +27,23 @@ RUN wget "https://ftp.gnu.org/gnu/coreutils/coreutils-${VER}.tar.xz" \
 FROM docker.io/ubuntu:${BASE}
 ARG BASE
 
-RUN apt-get update && apt-get install -y \
+RUN dpkg --add-architecture i386 \
+    && apt-get update && apt-get install -y \
     bison \
     build-essential \
     file \
     flex \
     gawk \
+    libgmp-dev libmpfr-dev libmpc-dev \
     mingw-w64 \
     m4 \
     rsync \
     sudo \
     texinfo \
     wget \
+    wine-stable \
+    wine32 \
+    zip \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 

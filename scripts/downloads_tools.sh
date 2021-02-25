@@ -10,8 +10,11 @@ function import-pgp-keys() {
         gpg --list-key "0x$KEY" > /dev/null 2>&1 && continue
 
         # Enfoce https fetch
-        wget -nv -O - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY}" | \
-            gpg --import || { echo "Could not import 0x${KEY} into gpg"; exit 1; }
+        KEYDATA=$(wget -nv -O - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY}")
+        if ! (echo "$KEYDATA" | gpg --import); then
+            echo "Could not import 0x${KEY} into gpg"
+            exit 1
+        fi
     done
 }
 
@@ -47,9 +50,9 @@ function package-confirm() {
 
 function signed() {
     BASE_FILE=${2/*\//}
-    basic-download "$2" || { echo "Could Not Download $BASE_FILE"; exit 1; }
+    basic-download "$2" || exit 1
     basic-download "$2.$1" || return 0 # Signature missing, skip
-    gpg --verify "$BASE_FILE.$1" || { echo "Cannot Verify $BASE_FILE Download"; exit 1; }
+    gpg --verify "$BASE_FILE.$1" || exit 1
 }
 
 function signed-ni() {

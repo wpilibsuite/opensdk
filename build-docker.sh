@@ -10,7 +10,7 @@ fi
 docker build \
     --build-arg BASE="$1" \
     -t "wpilib/toolchain-builder:$1" \
-    .
+    . || exit
 
 [ "$CI" != true ] && DOCKER_ARG="-it"
 

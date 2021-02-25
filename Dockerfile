@@ -27,8 +27,7 @@ RUN wget "https://ftp.gnu.org/gnu/coreutils/coreutils-${VER}.tar.xz" \
 FROM docker.io/ubuntu:${BASE}
 ARG BASE
 
-RUN dpkg --add-architecture i386 \
-    && apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     bison \
     build-essential \
     file \
@@ -41,8 +40,6 @@ RUN dpkg --add-architecture i386 \
     sudo \
     texinfo \
     wget \
-    wine-stable \
-    wine32 \
     zip \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*

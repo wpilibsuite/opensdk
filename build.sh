@@ -4,8 +4,8 @@
 cd "$(dirname "$0")" || exit
 
 ROOT_DIR="${PWD}" && export ROOT_DIR
+# shellcheck source=./scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
-bash ./makes/src/test/test.sh || exit
 
 if [ "${WPITARGET}" = "Windows" ]; then
     # Recursivly build to setup host to help the canadian build
@@ -14,24 +14,20 @@ if [ "${WPITARGET}" = "Windows" ]; then
 fi
 
 # Prep builds
-if [ "$SKIP_PREP" != true ]; then
-    mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
-    pushd "${DOWNLOAD_DIR}" || exit
-    bash "${TOOLCHAIN_CFG}/download.sh" || exit
-    bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
-    popd || exit
-fi
+set -e
+mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
+pushd "${DOWNLOAD_DIR}"
+bash "${TOOLCHAIN_CFG}/download.sh"
+bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
+popd
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
 
-set -e
-
-PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
-PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
-export PATH
 ${MAKE} basic
-${STOP_AT_GCC:-false} && exit 0 || true
+if "${STOP_AT_GCC:-false}"; then
+    exit 0
+fi
 ${MAKE} extended
 
 # Package build for release

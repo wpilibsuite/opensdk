@@ -18,5 +18,6 @@ source "$SETUP_DIR/macos.sh"
 echo "Applying Linux/Windows Specifc Flags"
 source "$SETUP_DIR/linux.sh" # Includes windows
 bash "$ROOT_DIR/scripts/confirm_gnu.sh" || exit
+bash "$ROOT_DIR/makes/src/test/test.sh" || exit
 
 unset SETUP_DIR

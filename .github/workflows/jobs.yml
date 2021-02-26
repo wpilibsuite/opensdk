@@ -19,7 +19,7 @@ jobs:
           docker: true,
           docker-img: 18.04
         }, {
-          os-cfg: macos_generic,
+          os-cfg: macos_x86_64,
           runner: macos-latest,
           docker: false,
           docker-img:

@@ -2,12 +2,15 @@
 
 function unpack-generic() {
     REPACK_DIR="$3"
-    DEB_FILE="$(readlink -f "$4")"
+    PACK_FILE="$(readlink -f "$4")"
+    DEB_FILE="${PACK_FILE/$1/.deb}"
     OUT_DIR="$(basename "${DEB_FILE/$1/}")"
     cd "$REPACK_DIR"
     mkdir .work_dir/ || exit # fail if dir exists
     pushd .work_dir/
-    ar -x "$DEB_FILE"
+    cp "$PACK_FILE" "$DEB_FILE" || true
+    ar -x "$DEB_FILE" || exit
+    [ "$PACK_FILE" != "$DEB_FILE" ] && rm "$DEB_FILE"
     mkdir extract/
     pushd extract/
     tar xf ../data.tar.$2

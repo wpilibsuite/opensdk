@@ -17,7 +17,7 @@ fi
 set -e
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
-# bash "${TOOLCHAIN_CFG}/download.sh"
+bash "${TOOLCHAIN_CFG}/download.sh"
 bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
 popd
 

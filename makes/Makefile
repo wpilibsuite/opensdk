@@ -8,18 +8,9 @@ all: clean test-cc sysroot binutils gcc gdb tree tarpkg
 
 sysroot:
 	cd ${BUILD_DIR}; rm -rf sysroot-*
-ifeq (${TARGET_TUPLE}, roborio)
-	cd ${BUILD_DIR}; mkdir -p sysroot-libc-linux/
-	cd ${BUILD_DIR}/sysroot-libc-linux; tar xf ${REPACK_DIR}/libc6-frc$(V_YEAR)-armel-cross_$(Va_LIBC).orig.tar.bz2
-	cd ${BUILD_DIR}/sysroot-libc-linux; tar xf ${REPACK_DIR}/linux-libc-dev-frc$(V_YEAR)-armel-cross_$(Va_LINUX).orig.tar.bz2
-	cd ${BUILD_DIR}/sysroot-libc-linux; tar xf ${REPACK_DIR}/libgcc1-frc$(V_YEAR)-armel-cross_$(Va_LIBGCC).orig.tar.bz2
-	cd ${BUILD_DIR}/sysroot-libc-linux; tar xf ${REPACK_DIR}/libstdc++6-frc$(V_YEAR)-armel-cross_$(Va_LIBSTDCPP).orig.tar.bz2
-	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/sysroot
-else
 	cd ${BUILD_DIR}/; tar xf ${DOWNLOAD_DIR}/sysroot-libc-linux.tar.bz2
 	cd ${BUILD_DIR}/; mkdir -p sysroot-install/
 	cd ${BUILD_DIR}/; mv sysroot-libc-linux/ sysroot-install/$(TARGET_TUPLE)
-endif
 
 sysroot-install: sysroot
 ifneq (${WPITARGET}, Windows)

@@ -6,8 +6,6 @@ source "$(dirname "$0")/../../scripts/downloads_tools.sh" || exit
 signed sig https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz
 signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
 
-signed asc https://sourceforge.net/projects/expat/files/expat/${Vw_EXPAT}/expat-${Vw_EXPAT}.tar.bz2
-
 basic-download https://ftp.gnu.org/gnu/gdb/gdb-${V_GDB}.tar.gz
 POOL="http://ports.ubuntu.com/pool/main/"
 basic-download $POOL/g/gcc-5/libgcc-5-dev_${Va_LIBGCC}_arm64.deb

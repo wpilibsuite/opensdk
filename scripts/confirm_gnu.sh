@@ -4,7 +4,7 @@ function cmd-check {
     $1 --version | grep -q "GNU $1\|GNU coreutils" || return
 }
 
-TO_TEST=( tar cp realpath readlink )
+TO_TEST=( tar cp realpath readlink patch )
 
 IS_GNU=true
 

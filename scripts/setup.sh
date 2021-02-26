@@ -7,8 +7,8 @@
 SETUP_DIR="$ROOT_DIR/scripts/setup"
 
 source "$SETUP_DIR/tools.sh"
-echo "Enabling coreutils"
-source "$SETUP_DIR/coreutils.sh"
+echo "Enabling GNUtils"
+source "$SETUP_DIR/gnutils.sh"
 echo "Processing Build Args"
 source "$SETUP_DIR/process_args.sh"
 echo "Applying Build Info"

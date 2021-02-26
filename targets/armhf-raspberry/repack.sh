@@ -28,14 +28,14 @@ sysroot-clean "${REPACK_DIR}"
 
 echo "Stage 4: Rename tuple"
 sysroot-tuple-rename "${REPACK_DIR}" "${V_GCC/\.*/}" \
-    "aarch64-linux-gnu" "${TARGET_TUPLE}"
+    "arm-linux-gnueabihf" "${TARGET_TUPLE}"
 
 echo "Stage 5: Clean Up Headers"
 fix-headers "${REPACK_DIR}" "${V_GCC}"
 
 echo "Stage 6: Fix symlinks"
 fix-links "${REPACK_DIR}" "${REPACK_DIR}"/usr/lib/$TARGET_TUPLE
-fix-links "${REPACK_DIR}" "${REPACK_DIR}"/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}
+fix-links "${REPACK_DIR}" "${REPACK_DIR}"/usr/lib/gcc/$TARGET_TUPLE/${V_GCC/\.*/}
 
 echo "Stage 7: Package"
 sysroot-package "${REPACK_DIR}" "${DOWNLOAD_DIR}"

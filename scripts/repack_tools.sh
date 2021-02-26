@@ -70,13 +70,13 @@ function sysroot-tuple-rename() {
     OLD_TUPLE="$3"
     NEW_TUPLE="$4"
     pushd "${REPACK_DIR}/usr/lib/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE"
+    mv "$OLD_TUPLE" "$NEW_TUPLE" || true
     popd # usr/lib/
     pushd "${REPACK_DIR}/usr/lib/gcc/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE"
+    mv "$OLD_TUPLE" "$NEW_TUPLE" || true
     popd # usr/lib/gcc
     pushd "${REPACK_DIR}/usr/include/c++/${GCC_VERSION}/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE"
+    mv "$OLD_TUPLE" "$NEW_TUPLE" || true
     popd # usr/include/...
 }
 
@@ -100,16 +100,16 @@ function fix-headers() {
     FULL_VER="${2}"
     MAJOR_VER="${FULL_VER/\.*/}"
 
-    mv "${REPACK_DIR}"/usr/lib/gcc/aarch64-linux-gnu/{${MAJOR_VER},${FULL_VER}}
-    rm "${REPACK_DIR}"/usr/include/aarch64-linux-gnu/c++/${FULL_VER}
-    mv "${REPACK_DIR}"/usr/include/aarch64-linux-gnu/c++/{${MAJOR_VER},${FULL_VER}}
-    rm "${REPACK_DIR}"/usr/include/c++/${FULL_VER}
-    mv "${REPACK_DIR}"/usr/include/c++/{${MAJOR_VER},${FULL_VER}}
+    mv "${REPACK_DIR}"/usr/lib/gcc/${TARGET_TUPLE}/{${MAJOR_VER},${FULL_VER}} || true
+    rm "${REPACK_DIR}"/usr/include/${TARGET_TUPLE}/c++/${FULL_VER} || true
+    mv "${REPACK_DIR}"/usr/include/${TARGET_TUPLE}/c++/{${MAJOR_VER},${FULL_VER}} || true
+    rm "${REPACK_DIR}"/usr/include/c++/${FULL_VER} || true
+    mv "${REPACK_DIR}"/usr/include/c++/{${MAJOR_VER},${FULL_VER}} || true
 }
 
 function fix-links() {
     SYSROOT_DIR="$1"
-    pushd "${SYSROOT_DIR}/usr/lib/aarch64-linux-gnu" >/dev/null
+    pushd "${SYSROOT_DIR}/usr/lib/${TARGET_TUPLE}" >/dev/null
     BROKEN_LINKS=($(find ./ -maxdepth 1 -type l -exec file {} \; | grep broken | sed 's/:.*//g;s/\.\///g'))
     for LIB in "${BROKEN_LINKS[@]}"; do
         link_info="$(readlink "$LIB" | sed 's/\///')"

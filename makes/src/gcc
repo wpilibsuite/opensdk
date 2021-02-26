@@ -21,7 +21,7 @@ tar xf ${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz
 pushd "${BUILD_DIR}/gcc-${V_GCC}/"
 ./contrib/download_prerequisites
 for file in "${PATCH_DIR}"/gcc_*.patch; do
-    patch -p0 <$file || true # Allow patch to fail
+    patch -p0 -N <$file || true # Allow patch to fail
 done
 popd
 
@@ -48,8 +48,9 @@ ${BUILD_DIR}/gcc-${V_GCC}/configure \
     --target="${TARGET_TUPLE}" \
     --enable-threads=posix \
     --with-cpu=${TARGET_CPU} \
-    --with-float=${TARGET_FLOAT} \
     --with-fpu=${TARGET_FPU} \
+    --with-arch=${TARGET_ARCH} \
+    --with-float=${TARGET_FLOAT} \
     --with-specs="${TARGET_SPECS}" \
     --program-prefix="${TARGET_PREFIX}" \
     --enable-languages=c,c++ \

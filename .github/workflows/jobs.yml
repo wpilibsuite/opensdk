@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [arm64-xenial, armel-roborio]
+        target: [arm64-xenial, armel-roborio, armhf-raspberry]
         host: [{
           os-cfg: linux_x86_64,
           runner: ubuntu-latest,

@@ -29,7 +29,7 @@ BUILD_TUPLE="$(gcc -dumpmachine)" # Builder
 HOST_TUPLE="${WPIHOSTTARGET}"
 
 # No Canadian Build on MacOS
-if [ -n "${WPITARGET}" ]; then
+if [ "${WPITARGET}" != Mac ]; then
     # If tuple mismatch then confirm if there is first pass
     if [ "$BUILD_TUPLE" != "$HOST_TUPLE" ]; then
         command -v "$WPIHOSTTARGET-gcc" || exit

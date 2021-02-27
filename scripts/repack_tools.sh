@@ -64,18 +64,18 @@ function sysroot-clean() {
 }
 
 function sysroot-tuple-rename() {
-    GCC_VERSION="$1"
-    OLD_TUPLE="$2"
-    NEW_TUPLE="$3"
+    OLD_TUPLE="$1"
+    NEW_TUPLE="$2"
+    MAJOR_VER="${V_GCC/\.*/}"
     pushd "${REPACK_DIR}/usr/lib/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE" || true
+    mv "$OLD_TUPLE" "$NEW_TUPLE"
     popd # usr/lib/
     pushd "${REPACK_DIR}/usr/lib/gcc/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE" || true
+    mv "$OLD_TUPLE" "$NEW_TUPLE"
     popd # usr/lib/gcc
-    pushd "${REPACK_DIR}/usr/include/c++/${GCC_VERSION}/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE" || true
-    popd # usr/include/...
+    #pushd "${REPACK_DIR}/usr/include/c++/${MAJOR_VER}/"
+    #mv "$OLD_TUPLE" "$NEW_TUPLE"
+    #popd # usr/include/...
 }
 
 function sysroot-package() {
@@ -103,7 +103,7 @@ function fix-headers() {
 }
 
 function fix-links() {
-    pushd "${REPACK_DIR}/usr/lib/${TARGET_TUPLE}"
+    pushd "${1}"
     BROKEN_LINKS=($(find ./ -maxdepth 1 -type l -exec file {} \; | grep broken | sed 's/:.*//g;s/\.\///g'))
     for LIB in "${BROKEN_LINKS[@]}"; do
         link_info="$(readlink "$LIB" | sed 's/\///')"
@@ -145,15 +145,15 @@ function repack-debian() {
     sysroot-clean
 
     echo "Stage 4: Rename tuple"
-    sysroot-tuple-rename "${V_GCC/\.*/}" \
+    sysroot-tuple-rename \
         "${ORIG_TUPLE}" "${TARGET_TUPLE}"
-
+    
     echo "Stage 5: Clean Up Headers"
     fix-headers "${V_GCC}"
 
     echo "Stage 6: Fix symlinks"
     fix-links "${REPACK_DIR}/usr/lib/$TARGET_TUPLE"
-    fix-links "${REPACK_DIR}/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}"
+    #fix-links "${REPACK_DIR}/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}"
 
     echo "Stage 7: Package"
     sysroot-package

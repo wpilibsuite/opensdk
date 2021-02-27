@@ -16,20 +16,19 @@ mkdir -p "${REPACK_DIR}"
 cp *.ipk "${REPACK_DIR}"
 for deb in *.ipk; do
 	echo "$deb"
-	unpack-ipk "${REPACK_DIR}" "$deb"
+	unpack-ipk "$deb"
 done
 rm "${REPACK_DIR}"/*.ipk
 
 # Stage 2: Merge ipks
-merge-unpacked-ipk "${REPACK_DIR}"
+merge-unpacked-ipk
 
 # Stage 3: Clean Up Sysroot
-sysroot-clean "${REPACK_DIR}"
+sysroot-clean
 find "${REPACK_DIR}" -name .install -delete
 
 # Stage 4: Rename tuple
 sysroot-tuple-rename \
-	"${REPACK_DIR}" "${V_GCC}" \
 	"arm-nilrt-linux-gnueabi" "${TARGET_TUPLE}"
 
 # Stage 5: Package

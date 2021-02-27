@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Prep MacOS
         if: ${{ !matrix.host.docker }}
-        run: brew install coreutils binutils gnu-tar libmpc isl gmp mpfr gzip
+        run: brew install coreutils binutils gnu-tar libmpc isl gmp mpfr gzip dpkg
       - name: Build on docker
         if: ${{ matrix.host.docker }}
         run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target}}

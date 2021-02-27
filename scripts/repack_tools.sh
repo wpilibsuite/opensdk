@@ -1,22 +1,22 @@
 #! /usr/bin/env bash
 
+[ -n "${V_GCC+x}" ] || exit
+[ -n "${REPACK_DIR+x}" ] || exit
+# [ -n "${SYSROOT_DIR+x}" ] || exit
+[ -n "${DOWNLOAD_DIR+x}" ] || exit
+[ -n "${TARGET_TUPLE+x}" ] || exit
+
 function unpack-generic() {
-    REPACK_DIR="$3"
-    DEB_FILE="$(readlink -f "$4")"
+    DEB_FILE="$(readlink -f "$3")"
     OUT_DIR="$(basename "${DEB_FILE/$1/}")"
     cd "$REPACK_DIR"
-    mkdir .work_dir/ || exit # fail if dir exists
-    pushd .work_dir/
-    ar -x "$DEB_FILE"
-    mkdir extract/
-    pushd extract/
-    tar xf ../data.tar.$2
+    mkdir extract
+    pushd extract
+    dpkg -x "$DEB_FILE" . || exit
     popd
-    rm *.tar.* debian-binary
-    mv extract/* .
-    rmdir extract/
-    popd
-    mv .work_dir "${OUT_DIR}"
+    mkdir -p "${OUT_DIR}"
+    mv extract/* "${OUT_DIR}"
+    rmdir extract
 }
 
 function unpack-deb() {
@@ -28,8 +28,7 @@ function unpack-ipk() {
 }
 
 function merge-unpacked-generic() {
-    REPACK_DIR="$1"
-    cd "$1"
+    pushd "$REPACK_DIR"
     mkdir .work_dir || exit
     UNPACKS=($(find . -maxdepth 1 -type d | sed 's/.\///g;/^\./d'))
     echo "${UNPACKS[@]}"
@@ -39,6 +38,7 @@ function merge-unpacked-generic() {
     done
     mv .work_dir/* .
     rmdir .work_dir/
+    popd
 }
 
 function merge-unpacked-deb() {
@@ -50,7 +50,6 @@ function merge-unpacked-ipk() {
 }
 
 function sysroot-clean() {
-    REPACK_DIR="$1"
     rm -rf "${REPACK_DIR}"/etc
     rm -rf "${REPACK_DIR}"/bin
     rm -rf "${REPACK_DIR}"/sbin
@@ -65,10 +64,9 @@ function sysroot-clean() {
 }
 
 function sysroot-tuple-rename() {
-    REPACK_DIR="$1"
-    GCC_VERSION="$2"
-    OLD_TUPLE="$3"
-    NEW_TUPLE="$4"
+    GCC_VERSION="$1"
+    OLD_TUPLE="$2"
+    NEW_TUPLE="$3"
     pushd "${REPACK_DIR}/usr/lib/"
     mv "$OLD_TUPLE" "$NEW_TUPLE" || true
     popd # usr/lib/
@@ -81,8 +79,6 @@ function sysroot-tuple-rename() {
 }
 
 function sysroot-package() {
-    REPACK_DIR="$1"
-    DOWNLOAD_DIR="$2"
     pushd "/tmp"
     echo "download dir ${DOWNLOAD_DIR}"
     rm -rf "${DOWNLOAD_DIR}/sysroot-libc-linux"
@@ -96,8 +92,7 @@ function sysroot-package() {
 }
 
 function fix-headers() {
-    REPACK_DIR="$1"
-    FULL_VER="${2}"
+    FULL_VER="${1}"
     MAJOR_VER="${FULL_VER/\.*/}"
 
     mv "${REPACK_DIR}"/usr/lib/gcc/${TARGET_TUPLE}/{${MAJOR_VER},${FULL_VER}} || true
@@ -108,12 +103,11 @@ function fix-headers() {
 }
 
 function fix-links() {
-    SYSROOT_DIR="$1"
-    pushd "${SYSROOT_DIR}/usr/lib/${TARGET_TUPLE}" >/dev/null
+    pushd "${REPACK_DIR}/usr/lib/${TARGET_TUPLE}"
     BROKEN_LINKS=($(find ./ -maxdepth 1 -type l -exec file {} \; | grep broken | sed 's/:.*//g;s/\.\///g'))
     for LIB in "${BROKEN_LINKS[@]}"; do
         link_info="$(readlink "$LIB" | sed 's/\///')"
-        link_info_relative="$(realpath --relative-to=. "${SYSROOT_DIR}/${link_info}")"
+        link_info_relative="$(realpath --relative-to=. "${REPACK_DIR}/${link_info}")"
         [ -f "$link_info_relative" ] || {
             echo "err $LIB"
             continue
@@ -122,45 +116,45 @@ function fix-links() {
         rm "$LIB"
         ln -s "$link_info_relative" "$LIB"
     done
-    popd >/dev/null
+    popd
 }
 
 function repack-debian() {
-    REPACK_DIR="$1"
-    DOWNLOAD_DIR="$2"
+    # REPACK_DIR="$1"
+    # DOWNLOAD_DIR="$2"
     ORIG_TUPLE="$3"
-    TARGET_TUPLE="$4"
-    V_GCC="$5"
+    # TARGET_TUPLE="$4"
+    # V_GCC="$5"
 
     # clean up old files
     rm -rf "${REPACK_DIR}"
+    mkdir -p "${REPACK_DIR}"
 
     echo "Stage 1: Extract Debs"
-    mkdir -p "${REPACK_DIR}"
     cp *.deb "${REPACK_DIR}"
     for deb in *.deb; do
         echo "$deb"
-        unpack-deb "${REPACK_DIR}" "$deb"
+        unpack-deb "$deb"
     done
     rm "${REPACK_DIR}"/*.deb
 
     echo "Stage 2: Merge Debs"
-    merge-unpacked-deb "${REPACK_DIR}"
+    merge-unpacked-deb
 
     echo "Stage 3: Clean Up Sysroot"
-    sysroot-clean "${REPACK_DIR}"
+    sysroot-clean
 
     echo "Stage 4: Rename tuple"
-    sysroot-tuple-rename "${REPACK_DIR}" "${V_GCC/\.*/}" \
+    sysroot-tuple-rename "${V_GCC/\.*/}" \
         "${ORIG_TUPLE}" "${TARGET_TUPLE}"
 
     echo "Stage 5: Clean Up Headers"
-    fix-headers "${REPACK_DIR}" "${V_GCC}"
+    fix-headers "${V_GCC}"
 
     echo "Stage 6: Fix symlinks"
-    fix-links "${REPACK_DIR}" "${REPACK_DIR}/usr/lib/$TARGET_TUPLE"
-    fix-links "${REPACK_DIR}" "${REPACK_DIR}/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}"
+    fix-links "${REPACK_DIR}/usr/lib/$TARGET_TUPLE"
+    fix-links "${REPACK_DIR}/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}"
 
     echo "Stage 7: Package"
-    sysroot-package "${REPACK_DIR}" "${DOWNLOAD_DIR}"
+    sysroot-package
 }

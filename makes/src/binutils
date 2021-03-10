@@ -19,5 +19,5 @@ pushd binutils-build
     --with-build-sysroot=${WPIPREFIX}/${TARGET_TUPLE} \
     --disable-werror || exit
 make -j"$JOBS" || exit
-DESTDIR=$PWD/../binutils-install make install || exit
+DESTDIR=$PWD/../binutils-install make install-strip || exit
 popd

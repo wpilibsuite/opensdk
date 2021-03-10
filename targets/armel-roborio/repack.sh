@@ -28,8 +28,8 @@ sysroot-clean
 find "${REPACK_DIR}" -name .install -delete
 
 # Stage 4: Rename tuple
-sysroot-tuple-rename \
-	"arm-nilrt-linux-gnueabi" "${TARGET_TUPLE}"
+# sysroot-tuple-rename \
+# 	"arm-nilrt-linux-gnueabi" "${TARGET_TUPLE}"
 
 # Stage 5: Package
 sysroot-package "${REPACK_DIR}" "${DOWNLOAD_DIR}"

@@ -8,6 +8,7 @@ signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
 
 basic-download https://ftp.gnu.org/gnu/gdb/gdb-${V_GDB}.tar.gz
 POOL="http://ports.ubuntu.com/pool/main/"
+basic-download $POOL/g/gccgo-6/libgcc1_${Va_LIBGCC1}_arm64.deb
 basic-download $POOL/g/gcc-5/libgcc-5-dev_${Va_LIBGCC}_arm64.deb
 basic-download $POOL/g/gcc-5/libatomic1_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-5/libatomic1-dbg_${Va_LIBSTDCPP}_arm64.deb

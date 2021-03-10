@@ -68,5 +68,5 @@ ${BUILD_DIR}/gcc-${V_GCC}/configure \
     --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}" \
     $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib)
 make -j"$JOBS" all-gcc
-DESTDIR=${BUILD_DIR}/gcc-install make install-gcc
+DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc
 popd

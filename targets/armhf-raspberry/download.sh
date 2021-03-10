@@ -8,6 +8,7 @@ signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
 
 basic-download https://ftp.gnu.org/gnu/gdb/gdb-${V_GDB}.tar.gz
 POOL="http://archive.raspbian.org/raspbian/pool/main/"
+basic-download $POOL/g/gcc-8/libgcc1_${Va_LIBGCC}_armhf.deb
 basic-download $POOL/g/gcc-8/libgcc-8-dev_${Va_LIBGCC}_armhf.deb
 basic-download $POOL/g/gcc-8/libatomic1_${Va_LIBSTDCPP}_armhf.deb
 basic-download $POOL/g/gcc-8/libatomic1-dbg_${Va_LIBSTDCPP}_armhf.deb

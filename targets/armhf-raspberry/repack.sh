@@ -7,5 +7,4 @@ source "$SCRIPT_DIR/../../scripts/repack_tools.sh" || exit
 
 REPACK_DIR="$1"
 
-repack-debian "$REPACK_DIR" "$DOWNLOAD_DIR" \
-    "arm-linux-gnueabihf" "$TARGET_TUPLE" "$V_GCC"
+repack-debian "$REPACK_DIR" "$DOWNLOAD_DIR" "$TARGET_TUPLE" "$V_GCC"

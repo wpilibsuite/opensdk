@@ -2,7 +2,7 @@ include $(ROOT_DIR)/consts.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.env
 
 basic: sysroot-install binutils-install gcc-install
-extended: gdb tree
+extended: gdb
 
 all: clean test-cc sysroot binutils gcc gdb tree tarpkg
 
@@ -43,9 +43,11 @@ tree:
 TREEOUT_TEMPLATE=$(TOOLCHAIN_NAME)-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC)
 tarpkg:
 	cd ${BUILD_DIR}/tree-install/frc$(V_YEAR); tar czf ${M}/$(TREEOUT_TEMPLATE).tar.gz .
+	cd ${BUILD_DIR}/tree-install/frc$(V_YEAR); du -h ${M}/$(TREEOUT_TEMPLATE).tar.gz
 
 zippkg:
 	cd ${BUILD_DIR}/tree-install/frc$(V_YEAR); zip -r $(M)/$(TREEOUT_TEMPLATE).zip .
+	cd ${BUILD_DIR}/tree-install/frc$(V_YEAR); du -h $(M)/$(TREEOUT_TEMPLATE).zip
 
 pkg: tree
 ifeq ($(WPITARGET), Windows)

@@ -2,12 +2,11 @@
 
 [ -n "${V_GCC+x}" ] || exit
 [ -n "${REPACK_DIR+x}" ] || exit
-# [ -n "${SYSROOT_DIR+x}" ] || exit
 [ -n "${DOWNLOAD_DIR+x}" ] || exit
 [ -n "${TARGET_TUPLE+x}" ] || exit
 
 function unpack-generic() {
-    DEB_FILE="$(readlink -f "$3")"
+    DEB_FILE="$(readlink -f "$2")"
     OUT_DIR="$(basename "${DEB_FILE/$1/}")"
     cd "$REPACK_DIR"
     mkdir extract
@@ -20,11 +19,11 @@ function unpack-generic() {
 }
 
 function unpack-deb() {
-    unpack-generic ".deb" "xz" "$@"
+    unpack-generic ".deb" "$@"
 }
 
 function unpack-ipk() {
-    unpack-generic ".ipk" "gz" "$@"
+    unpack-generic ".ipk" "$@"
 }
 
 function merge-unpacked-generic() {
@@ -63,21 +62,6 @@ function sysroot-clean() {
     find "${REPACK_DIR}" -empty -type d -delete
 }
 
-function sysroot-tuple-rename() {
-    OLD_TUPLE="$1"
-    NEW_TUPLE="$2"
-    MAJOR_VER="${V_GCC/\.*/}"
-    pushd "${REPACK_DIR}/usr/lib/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE"
-    popd # usr/lib/
-    pushd "${REPACK_DIR}/usr/lib/gcc/"
-    mv "$OLD_TUPLE" "$NEW_TUPLE"
-    popd # usr/lib/gcc
-    #pushd "${REPACK_DIR}/usr/include/c++/${MAJOR_VER}/"
-    #mv "$OLD_TUPLE" "$NEW_TUPLE"
-    #popd # usr/include/...
-}
-
 function sysroot-package() {
     pushd "/tmp"
     echo "download dir ${DOWNLOAD_DIR}"
@@ -88,7 +72,6 @@ function sysroot-package() {
     tar cjf sysroot-libc-linux.tar.bz2 sysroot-libc-linux --owner=0 --group=0
     popd
     popd
-
 }
 
 function fix-headers() {
@@ -103,18 +86,29 @@ function fix-headers() {
 }
 
 function fix-links() {
-    pushd "${1}"
-    BROKEN_LINKS=($(find ./ -maxdepth 1 -type l -exec file {} \; | grep broken | sed 's/:.*//g;s/\.\///g'))
+    function find-links() {
+        SHARED_OBJS=($(find ./ -name "*.so*" -type l))
+        for OBJ in "${SHARED_OBJS[@]}"; do
+            DATA="$(file "$OBJ" | grep "broken symbolic link")"
+            TARGET_LINK="$(echo "$DATA" | sed "s/.*broken symbolic link to //g")"
+            TARGET_LINK="$(echo "$TARGET_LINK" | sed "s/'//g;s/\"//g;s/\`//g")"
+            echo "$OBJ;$TARGET_LINK"
+            unset TARGET_LINK
+        done
+    }
+    pushd "${REPACK_DIR}"
+    BROKEN_LINKS=($(find-links))
     for LIB in "${BROKEN_LINKS[@]}"; do
-        link_info="$(readlink "$LIB" | sed 's/\///')"
-        link_info_relative="$(realpath --relative-to=. "${REPACK_DIR}/${link_info}")"
-        [ -f "$link_info_relative" ] || {
-            echo "err $LIB"
+        SOURCE_LINK="$(echo "$LIB" | sed "s/;.*//g")" # first half
+        TARGET_LINK="$(echo "$LIB" | sed "s/.*;//g")" # second half
+        link_info_relative="$(realpath --relative-to=. "${REPACK_DIR}/${TARGET_LINK}")"
+        if ! [ -f "$link_info_relative" ]; then
+            echo "err $SOURCE_LINK, expected $link_info_relative"
             continue
-        }
-        echo "$link_info_relative"
-        rm "$LIB"
-        ln -s "$link_info_relative" "$LIB"
+        fi
+        echo "$SOURCE_LINK:$link_info_relative"
+        rm "$SOURCE_LINK"
+        cp "$link_info_relative" "$SOURCE_LINK"
     done
     popd
 }
@@ -122,7 +116,6 @@ function fix-links() {
 function repack-debian() {
     # REPACK_DIR="$1"
     # DOWNLOAD_DIR="$2"
-    ORIG_TUPLE="$3"
     # TARGET_TUPLE="$4"
     # V_GCC="$5"
 
@@ -144,17 +137,17 @@ function repack-debian() {
     echo "Stage 3: Clean Up Sysroot"
     sysroot-clean
 
-    echo "Stage 4: Rename tuple"
-    sysroot-tuple-rename \
-        "${ORIG_TUPLE}" "${TARGET_TUPLE}"
-    
-    echo "Stage 5: Clean Up Headers"
+    # echo "Stage 4: Rename tuple"
+    # sysroot-tuple-rename \
+    #     "${ORIG_TUPLE}" "${TARGET_TUPLE}"
+
+    echo "Stage 4: Clean Up Headers"
     fix-headers "${V_GCC}"
 
-    echo "Stage 6: Fix symlinks"
+    echo "Stage 5: Fix symlinks"
     fix-links "${REPACK_DIR}/usr/lib/$TARGET_TUPLE"
     #fix-links "${REPACK_DIR}/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}"
 
-    echo "Stage 7: Package"
+    echo "Stage 6: Package"
     sysroot-package
 }

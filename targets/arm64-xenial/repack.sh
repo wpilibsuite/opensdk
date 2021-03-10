@@ -7,5 +7,4 @@ source "$SCRIPT_DIR/../../scripts/repack_tools.sh" || exit
 
 REPACK_DIR="$1"
 
-repack-debian "$REPACK_DIR" "$DOWNLOAD_DIR" \
-    "aarch64-linux-gnu" "$TARGET_TUPLE" "$V_GCC"
+repack-debian "$REPACK_DIR" "$DOWNLOAD_DIR" "$TARGET_TUPLE" "$V_GCC"

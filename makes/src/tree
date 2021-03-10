@@ -1,10 +1,16 @@
 #! /usr/bin/env bash
 
+source "$ROOT_DIR/scripts/repack_tools.sh" || exit
+
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
 for dir in {gcc,binutils,sysroot,gdb}-install; do
     echo "$dir/"
+    pushd "$dir"
+    fix-links
+    popd
     rsync "$dir/" tree-build -a --copy-links
+    # rsync "$dir/" tree-build -a # --copy-links
 done
 pushd tree-build
 du -hs .
@@ -19,20 +25,6 @@ rsync -a "./${WPIPREFIX}"/ "${WPI_TREE_OUT}/"
 rm -rf "./${WPIPREFIX}/"
 
 pushd "${WPI_TREE_OUT}"
-
-function strip-executables() {
-    STRIP="strip --strip-unneeded"
-    [ "$WPITARGET" != "Mac" ] && STRIP="${WPIHOSTTARGET}-${STRIP}"
-    pushd "$1"
-    find -type f -exec file -i {} \; |
-        cut -d: -f 1 | xargs -I {} -- sh -c "$STRIP {} || true"
-    popd
-}
-
-# Attempt to strip everything
-strip-executables "${PWD}/bin"
-strip-executables "${PWD}/libexec"
-
 rm -rf share/info share/man
 rm -rf lib/xtables
 

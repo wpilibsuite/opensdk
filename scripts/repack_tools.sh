@@ -86,39 +86,30 @@ function fix-headers() {
 }
 
 function fix-links() {
-    function find-links() {
-        SHARED_OBJS=($(find ./ -name "*.so*" -type l))
-        for OBJ in "${SHARED_OBJS[@]}"; do
-            DATA="$(file "$OBJ" | grep "broken symbolic link")"
-            TARGET_LINK="$(echo "$DATA" | sed "s/.*broken symbolic link to //g")"
-            TARGET_LINK="$(echo "$TARGET_LINK" | sed "s/'//g;s/\"//g;s/\`//g")"
-            echo "$OBJ;$TARGET_LINK"
-            unset TARGET_LINK
-        done
-    }
     pushd "${REPACK_DIR}"
-    BROKEN_LINKS=($(find-links))
-    for LIB in "${BROKEN_LINKS[@]}"; do
-        SOURCE_LINK="$(echo "$LIB" | sed "s/;.*//g")" # first half
-        TARGET_LINK="$(echo "$LIB" | sed "s/.*;//g")" # second half
-        link_info_relative="$(realpath --relative-to=. "${REPACK_DIR}/${TARGET_LINK}")"
-        if ! [ -f "$link_info_relative" ]; then
-            echo "err $SOURCE_LINK, expected $link_info_relative"
-            continue
+    for symlink in $(find ./ -name "*.*" -type l); do
+        source="$(readlink $symlink)"
+        echo "$symlink -> $source"
+        pushd "$(dirname "$symlink")" > /dev/null
+        f_name="$(basename "$symlink")"
+        if [ -e "$source" ]; then
+            # 18.04 and newer
+            rm "$f_name"
+            cp "$source" "$f_name"
+        elif [ -e "$REPACK_DIR/$source" ]; then
+            # 16.04 and newer
+            rm "$f_name"
+            cp "$REPACK_DIR/$source" "$f_name"
+        else
+            echo "$PWD/$source: not valid link, potentially missing dep."
+            exit 1
         fi
-        echo "$SOURCE_LINK:$link_info_relative"
-        rm "$SOURCE_LINK"
-        cp "$link_info_relative" "$SOURCE_LINK"
+        popd > /dev/null
     done
     popd
 }
 
 function repack-debian() {
-    # REPACK_DIR="$1"
-    # DOWNLOAD_DIR="$2"
-    # TARGET_TUPLE="$4"
-    # V_GCC="$5"
-
     # clean up old files
     rm -rf "${REPACK_DIR}"
     mkdir -p "${REPACK_DIR}"
@@ -137,16 +128,11 @@ function repack-debian() {
     echo "Stage 3: Clean Up Sysroot"
     sysroot-clean
 
-    # echo "Stage 4: Rename tuple"
-    # sysroot-tuple-rename \
-    #     "${ORIG_TUPLE}" "${TARGET_TUPLE}"
-
     echo "Stage 4: Clean Up Headers"
     fix-headers "${V_GCC}"
 
     echo "Stage 5: Fix symlinks"
-    fix-links "${REPACK_DIR}/usr/lib/$TARGET_TUPLE"
-    #fix-links "${REPACK_DIR}/usr/lib/gcc/$TARGET_TUPLE/${V_GCC}"
+    fix-links
 
     echo "Stage 6: Package"
     sysroot-package

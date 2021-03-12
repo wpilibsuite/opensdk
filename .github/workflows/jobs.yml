@@ -26,7 +26,7 @@ jobs:
               os-cfg: macos_x86_64,
               runner: macos-latest,
               docker: false,
-              docker-img,
+              docker-img: "",
             },
           ]
     name: Build ${{ matrix.target }} for ${{ matrix.host.os-cfg }}

@@ -19,7 +19,14 @@ tar xf ${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz
 pushd "${BUILD_DIR}/gcc-${V_GCC}/"
 ./contrib/download_prerequisites
 for file in "${PATCH_DIR}"/gcc_*.patch; do
-    patch -p0 -N <$file || true # Allow patch to fail
+    EXPECTED_CHANGED=$(grep -- "---" "$file" | awk '{print $2}')
+    EXISTS=true
+    for x in $EXPECTED_CHANGED; do
+        [ -e "$x" ] || { EXISTS=false; break; }
+    done
+    if [ "$EXISTS" = "true" ]; then
+        patch -p0 -N -s <$file || true # Allow patch to fail
+    fi
 done
 popd
 

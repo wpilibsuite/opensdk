@@ -14,19 +14,13 @@ basic-download $POOL/g/gcc-8/libgcc-8-dev_${Va_LIBGCC}_arm64.deb
 basic-download $POOL/g/gcc-8/libatomic1_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libatomic1-dbg_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libstdc++6_${Va_LIBSTDCPP}_arm64.deb
-# basic-download $POOL/g/gcc-5/libstdc++6-5-dbg_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL_UNIVERSE/g/gcc-8/libstdc++-8-dev_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libasan5_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/liblsan0_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libtsan0_${Va_LIBSTDCPP}_arm64.deb
-# basic-download $POOL/g/gcc-5/libasan5-dbg_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libgomp1_${Va_LIBSTDCPP}_arm64.deb
-# basic-download $POOL/g/gcc-5/libgomp1-dbg_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libubsan1_${Va_LIBSTDCPP}_arm64.deb
-# basic-download $POOL/g/gcc-5/libubsan0-dbg_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/gcc-8/libitm1_${Va_LIBSTDCPP}_arm64.deb
-# basic-download $POOL/g/gcc-5/libitm1-dbg_${Va_LIBSTDCPP}_arm64.deb
 basic-download $POOL/g/glibc/libc6_${Va_LIBC}_arm64.deb
 basic-download $POOL/g/glibc/libc6-dev_${Va_LIBC}_arm64.deb
-# basic-download $POOL/g/glibc/libc6-dbg_${Va_LIBC}_arm64.deb
 basic-download $POOL/l/linux/linux-libc-dev_${Va_LINUX}_arm64.deb

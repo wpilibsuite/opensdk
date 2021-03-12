@@ -14,6 +14,6 @@ unset GCC_VER
 export CC CXX CPP LD
 
 # MacOS Flags
-is-mac && CFLAGS="-fPIC -fcommon"
-is-mac && CXXFLAGS="-fPIC -fcommon"
+is-mac && CFLAGS="-fPIC -fcommon -std=gnu11"
+is-mac && CXXFLAGS="-fPIC -fcommon -std=gnu++11"
 export CFLAGS CXXFLAGS

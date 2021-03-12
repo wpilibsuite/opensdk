@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-set -x
-set -e
+set -e -x
 
+rm -rf "${BUILD_DIR}"/gdb-{build,install}
 mkdir -p "${BUILD_DIR}"/gdb-{build,install}
 cd "${BUILD_DIR}"/gdb-build
 # --with-libexpat-prefix="${BUILD_DIR}/expat-install/${FRCPREFIX}/" \

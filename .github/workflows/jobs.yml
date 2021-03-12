@@ -7,7 +7,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [arm64-xenial, arm64-bionic, armel-roborio, armhf-raspberry]
+        target:
+          [
+            arm64-xenial,
+            arm64-bionic,
+            arm64-focal,
+            armel-roborio,
+            armhf-raspberry,
+          ]
         host:
           [
             {

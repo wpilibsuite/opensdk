@@ -1,7 +1,5 @@
 #! /usr/bin/env bash
 
-set -e -x
-
 source "$(dirname "$0")/version.env" || exit
 source "$(dirname "$0")/../../scripts/downloads_tools.sh" || exit
 

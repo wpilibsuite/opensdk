@@ -4,8 +4,6 @@ source ${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env
 
 WPI_PATH="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/"
 
-export PATH="$PATH:${WPI_PATH}/binutils-install"
-
 set -e -x
 
 CFLAGS_FOR_TARGET="-g -O2 -Wformat -Wformat-security"
@@ -33,7 +31,7 @@ if [ "${WPITARGET}" != Mac ]; then
     # If tuple mismatch then confirm if there is first pass
     if [ "$BUILD_TUPLE" != "$HOST_TUPLE" ]; then
         command -v "${WPIHOSTTARGET}-gcc" || exit
-        command -v "${TARGET_PREFIX}gcc" || exit
+        command -v "${TARGET_TUPLE}-gcc" || exit
         unset CC CXX CPP LD 
     fi
 fi

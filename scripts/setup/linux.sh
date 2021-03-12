@@ -6,6 +6,6 @@ is-linux && CPP="${WPIHOSTTARGET}-cpp"
 is-linux && LD="${WPIHOSTTARGET}-ld"
 export CC CXX CPP LD
 
-is-linux && CFLAGS=""
-is-linux && CXXFLAGS=""
+is-linux && CFLAGS="-fPIC"
+is-linux && CXXFLAGS="-fPIC"
 export CFLAGS CXXFLAGS

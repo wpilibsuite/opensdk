@@ -2,6 +2,8 @@
 
 cd "$(dirname "$0")"
 
+[ -z "$CC" ] && CC=gcc
+
 FAIL=true
 
 "$CC" ./main.c -o a.out && {

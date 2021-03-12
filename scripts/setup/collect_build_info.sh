@@ -6,7 +6,11 @@ source "${HOST_CFG}"
 source "${ROOT_DIR}/consts.env"
 # shellcheck source=targets/roborio/info.env
 source "${TOOLCHAIN_CFG}/info.env"
-export WPITARGET WPIHOSTTARGET WPIPREFIX TOOLCHAIN_NAME TARGET_CPU TARGET_TUPLE
+if "${STOP_AT_GCC:-false}"; then
+    TARGET_PREFIX="$TARGET_TUPLE-"
+fi
+export WPITARGET WPIHOSTTARGET WPIPREFIX TOOLCHAIN_NAME TARGET_CPU TARGET_TUPLE TARGET_PREFIX
+
 
 cat <<EOF
 Host System Info
@@ -17,6 +21,7 @@ Toolchain Info:
     Name: ${TOOLCHAIN_NAME}
     CPU: ${TARGET_CPU}
     Tuple: ${TARGET_TUPLE}
+    Prefix: ${TARGET_PREFIX}
 EOF
 
 DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
@@ -25,7 +30,7 @@ PATCH_DIR="${ROOT_DIR}/patches/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/${WPITARGET}/"
 JOBS=$(nproc --ignore=1)
 
-PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
+# PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
 PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
 
 export DOWNLOAD_DIR REPACK_DIR PATCH_DIR BUILD_DIR JOBS PATH

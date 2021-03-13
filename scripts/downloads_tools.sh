@@ -4,10 +4,9 @@
 set -e
 
 function import-pgp-keys() {
-    for KEY in "$@"
-    do
+    for KEY in "$@"; do
         # Dont Attempt import if it already exists
-        gpg --list-key "0x$KEY" > /dev/null 2>&1 && continue
+        gpg --list-key "0x$KEY" >/dev/null 2>&1 && continue
 
         # Enfoce https fetch
         KEYDATA=$(wget -nv -O - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY}")
@@ -38,13 +37,37 @@ function basic-download() {
     wget -nc -nv "$1" || return
 }
 
+function package-debian() {
+    REPOS=(
+        "http://ports.ubuntu.com/pool/main/"
+        "http://ports.ubuntu.com/pool/universe/"
+        "http://ftp.debian.org/debian/pool/main/"
+        "http://archive.raspbian.org/raspbian/pool/main/"
+    )
+    SUB_URL="$1"
+    FILE="${SUB_URL//*\/}"
+    PACKAGE="${FILE//_*}"
+    if [ -r "$FILE" ]; then
+        echo "[INFO] '$PACKAGE' is already downloaded"
+        return 0
+    fi
+    for repo in "${REPOS[@]}"; do
+        echo "[INFO] Looking for '$PACKAGE' in '$repo'"
+        URL="$repo/$SUB_URL"
+        basic-download "$URL" && return
+        echo "[INFO] '$PACKAGE' is not in $repo"
+    done
+    echo "[ERR] Cannot find '${FILE}' in any repos"
+    return 1
+}
+
 function package-confirm() {
     REPO_FILE="$1"
     PACKAGE_FILE="$2"
 
     PACKAGE="${PACKAGE_FILE//_*/}"
     echo "testing package $PACKAGE"
-    BLOCK=$(sed -e '/Package: '"$PACKAGE"'$/,/Priority/!d' < "$REPO_FILE")
+    BLOCK=$(sed -e '/Package: '"$PACKAGE"'$/,/Priority/!d' <"$REPO_FILE")
     SHA=$(echo "$BLOCK" | grep 'SHA256' | sed -e 's/.*: //g')
     echo "$SHA  $PACKAGE_FILE" | shasum -a 256 -c - || exit
 }

@@ -5,8 +5,8 @@ source "$(dirname "$0")/../../scripts/downloads_tools.sh" || exit
 
 signed sig https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz
 signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
+signed sig https://ftp.gnu.org/gnu/gdb/gdb-${V_GDB}.tar.gz
 
-basic-download https://ftp.gnu.org/gnu/gdb/gdb-${V_GDB}.tar.gz
 POOL="http://ports.ubuntu.com/pool/main/"
 POOL_UNIVERSE="http://ports.ubuntu.com/pool/universe/"
 basic-download $POOL_UNIVERSE/g/gcc-10/libgcc1_${Va_LIBGCC}_arm64.deb

@@ -4,6 +4,10 @@ source ${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env
 
 WPI_PATH="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/"
 
+CFLAGS="$GCC_CFLAGS"
+CXXFLAGS="$GCC_CXXFLAGS"
+export CFLAGS CXXFLAGS
+
 set -e -x
 
 CFLAGS_FOR_TARGET="-g -O2 -Wformat -Wformat-security"

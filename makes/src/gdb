@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+CFLAGS="$GDB_CFLAGS"
+CXXFLAGS="$GDB_CXXFLAGS"
+export CFLAGS CXXFLAGS
+
 set -e -x
 
 rm -rf "${BUILD_DIR}"/gdb-{build,install}
@@ -23,10 +27,3 @@ cd "${BUILD_DIR}"/gdb-build
 make -j"$JOBS" || exit $?
 DESTDIR="${BUILD_DIR}"/gdb-install make install || exit $?
 cd "${BUILD_DIR}"/gdb-install
-
-# if [ "${FRCTARGET}" = "Windows" ]; then
-# "${FRCHOSTTARGET}"-strip \
-#     --remove-section=.comment \
-#     --remove-section=.note \
-#     --strip-unneeded ./**/*.exe
-# fi

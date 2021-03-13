@@ -5,18 +5,6 @@ CXXFLAGS="$GDB_CXXFLAGS"
 export CFLAGS CXXFLAGS
 
 set -e -x
-pushd "${BUILD_DIR}/gdb-${V_GDB}"
-for file in "${PATCH_DIR}"/gdb_*.patch; do
-    EXPECTED_CHANGED=$(grep -- "---" "$file" | awk '{print $2}')
-    EXISTS=true
-    for x in $EXPECTED_CHANGED; do
-        [ -e "$x" ] || { EXISTS=false; break; }
-    done
-    if [ "$EXISTS" = "true" ]; then
-        patch -p0 -N -s <$file || true # Allow patch to fail
-    fi
-done
-popd
 
 rm -rf "${BUILD_DIR}"/gdb-{build,install}
 mkdir -p "${BUILD_DIR}"/gdb-{build,install}

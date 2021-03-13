@@ -13,7 +13,8 @@ jobs:
             arm64-bionic,
             arm64-focal,
             armel-roborio,
-            armhf-raspberry,
+            arm64-buster,
+            armhf-buster,
           ]
         host:
           [

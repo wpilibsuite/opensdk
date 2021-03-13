@@ -17,7 +17,7 @@
 
 ## Supported Targets
 
-### N.I. Roborio
+### N.I. RoborRIO
  * armel-roborio
 
 ### Ubuntu

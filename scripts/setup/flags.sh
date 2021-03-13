@@ -14,3 +14,8 @@ export GCC_CFLAGS GCC_CXXFLAGS
 GDB_CFLAGS="$CFLAGS --std=gnu11"
 GDB_CXXFLAGS="$CXXFLAGS --std=c++11"
 export GDB_CFLAGS GDB_CXXFLAGS
+
+# Make-server processes
+JOBS="$(nproc --ignore=1)"
+is-actions && JOBS="6" # Use the same across all actions
+export JOBS

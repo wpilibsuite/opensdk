@@ -28,7 +28,6 @@ DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}/"
 REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}/"
 PATCH_DIR="${ROOT_DIR}/patches/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/${WPITARGET}/"
-JOBS=$(nproc --ignore=1)
 
 # PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
 PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"

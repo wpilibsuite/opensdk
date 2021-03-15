@@ -4,14 +4,20 @@ source "$ROOT_DIR/scripts/repack_tools.sh" || exit
 
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
-for dir in {gcc,binutils,sysroot,gdb}-install; do
-    echo "$dir/"
-    pushd "$dir"
-    fix-links
+if [ "$WPITARGET" != "sysroot" ]; then
+    for dir in {gcc,binutils,sysroot,gdb}-install; do
+        echo "$dir/"
+        pushd "$dir"
+        fix-links
+        popd
+        rsync "$dir/" tree-build -a --copy-links
+    done
+else
+    pushd "sysroot-install"
+    # fix-links
     popd
-    rsync "$dir/" tree-build -a --copy-links
-    # rsync "$dir/" tree-build -a # --copy-links
-done
+    rsync "sysroot-install/" tree-build -a --copy-links
+fi
 pushd tree-build
 du -hs .
 
@@ -20,8 +26,8 @@ WPI_TREE_OUT="frc${V_YEAR}/${TOOLCHAIN_NAME}/"
 rm -rf "${WPI_TREE_OUT}"
 mkdir -p "${WPI_TREE_OUT}"
 
-rsync -a "./${TARGET_TUPLE}"/ "${WPI_TREE_OUT}/${TARGET_TUPLE}"
-rsync -a "./${WPIPREFIX}"/ "${WPI_TREE_OUT}/"
+rsync -a "./${TARGET_TUPLE}/" "${WPI_TREE_OUT}/${TARGET_TUPLE}"
+rsync -a "./${WPIPREFIX}/" "${WPI_TREE_OUT}/"
 rm -rf "./${WPIPREFIX}/"
 
 pushd "${WPI_TREE_OUT}"

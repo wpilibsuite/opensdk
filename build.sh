@@ -23,12 +23,15 @@ popd
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
-
-${MAKE} basic
-if "${STOP_AT_GCC:-false}"; then
-    exit 0
+if [ "$WPITARGET" != "sysroot" ]; then
+    ${MAKE} basic
+    if "${STOP_AT_GCC:-false}"; then
+        exit 0
+    fi
+    ${MAKE} extended
+else
+    ${MAKE} sysroot
 fi
-${MAKE} extended
 
 # Package build for release
 ${MAKE} pkg

@@ -16,7 +16,6 @@ pushd binutils-build
     --enable-plugins \
     --disable-nls \
     --enable-lto \
-    --enable-gold \
     --with-build-sysroot=${WPIPREFIX}/${TARGET_TUPLE} \
     --disable-werror || exit
 make -j"$JOBS" || exit

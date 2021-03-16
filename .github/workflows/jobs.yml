@@ -16,28 +16,33 @@ jobs:
             arm64-buster,
             armhf-buster,
           ]
-        host:
-          [
-            {
-              os-cfg: linux_x86_64,
-              runner: ubuntu-latest,
-              docker: true,
-              docker-img: 14.04,
-            },
-            {
-              os-cfg: windows_i686,
-              runner: ubuntu-latest,
-              docker: true,
-              docker-img: 18.04,
-            },
-            {
-              os-cfg: windows_x86_64,
-              runner: ubuntu-latest,
-              docker: true,
-              docker-img: 18.04,
-            },
+        host: [
+            # {
+            #   os-cfg: linux_x86_64,
+            #   runner: ubuntu-latest,
+            #   docker: true,
+            #   docker-img: 14.04,
+            # },
+            # {
+            #   os-cfg: windows_i686,
+            #   runner: ubuntu-latest,
+            #   docker: true,
+            #   docker-img: 18.04,
+            # },
+            # {
+            #   os-cfg: windows_x86_64,
+            #   runner: ubuntu-latest,
+            #   docker: true,
+            #   docker-img: 18.04,
+            # },
             {
               os-cfg: macos_x86_64,
+              runner: macos-latest,
+              docker: false,
+              docker-img: "",
+            },
+            {
+              os-cfg: macos_arm64,
               runner: macos-latest,
               docker: false,
               docker-img: "",

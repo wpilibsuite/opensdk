@@ -6,10 +6,10 @@ export PATH
 
 # Clang appears to have issues
 GCC_VER=10
-is-mac && CC="gcc-$GCC_VER"
-is-mac && CXX="g++-$GCC_VER"
-is-mac && CPP="cpp-$GCC_VER"
-is-mac && LD="ld"
+is-mac && CC="clang" # XCode
+is-mac && CXX="clang++" # XCode
+# is-mac && CPP="cpp-$GCC_VER"
+is-mac && LD="ld" # Apple linker
 unset GCC_VER
 export CC CXX CPP LD
 

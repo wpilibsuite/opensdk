@@ -45,7 +45,7 @@ jobs:
             {
               os-cfg: sysroot,
               runner: macos-latest,
-              docker: true,
+              docker: false,
               docker-img: "",
             },
           ]

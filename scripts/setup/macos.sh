@@ -9,12 +9,12 @@ is-mac && CC="clang" # XCode
 is-mac && CXX="clang++" # XCode
 # is-mac && CPP="cpp-$GCC_VER"
 is-mac && LD="ld" # Apple linker
-export CC CXX CPP LD
+export CC CXX LD
 
 
 # MacOS Flags
-is-mac && CFLAGS="-fcommon -target ${WPIHOSTTARGET}"
-is-mac && CXXFLAGS="-fcommon -target ${WPIHOSTTARGET}"
-is-mac && LDFLAGS="-target ${WPIHOSTTARGET}"
+is-mac && CFLAGS="-fcommon -arch arm64 -arch x86_64"
+is-mac && CXXFLAGS="-fcommon -arch arm64 -arch x86_64"
+is-mac && LDFLAGS="-target -arch arm64 -arch x86_64"
 
 export CFLAGS CXXFLAGS

@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 FAIL=true
 
-"$CC" ./main.c -o a.out && {
+"$CC" $CFLAGS ./main.c -o a.out && {
     file a.out
     rm a.out
     FAIL=false

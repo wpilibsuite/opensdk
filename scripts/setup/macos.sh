@@ -16,7 +16,7 @@ ls -l "/Library/Developer/CommandLineTools/SDKs/"
 
 # MacOS Flags
 SDK_NAME="MacOSX${WPI_HOST_SDK_CUR}.sdk"
-SDK_PATH="/Applications/Xcode_12.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/$SDK_NAME"
+SDK_PATH="/Library/Developer/CommandLineTools/SDKs/$SDK_NAME"
 CPPFLAGS="-isysroot $SDK_PATH -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
 CFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"
 CXXFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"

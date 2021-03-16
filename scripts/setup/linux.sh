@@ -1,11 +1,13 @@
 #! /usr/bin/env bash
 
-is-linux && CC="${WPIHOSTTARGET}-gcc"
-is-linux && CXX="${WPIHOSTTARGET}-g++"
-is-linux && CPP="${WPIHOSTTARGET}-cpp"
-is-linux && LD="${WPIHOSTTARGET}-ld"
+is-linux || return 0
+
+CC="${WPIHOSTTARGET}-gcc"
+CXX="${WPIHOSTTARGET}-g++"
+CPP="${WPIHOSTTARGET}-cpp"
+LD="${WPIHOSTTARGET}-ld"
 export CC CXX CPP LD
 
-is-linux && CFLAGS=""
-is-linux && CXXFLAGS=""
+CFLAGS=""
+CXXFLAGS=""
 export CFLAGS CXXFLAGS

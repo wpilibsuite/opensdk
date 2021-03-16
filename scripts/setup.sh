@@ -21,7 +21,7 @@ echo "Finalizing Compiler Flags"
 source "$SETUP_DIR/flags.sh"
 bash "$ROOT_DIR/scripts/confirm_gnu.sh" || exit
 if [ "$WPITARGET" != "sysroot" ]; then
-    bash "$ROOT_DIR/makes/src/test/test.sh" || exit
+    make -C "$ROOT_DIR/makes/src/test/" main clean
 fi
 
 unset SETUP_DIR

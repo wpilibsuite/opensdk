@@ -1,20 +1,21 @@
 #! /usr/bin/env bash
 
-is-mac && PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-is-mac && PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
-# is-mac && PATH="/Applications/Xcode_12.4.app/Contents/Developer/usr/bin:$PATH"
+is-mac || return 0
+
+PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 export PATH
 
-is-mac && CC="clang" # XCode
-is-mac && CXX="clang++" # XCode
-# is-mac && CPP="cpp-$GCC_VER"
-is-mac && LD="ld" # Apple linker
+CC="cc" # XCode
+CXX="c++" # XCode
+# CPP="cpp-$GCC_VER"
+LD="ld" # Apple linker
 export CC CXX LD
 
 
 # MacOS Flags
-is-mac && CFLAGS="-fcommon -arch arm64 -arch x86_64"
-is-mac && CXXFLAGS="-fcommon -arch arm64 -arch x86_64"
-is-mac && LDFLAGS="-target -arch arm64 -arch x86_64"
+CFLAGS="-fcommon -arch arm64 -arch x86_64"
+CXXFLAGS="-fcommon -arch arm64 -arch x86_64"
+LDFLAGS=""
 
 export CFLAGS CXXFLAGS

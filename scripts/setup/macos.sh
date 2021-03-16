@@ -12,6 +12,7 @@ CXX="c++" # XCode
 LD="ld" # Apple linker
 export CC CXX LD
 
+ls -l "/Library/Developer/CommandLineTools/SDKs/"
 
 # MacOS Flags
 SDK_NAME="MacOSX${WPI_HOST_SDK_CUR}.sdk"

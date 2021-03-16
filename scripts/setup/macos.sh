@@ -14,10 +14,11 @@ export CC CXX LD
 
 
 # MacOS Flags
-SDK_PATH="/Library/Developer/CommandLineTools/SDKs/"
-CPPFLAGS="-isysroot $SDK_PATH/MacOSX11.0.sdk  -mmacosx-version-min=10.14"
+SDK_NAME="MacOSX${WPI_HOST_SDK_CUR}.sdk"
+SDK_PATH="/Applications/Xcode_12.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/$SDK_NAME"
+CPPFLAGS="-isysroot $SDK_PATH -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
 CFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"
-CXXFLAGS="$CPPFLAGS-fcommon -arch arm64 -arch x86_64"
-unset SDK_PATH
+CXXFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"
+unset SDK_NAME SDK_PATH
 
 export CPPFLAGS CFLAGS CXXFLAGS

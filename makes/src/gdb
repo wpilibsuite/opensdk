@@ -21,6 +21,7 @@ cd "${BUILD_DIR}"/gdb-build
     --with-sysroot="${FRCPREFIX}/${TARGET_TUPLE}/" \
     --enable-lto \
     --without-expat \
+    --disable-werror \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--datadir=${FRCPREFIX}/share/frc") \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--with-system-gdbinit=${FRCPREFIX}/share/frc/gdb/gdbinit") \
     || exit $?

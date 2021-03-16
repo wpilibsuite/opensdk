@@ -2,7 +2,7 @@
 
 is-mac && PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 is-mac && PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
-is-mac && PATH="/Applications/Xcode_12.4.app/Contents/Developer/usr/bin:$PATH"
+# is-mac && PATH="/Applications/Xcode_12.4.app/Contents/Developer/usr/bin:$PATH"
 export PATH
 
 is-mac && CC="clang" # XCode

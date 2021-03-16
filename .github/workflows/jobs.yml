@@ -19,7 +19,7 @@ jobs:
         host:
           [
             {
-              os-cfg: sysroot_none,
+              os-cfg: sysroot,
               runner: ubuntu-latest,
               docker: true,
               docker-img: 14.04,

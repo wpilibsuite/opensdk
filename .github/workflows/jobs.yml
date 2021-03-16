@@ -46,7 +46,7 @@ jobs:
               os-cfg: sysroot,
               runner: macos-latest,
               docker: true,
-              docker-img: 14.04,
+              docker-img: "",
             },
           ]
     name: Build ${{ matrix.target }} for ${{ matrix.host.os-cfg }}

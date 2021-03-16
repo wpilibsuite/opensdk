@@ -31,6 +31,12 @@ jobs:
               docker-img: 18.04,
             },
             {
+              os-cfg: windows_x86_64,
+              runner: ubuntu-latest,
+              docker: true,
+              docker-img: 18.04,
+            },
+            {
               os-cfg: macos_x86_64,
               runner: macos-latest,
               docker: false,

@@ -19,12 +19,6 @@ jobs:
         host:
           [
             {
-              os-cfg: sysroot,
-              runner: ubuntu-latest,
-              docker: true,
-              docker-img: 14.04,
-            },
-            {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
               docker: true,
@@ -41,6 +35,12 @@ jobs:
               runner: macos-latest,
               docker: false,
               docker-img: "",
+            },
+            {
+              os-cfg: sysroot,
+              runner: macos-latest,
+              docker: true,
+              docker-img: 14.04,
             },
           ]
     name: Build ${{ matrix.target }} for ${{ matrix.host.os-cfg }}

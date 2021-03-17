@@ -8,22 +8,21 @@ export PATH
 
 CC="cc" # XCode
 CXX="c++" # XCode
-# CPP="cpp-$GCC_VER"
-LD="ld" # Apple linker
-export CC CXX LD
+AR="ar" # Xcode
+LD="ld" # Xcode
+export CC CXX AR LD
 
-ls -l "/Library/Developer/CommandLineTools/SDKs/"
+SDK_PATH="/Library/Developer/CommandLineTools/SDKs"
+ls -l "$SDK_PATH"
 
 # MacOS Flags
-SDK_NAME="MacOSX${WPI_HOST_SDK_CUR}.sdk"
-SDK_PATH="/Library/Developer/CommandLineTools/SDKs/$SDK_NAME"
-CPPFLAGS="-isysroot $SDK_PATH -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
+CPPFLAGS="-isysroot $SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
 CFLAGS="$CPPFLAGS -fcommon $WPI_HOST_CPP_FLAGS_APPEND"
 CXXFLAGS="$CPPFLAGS -fcommon $WPI_HOST_CPP_FLAGS_APPEND"
 
 # The following was a test for universal binary
 # CFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"
 # CXXFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"
-unset SDK_NAME SDK_PATH
+unset SDK_PATH
 
 export CPPFLAGS CFLAGS CXXFLAGS

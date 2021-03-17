@@ -18,8 +18,8 @@ ls -l "/Library/Developer/CommandLineTools/SDKs/"
 SDK_NAME="MacOSX${WPI_HOST_SDK_CUR}.sdk"
 SDK_PATH="/Library/Developer/CommandLineTools/SDKs/$SDK_NAME"
 CPPFLAGS="-isysroot $SDK_PATH -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
-CFLAGS="$CPPFLAGS -fcommon $WPI_HOST_CPP_FLAGS_APPEND"
-CXXFLAGS="$CPPFLAGS -fcommon $WPI_HOST_CPP_FLAGS_APPEND"
+CFLAGS="$CPPFLAGS -fcommon -Wno-implicit-function-declaration $WPI_HOST_CPP_FLAGS_APPEND"
+CXXFLAGS="$CPPFLAGS -fcommon -Wno-implicit-function-declaration $WPI_HOST_CPP_FLAGS_APPEND"
 
 # The following was a test for universal binary
 # CFLAGS="$CPPFLAGS -fcommon -arch arm64 -arch x86_64"

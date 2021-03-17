@@ -22,9 +22,10 @@ cd "${BUILD_DIR}"/gdb-build
     --enable-lto \
     --without-expat \
     --disable-werror \
+    --disable-debug --disable-dependency-tracking \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--datadir=${FRCPREFIX}/share/frc") \
     $([ "${FRCTARGET}" != "Windows" ] && echo "--with-system-gdbinit=${FRCPREFIX}/share/frc/gdb/gdbinit") \
     || exit $?
 make -j"$JOBS" || exit $?
-DESTDIR="${BUILD_DIR}"/gdb-install make install || exit $?
+DESTDIR="${BUILD_DIR}"/gdb-install make install-gdb || exit $?
 cd "${BUILD_DIR}"/gdb-install

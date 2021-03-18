@@ -22,9 +22,9 @@ ls -l "$SDK_PATH"
 [ -d "$SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk" ] || exit
 
 # MacOS Flags
-CPPFLAGS="-isysroot $SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk
-    -I$SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk/usr/include/
-    -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
+CPPFLAGS="-isysroot $SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk"
+CPPFLAGS+=" -I$SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk/usr/include/"
+CPPFLAGS+=" -mmacosx-version-min=${WPI_HOST_SDK_MIN}"
 CFLAGS="${CPPFLAGS} -fcommon $WPI_HOST_CPP_FLAGS_APPEND"
 CXXFLAGS="${CPPFLAGS} -fcommon $WPI_HOST_CPP_FLAGS_APPEND"
 

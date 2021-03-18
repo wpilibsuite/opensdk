@@ -4,8 +4,8 @@
 CFLAGS="$CFLAGS -fPIC"
 CXXFLAGS="$CXXFLAGS -fPIC"
 if "$CC" --version | grep -qi clang; then
-    CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags"
-    CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags"
+    CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
+    CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
 fi
 export CFLAGS CXXFLAGS
 

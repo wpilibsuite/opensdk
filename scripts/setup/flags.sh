@@ -3,6 +3,10 @@
 # Core flags
 CFLAGS="$CFLAGS -fPIC"
 CXXFLAGS="$CXXFLAGS -fPIC"
+if "$CC" --version | grep -qi clang; then
+    CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags"
+    CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags"
+fi
 export CFLAGS CXXFLAGS
 
 # Flags to build toolchain gcc

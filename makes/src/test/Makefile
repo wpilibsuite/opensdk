@@ -4,6 +4,6 @@ main: main-c main-cpp
 main-c: main.c
 	${CC} ${CFLAGS} -Werror -o $@ $<
 main-cpp: main.c
-	${CXX} ${CXXFLAGS} -Werror -o $@ $<
+	${CXX} ${CXXFLAGS} -Wno-deprecated -Werror -o $@ $<
 clean:
 	rm -f main-c main-cpp

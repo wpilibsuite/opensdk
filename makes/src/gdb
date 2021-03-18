@@ -1,13 +1,19 @@
 #! /usr/bin/env bash
 
+rm -rf "${BUILD_DIR}"/gdb-{build,install}
+mkdir -p "${BUILD_DIR}"/gdb-{build,install}
+
+if [ "$SKIP_GDB" = "true" ]; then
+    echo "[INFO] Skipping GDB Build"
+    exit 0
+fi
+
 CFLAGS="$GDB_CFLAGS"
 CXXFLAGS="$GDB_CXXFLAGS"
 export CFLAGS CXXFLAGS
 
 set -e -x
 
-rm -rf "${BUILD_DIR}"/gdb-{build,install}
-mkdir -p "${BUILD_DIR}"/gdb-{build,install}
 cd "${BUILD_DIR}"/gdb-build
 # --with-libexpat-prefix="${BUILD_DIR}/expat-install/${FRCPREFIX}/" \
 "${BUILD_DIR}"/gdb-"${V_GDB}"/configure \

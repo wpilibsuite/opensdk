@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
 # Core flags
-CFLAGS="$CFLAGS -fPIC"
-CXXFLAGS="$CXXFLAGS -fPIC"
+CFLAGS="$CFLAGS -fPIC -fvisibility=default"
+CXXFLAGS="$CXXFLAGS -fPIC -fvisibility=default"
 if "$CC" --version | grep -qi clang; then
     CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
     CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"

@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk --no-cache \
+RUN apk --no-cache add \
     binutils \
     coreutils \
     gnupg \

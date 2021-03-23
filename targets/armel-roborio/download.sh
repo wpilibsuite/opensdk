@@ -4,8 +4,6 @@ source "$(dirname "$0")/version.env" || exit
 source "$(dirname "$0")/../../scripts/downloads_tools.sh" || exit
 
 signed sig https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz
-signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
-signed sig https://ftp.gnu.org/gnu/gdb/gdb-${V_GDB}.tar.gz
 
 # signed asc https://download.ni.com/ni-linux-rt/feeds/2019/arm/cortexa9-vfpv3/Packages
 # Cannot find public key to verify Packages.asc in directory, use https instead

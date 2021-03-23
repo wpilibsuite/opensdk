@@ -2,7 +2,7 @@ include $(ROOT_DIR)/consts.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.env
 
 basic: sysroot-install binutils-install gcc-install
-extended: gdb
+extended:
 
 all: clean test-cc sysroot binutils gcc gdb tree tarpkg
 
@@ -17,25 +17,18 @@ ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/$(WPIPREFIX)/"
 endif
 
-binutils: sysroot
-	cd ${BUILD_DIR}; tar xf ${DOWNLOAD_DIR}/binutils-$(V_BINUTILS).tar.bz2
-	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_BINUTILS=$(V_BINUTILS) ${ROOT_DIR}/makes/src/binutils
-binutils-install: binutils
+binutils-install:
 ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 endif
 
-gcc: sysroot binutils
+gcc: sysroot binutils-install
 	@# gcc does its own extraction
 	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc
 gcc-install: gcc
 ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 endif
-
-gdb:
-	cd ${BUILD_DIR}; tar xf ${DOWNLOAD_DIR}/gdb-$(V_GDB).tar.gz
-	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GDB=$(V_GDB) ${ROOT_DIR}/makes/src/gdb
 
 tree:
 	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree

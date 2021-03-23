@@ -21,6 +21,8 @@ bash "${TOOLCHAIN_CFG}/download.sh"
 bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
 popd
 
+bash "${ROOT_DIR}/scripts/target_utils.sh"
+
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
 if [ "$WPITARGET" != "sysroot" ]; then

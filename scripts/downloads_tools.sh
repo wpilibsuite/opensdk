@@ -34,7 +34,7 @@ import-pgp-keys "${PUB_KEYS[@]}" || exit
 function basic-download() {
     FILE="${1/*\//}"
     [ -r "$FILE" ] && return
-    wget -nc -nv "$1" || return
+    wget -nc -nv "$1" &> /dev/null || return
 }
 
 function package-debian() {

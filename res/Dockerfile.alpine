@@ -6,6 +6,8 @@ RUN apk --no-cache add \
     coreutils \
     gnupg \
     gzip \
-    wget \
+    make \
+    rsync \
     tar \
+    wget \
     xz

@@ -80,10 +80,8 @@ rm -rf ${BUILD_DIR}/gcc-{build,install}
 mkdir -p ${BUILD_DIR}/gcc-{build,install}
 pushd ${BUILD_DIR}/gcc-build
 "${BUILD_DIR}/gcc-${V_GCC}/configure" \
-    "${BUILD_INFO[@]}"
-    "${TARGET_INFO[@]}"
-    "${FEATURE_INFO[@]}"
-    "${SYSROOT_INFO[@]}"
+    "${BUILD_INFO[@]}" "${TARGET_INFO[@]}" \
+    "${FEATURE_INFO[@]}" "${SYSROOT_INFO[@]}" \
     --prefix="$WPIPREFIX" \
     --enable-poison-system-directories \
     --disable-libmudflap \

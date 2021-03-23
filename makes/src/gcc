@@ -51,15 +51,15 @@ BUILD_INFO=(
     "--build=${BUILD_TUPLE}"
     "--host=${WPIHOSTTARGET}"
     "--target=${TARGET_TUPLE}"
-    "--prefix=$WPIPREFIX" # Host
+    "--prefix=$WPIPREFIX" # Host directory prefix
+    "--program-prefix=${TARGET_PREFIX}" # Host binary prefix
 )
 TARGET_INFO=(
-    "--with-cpu=${TARGET_CPU}"
-    "--with-fpu=${TARGET_FPU}"
-    "--with-arch=${TARGET_ARCH}"
-    "--with-float=${TARGET_FLOAT}"
-    "--with-specs=${TARGET_SPECS}"
-    "--program-prefix=${TARGET_PREFIX}"
+    "--with-cpu=${TARGET_CPU}" # target -mtune
+    "--with-fpu=${TARGET_FPU}" # target -mfpu
+    "--with-arch=${TARGET_ARCH}" # target -march
+    "--with-float=${TARGET_FLOAT}" # target -mfloat-abi
+    "--with-specs=${TARGET_SPECS}" # default target flags
 )
 FEATURE_INFO=(
     "--enable-threads=posix"

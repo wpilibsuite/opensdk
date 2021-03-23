@@ -6,14 +6,24 @@
 [ -n "${TARGET_TUPLE+x}" ] || exit
 
 function unpack-generic() {
+    function extract() {
+	if [ -f "/usr/local/opt/binutils/bin/ar" ]; then
+	    AR="/usr/local/opt/binutils/bin/ar"
+	elif [ -f "/opt/homebrew/opt/binutils/bin/ar" ]; then
+	    AR="/opt/homebrew/opt/binutils/bin/ar"
+	else
+	    AR=ar
+	fi
+	"$AR" x "$@"
+    }
     DEB_FILE="$(readlink -f "$3")"
     OUT_DIR="$(basename "${DEB_FILE/$1/}")"
     cd "$REPACK_DIR"
     mkdir extract
     pushd extract
-    ar -x "$DEB_FILE" || exit
+    extract "$DEB_FILE" || exit
     tar -xf data.tar.$2
-    rm *.tar.*
+    rm debian-binary {control,data}.tar.*
     popd
     mkdir -p "${OUT_DIR}"
     mv extract/* "${OUT_DIR}"

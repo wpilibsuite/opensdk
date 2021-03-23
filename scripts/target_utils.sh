@@ -33,9 +33,8 @@ CORE_ARGS=(
 
 mkdir -p "${BUILD_DIR}"
 pushd "$BUILD_DIR/"
-rm -rf {binutils,gdb}-install
-mkdir -p {binutils,gdb}-build
-mkdir -p {binutils,gdb}-install
+rm -rf {binutils,gdb}-{build,install}
+mkdir -p {binutils,gdb}-{build,install}
 
 pushd "binutils-build/"
 "$ROOT_DIR/downloads/binutils-${V_BIN}/configure" \
@@ -47,6 +46,9 @@ DESTDIR=$PWD/../binutils-install make install install-strip || exit
 popd
 
 pushd "gdb-build/"
+CFLAGS="$GDB_CFLAGS"
+CXXFLAGS="$GDB_CXXFLAGS"
+export {C,CXX}FLAGS
 "$ROOT_DIR/downloads/gdb-${V_GDB}/configure" \
     "${CORE_ARGS[@]}" \
     --without-expat \

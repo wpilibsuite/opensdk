@@ -22,9 +22,11 @@ tar xf ${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz
 
 pushd "${BUILD_DIR}/gcc-${V_GCC}/"
 ./contrib/download_prerequisites
-for file in "${PATCH_DIR}"/gcc-${V_GCC//.*}_*.patch; do
-    patch -p0 -N -s < "$file"
-done
+if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
+    for file in "${PATCH_DIR}"/gcc-${V_GCC//.*/}_*.patch; do
+        patch -p0 -N -s <"$file"
+    done
+fi
 popd
 
 BUILD_TUPLE="$(gcc -dumpmachine)" # Builder
@@ -36,7 +38,7 @@ if [ "${WPITARGET}" != Mac ]; then
     if [ "$BUILD_TUPLE" != "$HOST_TUPLE" ]; then
         command -v "${WPIHOSTTARGET}-gcc" || exit
         command -v "${TARGET_TUPLE}-gcc" || exit
-        unset CC CXX CPP LD 
+        unset CC CXX CPP LD
     fi
 fi
 
@@ -44,13 +46,13 @@ BUILD_INFO=(
     "--build=${BUILD_TUPLE}"
     "--host=${WPIHOSTTARGET}"
     "--target=${TARGET_TUPLE}"
-    "--prefix=$WPIPREFIX" # Host directory prefix
+    "--prefix=$WPIPREFIX"               # Host directory prefix
     "--program-prefix=${TARGET_PREFIX}" # Host binary prefix
 )
 TARGET_INFO=(
-    "--with-cpu=${TARGET_CPU}" # target -mtune
-    "--with-fpu=${TARGET_FPU}" # target -mfpu
-    "--with-arch=${TARGET_ARCH}" # target -march
+    "--with-cpu=${TARGET_CPU}"     # target -mtune
+    "--with-fpu=${TARGET_FPU}"     # target -mfpu
+    "--with-arch=${TARGET_ARCH}"   # target -march
     "--with-float=${TARGET_FLOAT}" # target -mfloat-abi
     "--with-specs=${TARGET_SPECS}" # default target flags
 )

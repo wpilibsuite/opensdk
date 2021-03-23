@@ -24,7 +24,7 @@ pushd "${BUILD_DIR}/gcc-${V_GCC}/"
 ./contrib/download_prerequisites
 if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
     for file in "${PATCH_DIR}"/gcc-${V_GCC//.*/}_*.patch; do
-        patch -p0 -N -s <"$file"
+        patch -p1 -N -s <"$file"
     done
 fi
 popd

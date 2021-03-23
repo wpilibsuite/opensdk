@@ -8,8 +8,11 @@
  * x86_64 Linux
    * Most systems during/after 2014 with glibc 2.19 or newer
  * x86_64 MacOS
-   * Any system running MacOS 10.15 or newer
-   * M1 should work through Rosetta (native support planned)
+   * Any system running macOS/OSX 10.10 or newer
+   * M1 should work through Rosetta
+ * x86_64 Windows
+   * Any system running Windows 7 or newer
+   * Older systems may potentially work but are not supported
  * i686 Windows
    * Any system running Windows 7 or newer
    * Older systems may potentially work but are not supported

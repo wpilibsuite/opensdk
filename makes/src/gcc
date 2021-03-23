@@ -47,34 +47,46 @@ if [ "${WPITARGET}" != Mac ]; then
     fi
 fi
 
+BUILD_INFO=(
+    "--build=${BUILD_TUPLE}"
+    "--host=${WPIHOSTTARGET}"
+    "--target=${TARGET_TUPLE}"
+)
+TARGET_INFO=(
+    "--enable-threads=posix"
+    "--with-cpu=${TARGET_CPU}"
+    "--with-fpu=${TARGET_FPU}"
+    "--with-arch=${TARGET_ARCH}"
+    "--with-float=${TARGET_FLOAT}"
+    "--with-specs=${TARGET_SPECS}"
+    "--program-prefix=${TARGET_PREFIX}"
+)
+FEATURE_INFO=(
+    "--enable-languages=c,c++"
+    "--enable-shared"
+    "--enable-lto"
+    "--disable-nls"
+    "--with-pkgversion=GCC for FRC ${V_YEAR}"
+    "--with-cloog"
+)
+SYSROOT_INFO=(
+    "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE" \
+    "--with-build-sysroot=/usr/local/$TARGET_TUPLE" \
+    "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib" \
+    "--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}"
+)
+
 rm -rf ${BUILD_DIR}/gcc-{build,install}
 mkdir -p ${BUILD_DIR}/gcc-{build,install}
 pushd ${BUILD_DIR}/gcc-build
-BINUTILS_PREFIX="${BUILD_DIR}/binutils-install/${WPIPREFIX}/bin/${TARGET_PREFIX}"
-${BUILD_DIR}/gcc-${V_GCC}/configure \
-    --build="${BUILD_TUPLE}" \
-    --host="${WPIHOSTTARGET}" \
-    --target="${TARGET_TUPLE}" \
-    --enable-threads=posix \
-    --with-cpu=${TARGET_CPU} \
-    --with-fpu=${TARGET_FPU} \
-    --with-arch=${TARGET_ARCH} \
-    --with-float=${TARGET_FLOAT} \
-    --with-specs="${TARGET_SPECS}" \
-    --program-prefix="${TARGET_PREFIX}" \
-    --enable-languages=c,c++ \
-    --enable-shared \
-    --enable-lto \
-    --disable-nls \
-    "--with-pkgversion=GCC for FRC ${V_YEAR}" \
-    --with-cloog \
+"${BUILD_DIR}/gcc-${V_GCC}/configure" \
+    "${BUILD_INFO[@]}"
+    "${TARGET_INFO[@]}"
+    "${FEATURE_INFO[@]}"
+    "${SYSROOT_INFO[@]}"
     --prefix="$WPIPREFIX" \
-    --with-sysroot="$WPIPREFIX/$TARGET_TUPLE" \
     --enable-poison-system-directories \
     --disable-libmudflap \
-    --with-build-sysroot="/usr/local/$TARGET_TUPLE" \
-    --libdir="$WPIPREFIX/$TARGET_TUPLE/usr/lib" \
-    --with-gxx-include-dir="$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}" \
     $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib)
 make -j"$JOBS" all-gcc
 DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc

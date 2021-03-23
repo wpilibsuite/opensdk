@@ -13,7 +13,7 @@ function unpack-generic() {
     pushd extract
     ar -x "$DEB_FILE" || exit
     tar -xf data.tar.$2
-    rm control.tar.$2 data.tar.$2
+    rm *.tar.*
     popd
     mkdir -p "${OUT_DIR}"
     mv extract/* "${OUT_DIR}"

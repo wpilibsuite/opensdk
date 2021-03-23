@@ -53,7 +53,6 @@ BUILD_INFO=(
     "--target=${TARGET_TUPLE}"
 )
 TARGET_INFO=(
-    "--enable-threads=posix"
     "--with-cpu=${TARGET_CPU}"
     "--with-fpu=${TARGET_FPU}"
     "--with-arch=${TARGET_ARCH}"
@@ -62,6 +61,7 @@ TARGET_INFO=(
     "--program-prefix=${TARGET_PREFIX}"
 )
 FEATURE_INFO=(
+    "--enable-threads=posix"
     "--enable-languages=c,c++"
     "--enable-shared"
     "--enable-lto"

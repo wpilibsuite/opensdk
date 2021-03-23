@@ -51,6 +51,7 @@ BUILD_INFO=(
     "--build=${BUILD_TUPLE}"
     "--host=${WPIHOSTTARGET}"
     "--target=${TARGET_TUPLE}"
+    "--prefix=$WPIPREFIX" # Host
 )
 TARGET_INFO=(
     "--with-cpu=${TARGET_CPU}"
@@ -82,7 +83,6 @@ pushd ${BUILD_DIR}/gcc-build
 "${BUILD_DIR}/gcc-${V_GCC}/configure" \
     "${BUILD_INFO[@]}" "${TARGET_INFO[@]}" \
     "${FEATURE_INFO[@]}" "${SYSROOT_INFO[@]}" \
-    --prefix="$WPIPREFIX" \
     --enable-poison-system-directories \
     --disable-libmudflap \
     $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib)

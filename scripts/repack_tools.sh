@@ -6,12 +6,14 @@
 [ -n "${TARGET_TUPLE+x}" ] || exit
 
 function unpack-generic() {
-    DEB_FILE="$(readlink -f "$2")"
+    DEB_FILE="$(readlink -f "$3")"
     OUT_DIR="$(basename "${DEB_FILE/$1/}")"
     cd "$REPACK_DIR"
     mkdir extract
     pushd extract
-    dpkg -x "$DEB_FILE" . || exit
+    ar -x "$DEB_FILE" || exit
+    tar -xf data.tar.$2
+    rm control.tar.$2 data.tar.$2
     popd
     mkdir -p "${OUT_DIR}"
     mv extract/* "${OUT_DIR}"
@@ -19,11 +21,11 @@ function unpack-generic() {
 }
 
 function unpack-deb() {
-    unpack-generic ".deb" "$@"
+    unpack-generic ".deb" "xz" "$@"
 }
 
 function unpack-ipk() {
-    unpack-generic ".ipk" "$@"
+    unpack-generic ".ipk" "gz" "$@"
 }
 
 function merge-unpacked-generic() {

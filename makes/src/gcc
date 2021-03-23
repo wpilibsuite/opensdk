@@ -70,9 +70,9 @@ FEATURE_INFO=(
     "--with-cloog"
 )
 SYSROOT_INFO=(
-    "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE" \
-    "--with-build-sysroot=/usr/local/$TARGET_TUPLE" \
-    "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib" \
+    "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE"
+    "--with-build-sysroot=/usr/local/$TARGET_TUPLE"
+    "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib"
     "--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}"
 )
 

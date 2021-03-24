@@ -20,7 +20,7 @@ source "$SETUP_DIR/linux.sh" # Includes windows
 echo "Finalizing Compiler Flags"
 source "$SETUP_DIR/flags.sh"
 bash "$ROOT_DIR/scripts/confirm_gnu.sh" || exit
-if [ "$WPITARGET" != "sysroot" ]; then
+if [ "$WPITARGET" != "sysroot" ] && [ "$TEST_SYS_GCC" != "false" ]; then
     make -C "$ROOT_DIR/makes/src/test/" main clean || exit
 fi
 

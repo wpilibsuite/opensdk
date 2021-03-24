@@ -35,7 +35,7 @@ tree:
 	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree
 
 TREEIN_DIRECTORY=${BUILD_DIR}/tree-install/frc$(V_YEAR)/${TOOLCHAIN_NAME}
-TREEOUT_TEMPLATE=$(TOOLCHAIN_NAME)-${TARGET_PORT}-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC)
+TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC)
 tarpkg:
 	cd ${TREEIN_DIRECTORY}; tar czf ${M}/$(TREEOUT_TEMPLATE).tar.gz .
 	cd ${TREEIN_DIRECTORY}; du -h ${M}/$(TREEOUT_TEMPLATE).tar.gz
@@ -50,9 +50,18 @@ ifeq ($(WPITARGET), Windows)
 else
 	$(MAKE) tarpkg
 endif
+print-treein:
+	@echo ${TREEIN_DIRECTORY}
 
 print-treeout:
 	@echo $(TREEOUT_TEMPLATE)
+
+print-pkg:
+ifeq ($(WPITARGET), Windows)
+	@echo $(TREEOUT_TEMPLATE).zip
+else
+	@echo $(TREEOUT_TEMPLATE).tar.gz
+endif
 
 clean:
 	cd ${M}; rm -rf binutils* roborio* sysroot* gcc* tree-install gdb* *-Toolchain-*.tar.gz

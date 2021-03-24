@@ -21,18 +21,21 @@
 ## Supported Targets
 
 ### N.I. RoboRIO
- * armel-roborio
+ * roborio
+  * armel
 
 ### Ubuntu
- * arm64-bionic
- * arm64-focal
+ * Bionic (18.04)
+  * armhf
+  * arm64
+ * Focal (20.04)
+  * armhf
+  * arm64
 
-### Debian
- * armhf-buster (armv6z)
-   * Raspberry Pi OS 32-bit compatible
- * arm64-buster
-   * Raspberry Pi OS 64-bit compatible
- * armhf-bullseye (armv6z)
-   * (future) Raspberry Pi OS 32-bit compatible
- * arm64-bullseye
-   * (future) Raspberry Pi OS 64-bit compatible
+### Debian/Raspberry Pi OS
+ * Buster
+  * armhf (armv6z)
+  * arm64
+ * Bullseye (testing)
+  * armhf (armv6z)
+  * arm64

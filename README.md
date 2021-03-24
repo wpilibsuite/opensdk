@@ -22,20 +22,20 @@
 
 ### N.I. RoboRIO
  * roborio
-  * armel
+   * armel
 
 ### Ubuntu
  * Bionic (18.04)
-  * armhf
-  * arm64
+   * armhf
+   * arm64
  * Focal (20.04)
-  * armhf
-  * arm64
+   * armhf
+   * arm64
 
 ### Debian/Raspberry Pi OS
  * Buster
-  * armhf (armv6z)
-  * arm64
+   * armhf (armv6z)
+   * arm64
  * Bullseye (testing)
-  * armhf (armv6z)
-  * arm64
+   * armhf (armv6z)
+   * arm64

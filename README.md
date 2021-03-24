@@ -7,16 +7,14 @@
 ## Supported Hosts
  * x86_64 Linux
    * Most systems during/after 2014 with glibc 2.19 or newer
- * x86_64 MacOS
-   * Any system running macOS/OSX 10.10 or newer
-   * M1 should work through Rosetta
- * x86_64 Windows
-   * Any system running Windows 7 or newer
-   * Older systems may potentially work but are not supported
- * i686 Windows
-   * Any system running Windows 7 or newer
-   * Older systems may potentially work but are not supported
-   * x86_64 should work through compatability
+ * x86_64 macOS
+   * All systems running macOS/OSX 10.10 or newer
+ * i686/x86_64 Windows
+   * All systems running Windows 7 or newer (older may work)
+ * Using Compatability Layers
+   * Use i686 Windows builds for Windows 10 on ARM
+   * Use x86_64 Windows builds for Windows 10 on ARM (Insiders Channel)
+   * Use x86_64 macOS builds for macOS on Apple Silicon
 
 ## Supported Targets
 

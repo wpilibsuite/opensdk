@@ -58,7 +58,7 @@ TARGET_INFO=(
 )
 FEATURE_INFO=(
     "--enable-threads=posix"
-    "--enable-languages=c,c++"
+    "--enable-languages=ada,c,c++,d,fortran,go,objc,objc++"
     "--enable-shared"
     "--enable-lto"
     "--disable-nls"

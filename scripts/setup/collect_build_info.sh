@@ -5,7 +5,7 @@ source "${HOST_CFG}"
 # shellcheck source=consts.env
 source "${ROOT_DIR}/consts.env"
 # shellcheck source=targets/roborio/info.env
-source "${TOOLCHAIN_CFG}/info.env"
+source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 if "${STOP_AT_GCC:-false}"; then
     TARGET_PREFIX="$TARGET_TUPLE-"
 fi

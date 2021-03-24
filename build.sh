@@ -16,8 +16,8 @@ fi
 # Prep builds
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
-bash "${TOOLCHAIN_CFG}/download.sh" || exit
-bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
+bash "${TARGET_CFG}/download.sh" || exit
+bash "${TARGET_CFG}/repack.sh" "${REPACK_DIR}/" || exit
 popd
 
 bash "${ROOT_DIR}/scripts/target_utils.sh"

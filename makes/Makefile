@@ -1,5 +1,6 @@
 include $(ROOT_DIR)/consts.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.env
+include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.${TARGET_PORT}.env
 
 basic: sysroot-install binutils-install gcc-install
 extended:

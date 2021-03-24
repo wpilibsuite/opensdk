@@ -80,7 +80,8 @@ pushd ${BUILD_DIR}/gcc-build
     "${FEATURE_INFO[@]}" "${SYSROOT_INFO[@]}" \
     --enable-poison-system-directories \
     --disable-libmudflap \
-    $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib)
-make -j"$JOBS" all-gcc
-DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc
+    $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) ||
+    exit
+make -j"$JOBS" all-gcc || exit
+DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc || exit
 popd

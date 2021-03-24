@@ -37,3 +37,10 @@
  * Bullseye (testing)
    * armhf (armv6z)
    * arm64
+
+## Resources
+ * [How to cross compile with LLVM based tools](https://archive.fosdem.org/2018/schedule/event/crosscompile/attachments/slides/2107/export/events/attachments/crosscompile/slides/2107/How_to_cross_compile_with_LLVM_based_tools.pdf)
+   * Good content but we are not using much LLVM specific stuff.
+ * [Linaro GCC toolchains](https://releases.linaro.org/components/toolchain/binaries/)
+   * Good examples of (generic) ARM toolchains
+ * [GCC Build instructions and configs](https://gcc.gnu.org/install/)

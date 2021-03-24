@@ -28,7 +28,11 @@
  * arm64-focal
 
 ### Debian
- * armhf-buster (armv6)
+ * armhf-buster (armv6z)
    * Raspberry Pi OS 32-bit compatible
  * arm64-buster
    * Raspberry Pi OS 64-bit compatible
+ * armhf-bullseye (armv6z)
+   * (future) Raspberry Pi OS 32-bit compatible
+ * arm64-bullseye
+   * (future) Raspberry Pi OS 64-bit compatible

@@ -14,11 +14,10 @@ if [ "${WPITARGET}" = "Windows" ]; then
 fi
 
 # Prep builds
-set -e
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
-bash "${TOOLCHAIN_CFG}/download.sh"
-bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/"
+bash "${TOOLCHAIN_CFG}/download.sh" || exit
+bash "${TOOLCHAIN_CFG}/repack.sh" "${REPACK_DIR}/" || exit
 popd
 
 bash "${ROOT_DIR}/scripts/target_utils.sh"
@@ -27,10 +26,6 @@ mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
 if [ "$WPITARGET" != "sysroot" ]; then
     ${MAKE} basic
-    if "${STOP_AT_GCC:-false}"; then
-        exit 0
-    fi
-    ${MAKE} extended
 else
     ${MAKE} sysroot
 fi

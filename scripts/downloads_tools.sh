@@ -1,18 +1,15 @@
 #! /usr/bin/env bash
 
-# Propogates to any tool that sources this file
-set -e
-
 function import-pgp-keys() {
     for KEY in "$@"; do
         # Dont Attempt import if it already exists
         gpg --list-key "0x$KEY" >/dev/null 2>&1 && continue
 
-        # Enfoce https fetch
-        KEYDATA=$(wget -nv -O - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x${KEY}")
-        if ! (echo "$KEYDATA" | gpg --import); then
-            echo "Could not import 0x${KEY} into gpg"
-            exit 1
+        echo "[INFO] Importing $KEY into gnupg"
+        gpg --keyserver keyserver.ubuntu.com --recv-key "$KEY" &> /dev/null
+        if [ "$?" != "0" ]; then
+            echo "[ERR] Could not import 0x${KEY} into gpg"
+            return 1
         fi
     done
 }
@@ -22,19 +19,19 @@ PUB_KEYS=(
     A328C3A2C3C45C06 # gcc-alt
     C3126D3B4AE55E93 # binutils
     13FCEF89DD9E3C4F # binutils-alt
-    980C197698C3739D # mpfr
-    F7D5C9BF765C61E3 # mpc
-    F3599FF828C67298 # gmp
     92EDB04BFF325CF3 # gdb
-    B00BC66A401A1600 # expat
 )
 
-import-pgp-keys "${PUB_KEYS[@]}" || exit
+import-pgp-keys "${PUB_KEYS[@]}" || return
 
 function basic-download() {
     FILE="${1/*\//}"
     [ -r "$FILE" ] && return
-    wget -nc -nv "$1" &> /dev/null || return
+    echo "[INFO] Downloading $FILE"
+    if ! wget -nc -nv "$1"; then
+        echo "[ERR] Failed to download $FILE"
+        return 1
+    fi
 }
 
 function package-debian() {

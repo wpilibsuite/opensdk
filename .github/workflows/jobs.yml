@@ -68,7 +68,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
-          path: build/${{matrix.target.os}}-${{matrix.target.port}}/*/${{matrix.target.os}}-${{matrix.target.port}}-*-*-Toolchain-*.*
+          path: build/${{matrix.target.os}}-${{matrix.target.port}}/*/${{matrix.target.port}}-${{matrix.target.os}}-*-*-Toolchain-*.*
   test-sysroot:
     needs: build
     strategy:

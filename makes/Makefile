@@ -2,7 +2,7 @@ include $(ROOT_DIR)/consts.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.${TARGET_PORT}.env
 
-basic: sysroot-install binutils-install gcc-install
+basic: sysroot-install binutils-install gcc-install cmake-toolchain
 extended:
 
 all: clean test-cc sysroot binutils gcc gdb tree tarpkg
@@ -30,6 +30,12 @@ gcc-install: gcc
 ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 endif
+
+cmake-toolchain:
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/gcc
+
+libcxx: sysroot-install gcc-install cmake-toolchain
+	false # TODO
 
 tree:
 	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree

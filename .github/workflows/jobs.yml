@@ -92,6 +92,8 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
+      - name: Fix directory
+        run: mv Linux/* .
       - name: Print directory for logging
         run: ls -lah
       - name: Run test

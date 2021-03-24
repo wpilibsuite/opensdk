@@ -93,4 +93,4 @@ jobs:
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
       - name: Run test
-        run: ./test hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+        run: ./test.sh hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}

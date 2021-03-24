@@ -13,11 +13,13 @@ if [ "${WPITARGET}" = "Windows" ]; then
         "$0" "hosts/linux_x86_64.env" "$2" "$3" || exit
 fi
 
+set -e
+
 # Prep builds
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
-bash "${TARGET_CFG}/download.sh" || exit
-bash "${TARGET_CFG}/repack.sh" "${REPACK_DIR}/" || exit
+bash "${TARGET_CFG}/download.sh"
+bash "${TARGET_CFG}/repack.sh" "${REPACK_DIR}/"
 popd
 
 mkdir -p "${BUILD_DIR}"

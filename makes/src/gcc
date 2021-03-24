@@ -57,10 +57,10 @@ TARGET_INFO=(
     "--with-specs=${TARGET_SPECS}" # default target flags
 )
 FEATURE_INFO=(
-    "--enable-threads=posix"
-    "--enable-languages=ada,c,c++,d,fortran,go,objc,objc++"
-    "--enable-shared"
-    "--enable-lto"
+    "--enable-threads=posix"   # Target threading library
+    "--enable-languages=c,c++" # More languages require extra packages
+    "--enable-lto"             # Optimize host binaries
+    "--enable-shared"          # Optimize host binaries
     "--disable-nls"
     "--with-pkgversion=GCC for FRC ${V_YEAR}"
     "--with-cloog"

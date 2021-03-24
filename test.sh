@@ -27,6 +27,8 @@ int main() {
 EOF
 ./bin/${TARGET_PREFIX}gcc hello.c -o a.out || exit
 file a.out
+./bin/${TARGET_PREFIX}g++ hello.c -o a.out || exit
+file a.out
 
 popd
 rm -r toolchain

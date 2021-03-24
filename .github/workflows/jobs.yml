@@ -9,7 +9,6 @@ jobs:
       matrix:
         target:
           [
-            arm64-xenial,
             arm64-bionic,
             arm64-focal,
             armel-roborio,

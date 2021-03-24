@@ -24,7 +24,6 @@
  * armel-roborio
 
 ### Ubuntu
- * arm64-xenial
  * arm64-bionic
  * arm64-focal
 

@@ -92,5 +92,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
+      - name: Print directory for logging
+        run: ls -lah
       - name: Run test
         run: ./test.sh hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}

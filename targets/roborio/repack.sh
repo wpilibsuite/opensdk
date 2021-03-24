@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
 
 set -e
-SCRIPT_DIR="$(dirname "$0")"
-source "$SCRIPT_DIR/version.env" || exit
-source "$SCRIPT_DIR/../../scripts/repack_tools.sh" || exit
+source "$(dirname "$0")/version.env" || exit
+source "$(dirname "$0")/version.${TARGET_PORT}.env" || exit
+source "$SCRIPT_DIR/repack_tools.sh" || exit
 
 WORK_DIR="$PWD"
 REPACK_DIR="$1"

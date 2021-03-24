@@ -10,14 +10,14 @@ jobs:
         target:
           [
             { os: roborio, port: armel },
-            { os: ubuntu/bionic, port: armhf },
-            { os: ubuntu/bionic, port: arm64 },
-            { os: ubuntu/focal, port: armhf },
-            { os: ubuntu/focal, port: arm64 },
-            { os: debian/buster, port: armhf },
-            { os: debian/buster, port: arm64 },
-            { os: debian/bullseye, port: armhf },
-            { os: debian/bullseye, port: arm64 },
+            { os: bionic, port: armhf },
+            { os: bionic, port: arm64 },
+            { os: focal, port: armhf },
+            { os: focal, port: arm64 },
+            { os: buster, port: armhf },
+            { os: buster, port: arm64 },
+            { os: bullseye, port: armhf },
+            { os: bullseye, port: arm64 },
           ]
         host:
           [

@@ -43,11 +43,6 @@ pushd build/
 cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-toolchain.cmake ..
 make
 file hello
-rm -rf *
-# Test CMake with Ninja
-cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=../cmake-toolchain.cmake ..
-ninja
-file hello
 popd
 
 popd

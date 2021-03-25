@@ -7,7 +7,7 @@ extended:
 
 all: clean test-cc sysroot binutils gcc gdb tree tarpkg
 
-sysroot:
+sysroot: cmake-toolchain
 	cd ${BUILD_DIR}; rm -rf sysroot-*
 	cd ${BUILD_DIR}/; tar xf ${DOWNLOAD_DIR}/sysroot-libc-linux.tar.bz2
 	cd ${BUILD_DIR}/; mkdir -p sysroot-install/
@@ -27,12 +27,10 @@ gcc: sysroot binutils-install
 	@# gcc does its own extraction
 	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc
 gcc-install: gcc
-ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
-endif
 
 cmake-toolchain:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/gcc
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/cmake-toolchain.sh
 
 libcxx: sysroot-install gcc-install cmake-toolchain
 	false # TODO

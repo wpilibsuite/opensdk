@@ -15,6 +15,7 @@ else
     popd
     rsync "sysroot-install/" tree-build -a --copy-links
 fi
+mv "cmake-toolchain.cmake" "tree-build/${WPIPREFIX}"  
 pushd tree-build
 du -hs .
 

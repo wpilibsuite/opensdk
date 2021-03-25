@@ -5,7 +5,8 @@ include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.${TARGET_PORT}.env
 basic: sysroot-install binutils-install gcc-install cmake-toolchain
 extended:
 
-all: clean test-cc sysroot binutils gcc gdb tree tarpkg
+prefix-install:
+	mkdir -p "/${WPIPREFIX}"
 
 sysroot: cmake-toolchain
 	cd ${BUILD_DIR}; rm -rf sysroot-*
@@ -13,12 +14,12 @@ sysroot: cmake-toolchain
 	cd ${BUILD_DIR}/; mkdir -p sysroot-install/
 	cd ${BUILD_DIR}/; mv sysroot-libc-linux/ sysroot-install/$(TARGET_TUPLE)
 
-sysroot-install: sysroot
+sysroot-install: prefix-install sysroot
 ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/$(WPIPREFIX)/"
 endif
 
-binutils-install:
+binutils-install: prefix-install
 ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 endif
@@ -26,7 +27,7 @@ endif
 gcc: sysroot binutils-install
 	@# gcc does its own extraction
 	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc
-gcc-install: gcc
+gcc-install: prefix-install gcc
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 
 cmake-toolchain:

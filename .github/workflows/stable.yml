@@ -1,9 +1,8 @@
-name: Build Lite - Linux Only
+name: Build All
 
 on:
-  pull_request:
   push:
-    branches-ignore:
+    branches:
       - "stable"
 
 jobs:
@@ -31,14 +30,44 @@ jobs:
               docker: true,
               docker-img: 14.04,
             },
+            {
+              os-cfg: windows_i686,
+              runner: ubuntu-latest,
+              docker: true,
+              docker-img: 18.04,
+            },
+            {
+              os-cfg: windows_x86_64,
+              runner: ubuntu-latest,
+              docker: true,
+              docker-img: 18.04,
+            },
+            {
+              os-cfg: macos_x86_64,
+              runner: macos-latest,
+              docker: false,
+              docker-img: "",
+            },
+            {
+              os-cfg: sysroot,
+              runner: ubuntu-latest,
+              docker: true,
+              docker-img: alpine,
+            },
           ]
     name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     steps:
       - uses: actions/checkout@v2
+      - name: Prep MacOS
+        if: ${{ !matrix.host.docker }}
+        run: brew install coreutils binutils gnu-tar gzip
       - name: Build on docker
         if: ${{ matrix.host.docker }}
         run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+      - name: Build on native
+        if: ${{ !matrix.host.docker }}
+        run: ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}

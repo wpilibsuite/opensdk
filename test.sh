@@ -20,6 +20,7 @@ pushd /tmp/
 mkdir -p toolchain
 pushd toolchain
 tar xf "$ROOT_DIR/$ARCHIVE_NAME"
+cd "${TOOLCHAIN_NAME}"
 cat << EOF > hello.c
 int main() {
     return 0;

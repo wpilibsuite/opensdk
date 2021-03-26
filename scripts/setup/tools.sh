@@ -14,5 +14,5 @@ function is-actions() {
 
 function is-mac-codesign() {
     is-mac && is-actions &&
-        [ -n "${APPLE_DEVELOPER_ID+x}" ] || return
+        [ -n "${APPLE_DEVELOPER_ID}" ] || return
 }

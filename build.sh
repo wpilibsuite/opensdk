@@ -3,7 +3,9 @@
 # Always ensure proper path
 cd "$(dirname "$0")" || exit
 
-ROOT_DIR="${PWD}" && export ROOT_DIR
+set -a
+
+ROOT_DIR="${PWD}"
 # shellcheck source=./scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
 

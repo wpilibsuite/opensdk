@@ -11,3 +11,8 @@ function is-linux() {
 function is-actions() {
     [ "$CI" = "true" ] || return
 }
+
+function is-mac-codesign() {
+    is-mac && is-actions &&
+        [ -n "${APPLE_DEVELOPER_ID+x}" ] || return
+}

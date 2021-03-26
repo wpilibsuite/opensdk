@@ -60,14 +60,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Prep MacOS
-        if: ${{ !matrix.host.docker }}
+        if: startsWith(matrix.host.runner, 'macos')
         run: brew install coreutils binutils gnu-tar gzip
+      - name: Import Developer ID Certificate
+        uses: wpilibsuite/import-signing-certificate@v1
+        with:
+          certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
+          certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+        if: github.repository_owner == 'wpilibsuite' && startsWith(matrix.host.runner, 'macos')
       - name: Build on docker
         if: ${{ matrix.host.docker }}
         run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - name: Build on native
-        if: ${{ !matrix.host.docker }}
+        if: startsWith(matrix.host.runner, 'macos')
         run: ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+        env:
+          APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}

@@ -23,25 +23,15 @@ jobs:
             { os: bullseye, port: armhf },
             { os: bullseye, port: arm64 },
           ]
-        host:
-          [
-            {
-              os-cfg: linux_x86_64,
-              runner: ubuntu-latest,
-              docker: true,
-              docker-img: 14.04,
-            },
-          ]
-    name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
-    runs-on: ${{ matrix.host.runner }}
+    name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for Linux
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build on docker
-        if: ${{ matrix.host.docker }}
-        run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+        run: ./build-docker.sh 14.04 hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
           path: build/${{matrix.target.os}}-${{matrix.target.port}}/*/${{matrix.target.port}}-${{matrix.target.os}}-*-*-Toolchain-*.*
   test-sysroot:
     needs: build

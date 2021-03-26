@@ -35,5 +35,9 @@ else
     fi
 fi
 
+if is-mac-codesign; then
+    bash scripts/codesign.sh
+fi
+
 # Package build for release
 ${MAKE} pkg

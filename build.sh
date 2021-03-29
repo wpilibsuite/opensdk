@@ -4,10 +4,10 @@
 cd "$(dirname "$0")" || exit
 
 set -a
-
 ROOT_DIR="${PWD}"
 # shellcheck source=./scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
+set +a
 
 if [ "${WPITARGET}" = "Windows" ]; then
     # Recursivly build to setup host to help the canadian build

@@ -34,13 +34,13 @@ jobs:
               os-cfg: windows_i686,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: 18.04,
+              docker-img: 20.04,
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: 18.04,
+              docker-img: 20.04,
             },
             {
               os-cfg: macos_x86_64,

@@ -10,4 +10,9 @@ export CC CXX CPP LD
 
 CFLAGS=""
 CXXFLAGS=""
-export CFLAGS CXXFLAGS
+if [ "$WPITARGET" = "Windows" ]; then
+    CFLAGS="$CFLAGS -static-libgcc -static-libstdc++"
+    CXXFLAGS="$CXXFLAGS -static-libgcc -static-libstdc++"
+    LDFLAGS="$LDFLAGS -static-libgcc -static-libstdc++"
+fi
+export CFLAGS CXXFLAGS LDFLAGS

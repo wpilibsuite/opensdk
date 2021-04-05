@@ -10,7 +10,7 @@ if ! [[ " ${TAGS[@]} " =~ " $TAG " ]]; then
 fi
 
 DOCKERFILE=Dockerfile
-[[ "$TAG" =~ *"alpine" ]] && DOCKERFILE=Dockerfile.alpine
+[ "$TAG" = "alpine" ] && DOCKERFILE=Dockerfile.alpine
 
 pushd "$BIN_PWD"
 docker build \

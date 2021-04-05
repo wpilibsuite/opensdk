@@ -7,3 +7,4 @@ main-cpp: main.c
 	${CXX} ${CXXFLAGS} -Wno-deprecated -Werror -o $@ $<
 clean:
 	rm -f main-c main-cpp
+	rm -f main-c.exe main-cpp.exe

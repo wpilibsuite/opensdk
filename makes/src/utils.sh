@@ -5,7 +5,7 @@
 cd "$(dirname "$0")"
 
 source "$ROOT_DIR/consts.env"
-source "$PWD/downloads_tools.sh"
+source "$SCRIPT_DIR/downloads_tools.sh"
 
 pushd "$ROOT_DIR/downloads"
 signed sig https://ftp.gnu.org/gnu/binutils/binutils-${V_BIN}.tar.bz2
@@ -44,6 +44,10 @@ pushd "binutils-build/"
 make -j"$JOBS" || exit
 DESTDIR=$PWD/../binutils-install make install install-strip || exit
 popd
+
+if [ "$STOP_AT_GCC" = "true" ]; then
+    exit 0
+fi
 
 pushd "gdb-build/"
 CFLAGS="$GDB_CFLAGS"

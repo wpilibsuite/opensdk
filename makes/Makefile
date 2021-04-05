@@ -19,7 +19,10 @@ ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/$(WPIPREFIX)/"
 endif
 
-binutils-install: prefix-install
+utils:
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/utils.sh
+
+binutils-install: utils prefix-install
 ifneq (${WPITARGET}, Windows)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 endif

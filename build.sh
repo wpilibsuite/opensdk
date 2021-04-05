@@ -29,8 +29,6 @@ MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
 if [ "$WPITARGET" = "sysroot" ]; then
     ${MAKE} sysroot
 else
-    bash "${ROOT_DIR}/scripts/target_utils.sh"
-
     ${MAKE} basic
     if [ "$STOP_AT_GCC" = "true" ]; then
         exit 0

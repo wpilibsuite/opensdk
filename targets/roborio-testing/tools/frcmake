@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+
+exec "cmake" "-DCMAKE_TOOLCHAIN_FILE=$(frc-cmake-toolchain)" "$@"
+

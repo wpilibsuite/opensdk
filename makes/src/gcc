@@ -57,10 +57,9 @@ TARGET_INFO=(
     "--with-specs=${TARGET_SPECS}" # default target flags
 )
 FEATURE_INFO=(
-    "--enable-threads=posix"   # Target threading library
-    "--enable-languages=c,c++" # More languages require extra packages
-    "--enable-lto"             # Optimize host binaries
-    "--enable-shared"          # Optimize host binaries
+    "--enable-threads=posix"           # Target threading library
+    "--enable-languages=c,c++,fortran" # More languages require extra packages
+    "--enable-lto"                     # Optimize host binaries
     "--disable-nls"
     "--with-pkgversion=GCC for FRC ${V_YEAR}"
     "--with-cloog"
@@ -69,19 +68,41 @@ SYSROOT_INFO=(
     "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE"
     "--with-build-sysroot=/usr/local/$TARGET_TUPLE"
     "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib"
-    "--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}"
 )
+if [ "$BACKPORT_LIBSTDCXX" = "true" ]; then
+    BACKPORT_INFO=(
+        "--disable-libatomic"
+        "--disable-libgomp"
+        "--disable-libitm"
+        "--disable-libssp"
+    )
+
+    # Link all target biaries with static versions
+    # of libgcc and libstdc++
+    FEATURE_INFO+=("--disable-shared")
+else
+    FEATURE_INFO+=("--enable-shared")
+    SYSROOT_INFO+=("--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}")
+fi
 
 rm -rf ${BUILD_DIR}/gcc-{build,install}
 mkdir -p ${BUILD_DIR}/gcc-{build,install}
 pushd ${BUILD_DIR}/gcc-build
 "${BUILD_DIR}/gcc-${V_GCC}/configure" \
-    "${BUILD_INFO[@]}" "${TARGET_INFO[@]}" \
-    "${FEATURE_INFO[@]}" "${SYSROOT_INFO[@]}" \
+    "${BUILD_INFO[@]}" \
+    "${TARGET_INFO[@]}" \
+    "${FEATURE_INFO[@]}" \
+    "${SYSROOT_INFO[@]}" \
+    "${BACKPORT_INFO[@]}" \
     --enable-poison-system-directories \
     --disable-libmudflap \
     $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) ||
     exit
-make -j"$JOBS" all-gcc || exit
-DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc || exit
+if [ "$BACKPORT_LIBSTDCXX" != "true" ]; then
+    make -j"$JOBS" all-gcc all-target-libgfortran || exit
+    DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc || exit
+else
+    make -j"$JOBS" || exit
+    DESTDIR=${BUILD_DIR}/gcc-install make install
+fi
 popd

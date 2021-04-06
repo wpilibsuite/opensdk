@@ -22,7 +22,8 @@
 
 | Architecture | Operating System | Tuple |
 | - | - | - |
-| ARMv7 | N.I. Linux (RoboRIO)| arm-frc2021-linux-gnueabi |
+| ARMv7 (softfp) | N.I. Linux (RoboRIO) | arm-frc2021-linux-gnueabi |
+| ARMv7 (softfp) | N.I. Linux (RoboRIO) with GCC-10 | arm-riotesting-linux-gnueabi |
 | ARMv6z | Debian/Raspberry Pi OS 10 | arm-buster-linux-gnueabihf |
 | ARMv6z | Debian/Raspberry Pi OS 11 | arm-bullseye-linux-gnueabihf |
 | ARMv7 | Ubuntu 18.04 | arm-bionic-linux-gnueabihf |

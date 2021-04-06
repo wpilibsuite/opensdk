@@ -41,6 +41,7 @@ jobs:
         target:
           [
             { os: roborio, port: armel },
+            { os: roborio-testing, port: armel },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },
             { os: focal, port: armhf },

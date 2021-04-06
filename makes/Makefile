@@ -15,7 +15,7 @@ sysroot: cmake-toolchain
 	cd ${BUILD_DIR}/; mv sysroot-libc-linux/ sysroot-install/$(TARGET_TUPLE)
 
 sysroot-install: prefix-install sysroot
-ifneq (${WPITARGET}, Windows)
+ifeq (${CANADIAN_STAGE_ONE}, true)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/$(WPIPREFIX)/"
 endif
 
@@ -23,7 +23,7 @@ utils:
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/utils.sh
 
 binutils-install: utils prefix-install
-ifneq (${WPITARGET}, Windows)
+ifeq (${CANADIAN_STAGE_ONE}, true)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
 endif
 
@@ -31,7 +31,9 @@ gcc: sysroot binutils-install
 	@# gcc does its own extraction
 	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc
 gcc-install: prefix-install gcc
+ifeq (${CANADIAN_STAGE_ONE}, true)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
+endif
 
 cmake-toolchain:
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/cmake-toolchain.sh

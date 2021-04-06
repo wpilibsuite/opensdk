@@ -11,7 +11,7 @@ set +a
 
 if [ "${WPITARGET}" = "Windows" ]; then
     # Recursivly build to setup host to help the canadian build
-    STOP_AT_GCC=true bash \
+    CANADIAN_STAGE_ONE=true bash \
         "$0" "hosts/linux_x86_64.env" "$2" "$3" || exit
 fi
 
@@ -30,7 +30,7 @@ if [ "$WPITARGET" = "sysroot" ]; then
     ${MAKE} sysroot
 else
     ${MAKE} basic
-    if [ "$STOP_AT_GCC" = "true" ]; then
+    if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
         exit 0
     fi
 fi

@@ -45,7 +45,7 @@ make -j"$JOBS" || exit
 DESTDIR=$PWD/../binutils-install make install install-strip || exit
 popd
 
-if [ "$STOP_AT_GCC" = "true" ]; then
+if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
     exit 0
 fi
 

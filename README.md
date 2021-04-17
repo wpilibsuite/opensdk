@@ -1,4 +1,4 @@
-# W.P.I. Toolchains
+# Robotics Toolchains
 
 ## Vocabulary
  * Host: The system in which code is compiled on

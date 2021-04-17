@@ -23,8 +23,10 @@
 | - | - | - |
 | ARMv7 (softfp) | N.I. Linux (RoboRIO) | arm-frc2021-linux-gnueabi |
 | ARMv7 (softfp) | N.I. Linux (RoboRIO) with GCC-10 | arm-riotesting-linux-gnueabi |
-| ARMv6z | Debian/Raspberry Pi OS 10 | arm-buster-linux-gnueabihf |
-| ARMv6z | Debian/Raspberry Pi OS 11 | arm-bullseye-linux-gnueabihf |
+| ARMv6z | Raspberry Pi OS 10 for Pi zero/one | arm-rpi0_buster-linux-gnueabihf |
+| ARMv6z | Raspberry Pi OS 11 for Pi zero/one | arm-rpi0_bullseye-linux-gnueabihf |
+| ARMv7 | Debian/Raspberry Pi OS 10 | arm-buster-linux-gnueabihf |
+| ARMv7 | Debian/Raspberry Pi OS 11 | arm-bullseye-linux-gnueabihf |
 | ARMv7 | Ubuntu 18.04 | arm-bionic-linux-gnueabihf |
 | ARMv7 | Ubuntu 20.04 | arm-focal-linux-gnueabihf |
 | ARMv8 (64bit) | Debian/Raspberry Pi OS 10 | aarch64-buster-linux-gnu |

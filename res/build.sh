@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-TAGS=( "alpine" "14.04" "20.04" )
+TAGS=( "14.04" "20.04" )
 BIN_PWD="$(dirname "$0")"
 
 if ! [[ " ${TAGS[@]} " =~ " $TAG " ]]; then
@@ -10,7 +10,6 @@ if ! [[ " ${TAGS[@]} " =~ " $TAG " ]]; then
 fi
 
 DOCKERFILE=Dockerfile
-[ "$TAG" = "alpine" ] && DOCKERFILE=Dockerfile.alpine
 
 pushd "$BIN_PWD"
 docker build \

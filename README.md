@@ -11,7 +11,6 @@
 | x86_64 | MacOS | 10.10 >= |
 | x86_64 | Win64 | 7 >= |
 | i686 | Win32 | 7 >= |
-| Sysroot Only | - | - |
 
 ### Using Compatability Layers
   * Use i686 Windows builds for Windows 10 on ARM

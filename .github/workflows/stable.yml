@@ -48,13 +48,7 @@ jobs:
               runner: macos-latest,
               docker: false,
               docker-img: "",
-            },
-            {
-              os-cfg: sysroot,
-              runner: ubuntu-latest,
-              docker: true,
-              docker-img: alpine,
-            },
+            }
           ]
     name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}

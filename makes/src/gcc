@@ -64,11 +64,11 @@ FEATURE_INFO=(
     "--with-pkgversion=GCC for FRC ${V_YEAR}"
     "--with-cloog"
 )
-_SYSROOT_LOCATION="$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
+bash
 SYSROOT_INFO=(
-    "--with-sysroot=$_SYSROOT_LOCATION"
-    "--with-build-sysroot=$_SYSROOT_LOCATION"
-    "--libdir=$_SYSROOT_LOCATION/usr/lib"
+    "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE"
+    "--with-build-sysroot=/usr/local/$TARGET_TUPLE"
+    "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib"
 )
 if [ "$BACKPORT_LIBSTDCXX" = "true" ]; then
     BACKPORT_INFO=(
@@ -83,7 +83,7 @@ if [ "$BACKPORT_LIBSTDCXX" = "true" ]; then
     FEATURE_INFO+=("--disable-shared")
 else
     FEATURE_INFO+=("--enable-shared")
-    SYSROOT_INFO+=("--with-gxx-include-dir=$_SYSROOT_LOCATION/usr/include/c++/${V_GCC}")
+    SYSROOT_INFO+=("--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}")
 fi
 
 rm -rf ${BUILD_DIR}/gcc-{build,install}

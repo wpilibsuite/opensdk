@@ -46,6 +46,7 @@ DESTDIR=$PWD/../binutils-install make install install-strip || exit
 popd
 
 if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
+    rsync -a "${BUILD_DIR}/binutils-install/${WPIPREFIX}/" "/${WPIPREFIX}/"
     exit 0
 fi
 

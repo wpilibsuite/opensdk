@@ -15,20 +15,20 @@ sysroot: cmake-toolchain
 	cd ${BUILD_DIR}/; mv sysroot-libc-linux/ sysroot-install/$(TARGET_TUPLE)
 
 sysroot-install: prefix-install sysroot
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ "/$(WPIPREFIX)/"
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ /$(WPIPREFIX)/
 
 utils:
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/utils.sh
 
 binutils-install: utils prefix-install
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* /$(WPIPREFIX)/
 
 gcc: sysroot binutils-install
 	@# gcc does its own extraction
 	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc
 gcc-install: prefix-install gcc
 ifneq (${WPITARGET}, Mac)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* "/$(WPIPREFIX)/"
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* /$(WPIPREFIX)/
 endif
 
 cmake-toolchain:

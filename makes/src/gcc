@@ -64,7 +64,6 @@ FEATURE_INFO=(
     "--with-pkgversion=GCC for FRC ${V_YEAR}"
     "--with-cloog"
 )
-bash
 SYSROOT_INFO=(
     "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE"
     "--with-build-sysroot=/usr/local/$TARGET_TUPLE"

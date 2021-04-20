@@ -1,8 +1,9 @@
 # Robotics Toolchains
 
-## Vocabulary
- * Host: The system in which code is compiled on
- * Target: The system in which the compiled code runs on 
+## Supported Languages
+  * C
+  * C++
+  * Fortran
 
 ## Supported Hosts
 | Architecture | OS | Requirments |

@@ -63,27 +63,14 @@ FEATURE_INFO=(
     "--disable-nls"
     "--with-pkgversion=GCC for FRC ${V_YEAR}"
     "--with-cloog"
+    "--enable-shared"
 )
 SYSROOT_INFO=(
     "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE"
     "--with-build-sysroot=/usr/local/$TARGET_TUPLE"
     "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib"
+    "--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}"
 )
-if [ "$BACKPORT_LIBSTDCXX" = "true" ]; then
-    BACKPORT_INFO=(
-        "--disable-libatomic"
-        "--disable-libgomp"
-        "--disable-libitm"
-        "--disable-libssp"
-    )
-
-    # Link all target biaries with static versions
-    # of libgcc and libstdc++
-    FEATURE_INFO+=("--disable-shared")
-else
-    FEATURE_INFO+=("--enable-shared")
-    SYSROOT_INFO+=("--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}")
-fi
 
 rm -rf ${BUILD_DIR}/gcc-{build,install}
 mkdir -p ${BUILD_DIR}/gcc-{build,install}

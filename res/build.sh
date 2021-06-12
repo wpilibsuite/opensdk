@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-TAGS=( "14.04" "20.04" )
+TAGS=( "16.04" "20.04" )
 BIN_PWD="$(dirname "$0")"
 
 if ! [[ " ${TAGS[@]} " =~ " $TAG " ]]; then

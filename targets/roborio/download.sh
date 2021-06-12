@@ -8,11 +8,12 @@ signed sig https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz
 PACKAGES=(
     "gcc"
     "libatomic-dev"
-    "libstdc++-dev"
-    "libgomp-dev"
-    "libssp-dev"
     "libc6"
     "libc6-dev"
+    "libgcc-s-dev"
+    "libgomp-dev"
+    "libssp-dev"
+    "libstdc++-dev"
     "linux-libc-headers-dev"
 )
 

@@ -30,7 +30,7 @@ jobs:
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: 14.04,
+              docker-img: 16.04,
             },
             {
               os-cfg: windows_i686,

@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build on docker
-        run: ./build-docker.sh 14.04 hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+        run: ./build-docker.sh 16.04 hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64

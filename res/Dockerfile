@@ -15,6 +15,10 @@ RUN apt-get update && apt-get install -y \
     mingw-w64 \
     m4 \
     ninja-build \
+    python3 \
+    python3-packaging \
+    python3-requests \
+    python3-yaml \
     rsync \
     sudo \
     texinfo \

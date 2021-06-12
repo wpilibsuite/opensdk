@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 
+set -e
 TAG="$1" bash res/build.sh
 
 if [ "$CI" != true ]; then

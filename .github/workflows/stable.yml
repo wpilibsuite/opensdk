@@ -70,7 +70,11 @@ jobs:
         run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - name: Build on native
         if: startsWith(matrix.host.runner, 'macos')
-        run: ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+        run: |
+          python3 -m pip install requests
+          python3 -m pip install pyyaml
+          python3 -m pip install packaging
+          ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
       - uses: actions/upload-artifact@v2

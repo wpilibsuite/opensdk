@@ -15,6 +15,8 @@ PACKAGES=(
     "libssp-dev"
     "libstdc++-dev"
     "linux-libc-headers-dev"
+    "ncurses-libtinfo-dev"
+    "ncurses-terminfo-dev"
 )
 
 python3 "${SCRIPT_DIR}/repocli.py" ni main cortexa9-vfpv3 . "${PACKAGES[@]}"

@@ -9,9 +9,20 @@ ROOT_DIR="${PWD}"
 source "$ROOT_DIR/scripts/setup.sh"
 set +a
 
-if [ "${PREBUILD_CANADIAN}" = "Windows" ]; then
+function onexit() {
+    code="$?"
+    if [ "${code}" != "0" ]; then
+        echo "[ERROR]: Exiting with code ${code}"
+    else
+        echo "[INFO]: Exiting with code ${code}"
+    fi
+}
+trap onexit "err" "exit"
+
+if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     # Recursivly build to setup host to help the canadian build
-    CANADIAN_STAGE_ONE=true bash \
+    CANADIAN_STAGE_ONE=true \
+        PREBUILD_CANADIAN=false bash \
         "$0" "hosts/linux_x86_64.env" "$2" "$3" || exit
 fi
 

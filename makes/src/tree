@@ -4,18 +4,11 @@ source "$ROOT_DIR/scripts/repack_tools.sh" || exit
 
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
-if [ "$WPITARGET" != "sysroot" ]; then
-    for dir in {gcc,sysroot,binutils,gdb}-install; do
-        echo "$dir/"
-        rsync "$dir/" tree-build -a --copy-links
-    done
-else
-    pushd "sysroot-install"
-    # fix-links
-    popd
-    rsync "sysroot-install/" tree-build -a --copy-links
-fi
-mv "cmake-toolchain.cmake" "tree-build/${WPIPREFIX}"  
+for dir in {gcc,sysroot,binutils,gdb}-install; do
+    echo "$dir/"
+    rsync "$dir/" tree-build -a --copy-links
+done
+mv "cmake-toolchain.cmake" "tree-build/${WPIPREFIX}"
 pushd tree-build
 du -hs .
 

@@ -3,7 +3,7 @@
 function import-pgp-keys() {
     for KEY in "$@"; do
         echo "[INFO] Importing $KEY into gnupg"
-        gpg --keyserver "keyserver.ubuntu.com" --recv-key "$KEY" &> /dev/null
+        gpg --keyserver "keyserver.ubuntu.com" --recv-key "$KEY" &>/dev/null
         if [ "$?" != "0" ]; then
             echo "[ERR] Could not import $KEY into gpg"
             return 1
@@ -35,4 +35,16 @@ function signed() {
     basic-download "$2" || exit 1
     basic-download "$2.$1" || return 0 # Signature missing, skip
     gpg --verify "$BASE_FILE.$1" || exit 1
+}
+
+function sysroot-package() {
+    pushd "/tmp" || exit
+    echo "download dir ${DOWNLOAD_DIR}"
+    rm -rf "${DOWNLOAD_DIR}/sysroot-libc-linux"
+    mv "${REPACK_DIR}" "${DOWNLOAD_DIR}/sysroot-libc-linux"
+    mkdir "${REPACK_DIR}"
+    pushd "${DOWNLOAD_DIR}" || exit
+    tar cjf sysroot-libc-linux.tar.bz2 sysroot-libc-linux --owner=0 --group=0
+    popd || exit
+    popd || exit
 }

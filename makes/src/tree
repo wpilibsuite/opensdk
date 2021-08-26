@@ -1,7 +1,5 @@
 #! /usr/bin/env bash
 
-source "$ROOT_DIR/scripts/repack_tools.sh" || exit
-
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
 for dir in {gcc,sysroot,binutils,gdb}-install; do

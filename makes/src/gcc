@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
-source ${ROOT_DIR}/consts.env
-source ${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env
+# shellcheck disable=SC2010
 
-WPI_PATH="${ROOT_DIR}/build/${TOOLCHAIN_NAME}/"
+source "${ROOT_DIR}/consts.env"
+source "${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env"
 
 CFLAGS="$GCC_CFLAGS"
 CXXFLAGS="$GCC_CXXFLAGS"
@@ -10,20 +10,14 @@ export CFLAGS CXXFLAGS
 
 set -e
 
-CFLAGS_FOR_TARGET="-g -O2 -Wformat -Wformat-security"
-CXXFLAGS_FOR_TARGET="-g -O2 -Wformat -Wformat-security"
-FFLAGS_FOR_TARGET="-g -O2"
-LDFLAGS_FOR_TARGET="-Wl,-Bsymbolic-functions -Wl,-z,relro"
-export {C,CXX,F,LD}FLAGS_FOR_TARGET
-
 rm -rf "${BUILD_DIR}/gcc-${V_GCC}"
 echo "Extracting GCC..."
-tar xf ${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz
+tar xf "${DOWNLOAD_DIR}/gcc-${V_GCC}.tar.gz"
 
 pushd "${BUILD_DIR}/gcc-${V_GCC}/"
 ./contrib/download_prerequisites
 if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
-    for file in "${PATCH_DIR}"/gcc-${V_GCC//.*/}_*.patch; do
+    for file in "${PATCH_DIR}"/gcc-"${V_GCC//.*/}"_*.patch; do
         patch -p1 -N -s <"$file"
     done
 fi
@@ -72,24 +66,29 @@ SYSROOT_INFO=(
     "--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}"
 )
 
-rm -rf ${BUILD_DIR}/gcc-{build,install}
-mkdir -p ${BUILD_DIR}/gcc-{build,install}
-pushd ${BUILD_DIR}/gcc-build
+if [ "${WPITARGET}" != "Windows" ]; then
+    BUILD_INFO[${#BUILD_INFO[@]}]="--with-system-zlib"
+fi
+
+rm -rf "${BUILD_DIR}"/gcc-{build,install}
+mkdir -p "${BUILD_DIR}"/gcc-{build,install}
+pushd "${BUILD_DIR}/gcc-build"
 "${BUILD_DIR}/gcc-${V_GCC}/configure" \
     "${BUILD_INFO[@]}" \
     "${TARGET_INFO[@]}" \
     "${FEATURE_INFO[@]}" \
     "${SYSROOT_INFO[@]}" \
     "${BACKPORT_INFO[@]}" \
+    --with-gcc-major-version-only \
     --enable-poison-system-directories \
-    --disable-libmudflap \
-    $([ "$WPITARGET" != "Windows" ] && echo --with-system-zlib) ||
+    --disable-libmudflap ||
     exit
-if [ "$BACKPORT_LIBSTDCXX" != "true" ]; then
-    make -j"$JOBS" all-gcc all-target-libgfortran || exit
-    DESTDIR=${BUILD_DIR}/gcc-install make install-strip-gcc || exit
-else
-    make -j"$JOBS" || exit
-    DESTDIR=${BUILD_DIR}/gcc-install make install
-fi
+make -j"$JOBS" \
+    all-gcc \
+    all-target-libgfortran ||
+    exit
+DESTDIR=${BUILD_DIR}/gcc-install make \
+    install-strip-gcc \
+    install-target-libgfortran ||
+    exit
 popd

@@ -5,11 +5,11 @@ source "${SCRIPT_DIR}/downloads_tools.sh" || exit
 
 signed sig https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz
 
-PACKAGES=(
-    "libgcc-8-dev"
-    "libstdc++-8-dev"
-    "libatomic1"
-    "linux-libc-dev"
-)
-
-python3 "${SCRIPT_DIR}/repocli.py" raspi buster armhf . "${PACKAGES[@]}"
+python3 -m opensysroot \
+    raspbian \
+    "${TARGET_PORT}" \
+    buster \
+    .
+mv "./raspbian/buster/${TARGET_PORT}/sysroot/"* "$REPACK_DIR"
+sysroot-package
+ 

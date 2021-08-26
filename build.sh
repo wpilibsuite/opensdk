@@ -32,7 +32,6 @@ set -e
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
 bash "${TARGET_CFG}/download.sh"
-bash "${TARGET_CFG}/repack.sh" "${REPACK_DIR}/"
 popd
 
 mkdir -p "${BUILD_DIR}"

@@ -2,6 +2,7 @@
 # shellcheck disable=SC2010
 
 source "${ROOT_DIR}/consts.env"
+source "${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/info.env"
 source "${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env"
 
 CFLAGS="$GCC_CFLAGS"
@@ -20,6 +21,9 @@ if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
     for file in "${PATCH_DIR}"/gcc-"${V_GCC//.*/}"_*.patch; do
         patch -p1 -N -s <"$file"
     done
+fi
+if [ "${TARGET_DISTRO}" != "roborio" ]; then
+    patch -p1 -N -s <"${PATCH_DIR}/gcc-debian.patch"
 fi
 popd
 
@@ -40,8 +44,9 @@ BUILD_INFO=(
     "--build=${BUILD_TUPLE}"
     "--host=${WPIHOSTTARGET}"
     "--target=${TARGET_TUPLE}"
-    "--prefix=${WPIPREFIX}"              # Host directory prefix
+    "--prefix=${WPIPREFIX}"             # Host directory prefix
     "--program-prefix=${TARGET_PREFIX}" # Host binary prefix
+    "--disable-bootstrap"
 )
 TARGET_INFO=(
     "--with-cpu=${TARGET_CPU}"     # target -mtune
@@ -60,6 +65,7 @@ FEATURE_INFO=(
     "--enable-shared"
 )
 SYSROOT_INFO=(
+    "--with-gcc-major-version-only"
     "--with-sysroot=$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
 )
 
@@ -76,7 +82,6 @@ pushd "${BUILD_DIR}/gcc-build"
     "${FEATURE_INFO[@]}" \
     "${SYSROOT_INFO[@]}" \
     "${BACKPORT_INFO[@]}" \
-    --with-gcc-major-version-only \
     --enable-poison-system-directories \
     --disable-libmudflap ||
     exit

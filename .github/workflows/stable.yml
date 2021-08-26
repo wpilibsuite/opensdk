@@ -57,7 +57,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Prep MacOS
         if: startsWith(matrix.host.runner, 'macos')
-        run: brew install coreutils binutils gnu-tar gzip
+        run: brew install coreutils binutils gnu-tar gzip dpkg
       - name: Import Developer ID Certificate
         uses: wpilibsuite/import-signing-certificate@v1
         with:
@@ -71,9 +71,6 @@ jobs:
       - name: Build on native
         if: startsWith(matrix.host.runner, 'macos')
         run: |
-          python3 -m pip install requests
-          python3 -m pip install pyyaml
-          python3 -m pip install packaging
           ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}

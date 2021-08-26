@@ -40,7 +40,7 @@ BUILD_INFO=(
     "--build=${BUILD_TUPLE}"
     "--host=${WPIHOSTTARGET}"
     "--target=${TARGET_TUPLE}"
-    "--prefix=$WPIPREFIX"               # Host directory prefix
+    "--prefix=${WPIPREFIX}"              # Host directory prefix
     "--program-prefix=${TARGET_PREFIX}" # Host binary prefix
 )
 TARGET_INFO=(
@@ -60,10 +60,7 @@ FEATURE_INFO=(
     "--enable-shared"
 )
 SYSROOT_INFO=(
-    "--with-sysroot=$WPIPREFIX/$TARGET_TUPLE"
-    "--with-build-sysroot=/usr/local/$TARGET_TUPLE"
-    "--libdir=$WPIPREFIX/$TARGET_TUPLE/usr/lib"
-    "--with-gxx-include-dir=$WPIPREFIX/$TARGET_TUPLE/usr/include/c++/${V_GCC}"
+    "--with-sysroot=$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
 )
 
 if [ "${WPITARGET}" != "Windows" ]; then

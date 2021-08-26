@@ -7,6 +7,7 @@ set -a
 ROOT_DIR="${PWD}"
 # shellcheck source=./scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
+source "$ROOT_DIR/scripts/downloads_tools.sh"
 set +a
 
 function onexit() {
@@ -31,7 +32,15 @@ set -e
 # Prep builds
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
-bash "${TARGET_CFG}/download.sh"
+signed sig "https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz"
+python3 -m opensysroot \
+    "${TARGET_DISTRO}" \
+    "${TARGET_PORT}" \
+    "${TARGET_DISTRO_RELEASE}" \
+    . || exit
+mv "./${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}/sysroot/"* \
+    "${REPACK_DIR}" || exit
+sysroot-package
 popd
 
 mkdir -p "${BUILD_DIR}"

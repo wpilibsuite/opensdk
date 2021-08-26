@@ -5,7 +5,7 @@ basic: sysroot-install binutils-install gcc-install cmake-toolchain
 extended:
 
 prefix-install:
-	mkdir -p "/${WPIPREFIX}"
+	sudo mkdir -p "/${WPIPREFIX}"
 
 sysroot: cmake-toolchain
 	cd ${BUILD_DIR}; rm -rf sysroot-*

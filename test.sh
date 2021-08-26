@@ -26,9 +26,9 @@ int main() {
     return 0;
 }
 EOF
-./bin/${TARGET_PREFIX}gcc hello.c -o a.out || exit
+"./bin/${TARGET_TUPLE}-gcc" hello.c -o a.out || exit
 file a.out
-./bin/${TARGET_PREFIX}g++ hello.c -o a.out || exit
+"./bin/${TARGET_TUPLE}-g++" hello.c -o a.out || exit
 file a.out
 
 mkdir build/

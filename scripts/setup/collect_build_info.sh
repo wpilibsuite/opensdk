@@ -6,6 +6,8 @@ source "${HOST_CFG}"
 source "${ROOT_DIR}/consts.env"
 # shellcheck source=targets/roborio/info.env
 source "${TARGET_CFG}/info.${TARGET_PORT}.env"
+source "${TARGET_CFG}/info.env"
+source "${TARGET_CFG}/version.env"
 if "${CANADIAN_STAGE_ONE:-false}"; then
     TARGET_PREFIX="$TARGET_TUPLE-"
 fi

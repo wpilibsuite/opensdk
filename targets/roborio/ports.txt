@@ -1,1 +1,1 @@
-armel
+cortexa9_vfpv3

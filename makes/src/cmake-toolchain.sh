@@ -4,7 +4,7 @@ set -e
 
 TOOLCHAIN_CMAKE_OUT=cmake-toolchain.cmake
 
-if [ "WPITARGET" = "Windows" ]; then
+if [ "$WPITARGET" = "Windows" ]; then
     export SUFFIX=".exe"
 fi
 

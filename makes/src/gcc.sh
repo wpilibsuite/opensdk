@@ -58,15 +58,21 @@ TARGET_INFO=(
 FEATURE_INFO=(
     "--enable-threads=posix"           # Target threading library
     "--enable-languages=c,c++,fortran" # More languages require extra packages
-    "--enable-lto"                     # Optimize host binaries
-    "--disable-nls"
     "--with-pkgversion=GCC for FRC ${V_YEAR}"
-    "--with-cloog"
     "--enable-shared"
+    "--enable-__cxa_atexit"
+    "--enable-default-pie"
 )
+
+SYSROOT_PATH="${WPIPREFIX}/${TARGET_TUPLE}"
+SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
 SYSROOT_INFO=(
     "--with-gcc-major-version-only"
-    "--with-sysroot=$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
+    "--enable-poison-system-directories"
+    "--with-sysroot=${SYSROOT_PATH}"
+    "--libdir=${SYSROOT_PATH}/usr/lib"
+    "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
+    "--with-build-sysroot=${SYSROOT_BUILD_PATH}"
 )
 
 if [ "${WPITARGET}" != "Windows" ]; then
@@ -82,7 +88,6 @@ pushd "${BUILD_DIR}/gcc-build"
     "${FEATURE_INFO[@]}" \
     "${SYSROOT_INFO[@]}" \
     "${BACKPORT_INFO[@]}" \
-    --enable-poison-system-directories \
     --disable-libmudflap ||
     exit
 make -j"$JOBS" \

@@ -24,7 +24,7 @@ binutils-install: utils prefix-install
 
 gcc: sysroot binutils-install
 	@# gcc does its own extraction
-	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc
+	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc.sh
 gcc-install: prefix-install gcc
 ifneq (${WPITARGET}, Mac)
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* /$(WPIPREFIX)/

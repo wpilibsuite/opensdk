@@ -3,8 +3,8 @@
 
 Index: b/src/libstdc++-v3/include/Makefile.am
 ===================================================================
---- a/src/libstdc++-v3/include/Makefile.am
-+++ b/src/libstdc++-v3/include/Makefile.am
+--- a/libstdc++-v3/include/Makefile.am
++++ b/libstdc++-v3/include/Makefile.am
 @@ -911,7 +911,7 @@ endif
  
  host_srcdir = ${glibcxx_srcdir}/$(OS_INC_SRCDIR)
@@ -14,10 +14,10 @@ Index: b/src/libstdc++-v3/include/Makefile.am
  host_headers = \
  	${host_srcdir}/ctype_base.h \
  	${host_srcdir}/ctype_inline.h \
-Index: b/src/libstdc++-v3/include/Makefile.in
+Index: b/libstdc++-v3/include/Makefile.in
 ===================================================================
---- a/src/libstdc++-v3/include/Makefile.in
-+++ b/src/libstdc++-v3/include/Makefile.in
+--- a/libstdc++-v3/include/Makefile.in
++++ b/libstdc++-v3/include/Makefile.in
 @@ -1193,7 +1193,7 @@ profile_impl_headers = \
  @GLIBCXX_C_HEADERS_COMPATIBILITY_TRUE@c_compatibility_headers_extra = ${c_compatibility_headers}
  host_srcdir = ${glibcxx_srcdir}/$(OS_INC_SRCDIR)
@@ -27,10 +27,10 @@ Index: b/src/libstdc++-v3/include/Makefile.in
  host_headers = \
  	${host_srcdir}/ctype_base.h \
  	${host_srcdir}/ctype_inline.h \
-Index: b/src/gcc/Makefile.in
+Index: b/gcc/Makefile.in
 ===================================================================
---- a/src/gcc/Makefile.in
-+++ b/src/gcc/Makefile.in
+--- a/gcc/Makefile.in
++++ b/gcc/Makefile.in
 @@ -1139,6 +1139,7 @@ FLAGS_TO_PASS = \
  	"prefix=$(prefix)" \
  	"local_prefix=$(local_prefix)" \
@@ -63,10 +63,10 @@ Index: b/src/gcc/Makefile.in
    -DGPLUSPLUS_BACKWARD_INCLUDE_DIR=\"$(gcc_gxx_include_dir)/backward\" \
    -DLOCAL_INCLUDE_DIR=\"$(local_includedir)\" \
    -DCROSS_INCLUDE_DIR=\"$(CROSS_SYSTEM_HEADER_DIR)\" \
-Index: b/src/gcc/cppdefault.c
+Index: b/gcc/cppdefault.c
 ===================================================================
---- a/src/gcc/cppdefault.c
-+++ b/src/gcc/cppdefault.c
+--- a/gcc/cppdefault.c
++++ b/gcc/cppdefault.c
 @@ -49,6 +49,8 @@ const struct default_include cpp_include
      /* Pick up GNU C++ target-dependent include files.  */
      { GPLUSPLUS_TOOL_INCLUDE_DIR, "G++", 1, 1,
@@ -76,10 +76,10 @@ Index: b/src/gcc/cppdefault.c
  #endif
  #ifdef GPLUSPLUS_BACKWARD_INCLUDE_DIR
      /* Pick up GNU C++ backward and deprecated include files.  */
-Index: b/src/gcc/incpath.c
+Index: b/gcc/incpath.c
 ===================================================================
---- a/src/gcc/incpath.c
-+++ b/src/gcc/incpath.c
+--- a/gcc/incpath.c
++++ b/gcc/incpath.c
 @@ -158,6 +158,18 @@ add_standard_paths (const char *sysroot,
  			}
  		      str = reconcat (str, str, dir_separator_str,

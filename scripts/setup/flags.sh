@@ -1,11 +1,16 @@
 #! /usr/bin/env bash
 
 # Core flags
-CFLAGS="$CFLAGS -fvisibility=default -Os"
-CXXFLAGS="$CXXFLAGS -fvisibility=default -Os"
-if "$CC" --version | grep -qi clang; then
+CFLAGS="$CFLAGS -Os -g0"
+CXXFLAGS="$CXXFLAGS -Os -g0"
+if [ "$WPITARGET" = "Mac" ]; then
+    # MacOS builds use Clang so changes need to me made to quite the logs
     CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
     CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
+
+    # Change visibility to make linker happy
+    CFLAGS+=" -fvisibility=default"
+    CXXFLAGS+=" -fvisibility=default"
 fi
 if [ "$WPITARGET" != "Windows" ]; then
     CFLAGS+=" -fPIC"

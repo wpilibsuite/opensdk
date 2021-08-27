@@ -8,7 +8,7 @@ source "${ROOT_DIR}/consts.env"
 source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"
-if "${CANADIAN_STAGE_ONE:-false}"; then
+if [ "${CANADIAN_STAGE_ONE:-false}" = "true" ]; then
     TARGET_PREFIX="$TARGET_TUPLE-"
 fi
 
@@ -30,5 +30,5 @@ SCRIPT_DIR="${ROOT_DIR}/scripts/"
 PATCH_DIR="${ROOT_DIR}/patches/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}/${WPITARGET}/"
 
-# PATH="$PATH:$BUILD_DIR/binutils-install/${WPIPREFIX}/bin/"
 PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
+export PATH

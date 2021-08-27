@@ -36,6 +36,7 @@ HOST_TUPLE="${WPIHOSTTARGET}"
 if [ "${WPITARGET}" != Mac ]; then
     # If tuple mismatch then confirm if there is first pass
     if [ "$BUILD_TUPLE" != "$HOST_TUPLE" ]; then
+        export PATH="${BUILD_DIR}/../Linux/tree-install/frc${V_YEAR}/${TOOLCHAIN_NAME}/bin:${PATH}"
         command -v "${WPIHOSTTARGET}-gcc" || exit
         command -v "${TARGET_TUPLE}-gcc" || exit
         unset CC CXX CPP LD

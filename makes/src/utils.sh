@@ -53,7 +53,6 @@ pushd "binutils-build/"
 "$ROOT_DIR/downloads/binutils-${V_BIN}/configure" \
     "${CORE_ARGS[@]}" \
     --enable-ld \
-    --enable-gold \
     --enable-deterministic-archives \
     --enable-poison-system-directories ||
     exit

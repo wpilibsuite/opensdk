@@ -9,6 +9,8 @@ CFLAGS="$GCC_CFLAGS"
 CXXFLAGS="$GCC_CXXFLAGS"
 export CFLAGS CXXFLAGS
 
+export LDFLAGS_FOR_TARGET="-Wl,-Bsymbolic-functions -Wl,-z,relro"
+
 set -e
 
 rm -rf "${BUILD_DIR}/gcc-${V_GCC}"

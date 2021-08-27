@@ -33,9 +33,16 @@ CORE_ARGS=(
     "--enable-plugins"
     "--disable-nls"
     "--disable-werror"
+    "--disable-debug"
+    "--disable-dependency-tracking"
     "--with-sysroot=${SYSROOT_PATH}"
     "--with-pkgversion=${K_VENDOR_ID}"
 )
+
+
+if [ "${WPITARGET}" != "Windows" ]; then
+    CORE_ARGS[${#CORE_ARGS[@]}]="--with-system-zlib"
+fi
 
 mkdir -p "${BUILD_DIR}"
 pushd "$BUILD_DIR/"

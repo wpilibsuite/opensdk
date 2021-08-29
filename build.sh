@@ -32,20 +32,11 @@ set -e
 # Prep builds
 mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
 pushd "${DOWNLOAD_DIR}"
-signed sig "https://ftp.gnu.org/gnu/gcc/gcc-${V_GCC}/gcc-${V_GCC}.tar.gz"
-python3 -m opensysroot \
-    "${TARGET_DISTRO}" \
-    "${TARGET_PORT}" \
-    "${TARGET_DISTRO_RELEASE}" \
-    . || exit
-mv "./${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}/sysroot/"* \
-    "${REPACK_DIR}" || exit
-sysroot-package
 popd
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
-${MAKE} basic
+${MAKE} all
 if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
     exit 0
 fi

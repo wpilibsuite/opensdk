@@ -22,29 +22,26 @@ pushd toolchain
 tar xf "$ROOT_DIR/$ARCHIVE_NAME"
 cd "${TOOLCHAIN_NAME}"
 cat << EOF > hello.c
+#include <stdio.h>
 int main() {
+    puts("Hello World");
+    return 0;
+}
+EOF
+cat << EOF > hello.cpp
+#include <iostream>
+int main() {
+    std::cout << "Hello World" << std::endl;
     return 0;
 }
 EOF
 "./bin/${TARGET_TUPLE}-gcc" hello.c -o a.out || exit
 file a.out
-"./bin/${TARGET_TUPLE}-g++" hello.c -o a.out || exit
+"./bin/${TARGET_TUPLE}-g++" hello.cpp -o a.out || exit
 file a.out
 
-mkdir build/
-# Tests to see if cmake-toolchain.cmake works
-cat << EOF > CMakeLists.txt
-cmake_minimum_required(VERSION 3.1)
-project(example)
-add_executable(hello hello.c)
-EOF
-
-pushd build/
-# Test CMake with Unix Makefiles
-cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-toolchain.cmake ..
-make
-file hello
-popd
+# Test sanitizer linkage
+"./bin/${TARGET_TUPLE}-gcc" hello.c -o a.out -fsanitize=undefined || exit
 
 popd
 rm -r toolchain

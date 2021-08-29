@@ -1,40 +1,27 @@
 include $(ROOT_DIR)/consts.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.env
 
-basic: sysroot-install binutils-install gcc-install cmake-toolchain
-extended:
+all: clean toolset-install
+
+clean:
+	rm -rf ${BUILD_DIR}
+	mkdir -p ${BUILD_DIR}
 
 prefix-install:
 	sudo mkdir -p "/${WPIPREFIX}"
 
-sysroot: cmake-toolchain
-	cd ${BUILD_DIR}; rm -rf sysroot-*
-	cd ${BUILD_DIR}/; tar xf ${DOWNLOAD_DIR}/sysroot-libc-linux.tar.bz2
-	cd ${BUILD_DIR}/; mkdir -p sysroot-install/
-	cd ${BUILD_DIR}/; mv sysroot-libc-linux/ sysroot-install/$(TARGET_TUPLE)
+sysroot:
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/sysroot.sh
 
-sysroot-install: prefix-install sysroot
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ /$(WPIPREFIX)/
+toolset: sysroot
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/toolset.sh
 
-utils:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/utils.sh
-
-binutils-install: utils prefix-install
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* /$(WPIPREFIX)/
-
-gcc: sysroot binutils-install
-	@# gcc does its own extraction
-	cd ${BUILD_DIR}; ${ROOT_DIR}/makes/src/gcc.sh
-gcc-install: prefix-install gcc
+toolset-install: prefix-install toolset
 ifneq (${WPITARGET}, Mac)
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ /$(WPIPREFIX)/
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* /$(WPIPREFIX)/
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* /$(WPIPREFIX)/
 endif
-
-cmake-toolchain:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/cmake-toolchain.sh
-
-libcxx: sysroot-install gcc-install cmake-toolchain
-	false # TODO
 
 tree:
 	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree
@@ -69,4 +56,3 @@ else
 endif
 
 clean:
-	cd ${M}; rm -rf binutils* roborio* sysroot* gcc* tree-install gdb* *-Toolchain-*.tar.gz

@@ -8,6 +8,7 @@ source "${ROOT_DIR}/consts.env"
 source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"
+
 if [ "${CANADIAN_STAGE_ONE:-false}" = "true" ]; then
     TARGET_PREFIX="$TARGET_TUPLE-"
 fi
@@ -31,4 +32,4 @@ PATCH_DIR="${ROOT_DIR}/patches/"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}/${WPITARGET}/"
 
 PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
-export PATH
+export DOWNLOAD_DIR REPACK_DIR SCRIPT_DIR PATCH_DIR PATH

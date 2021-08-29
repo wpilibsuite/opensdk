@@ -1,13 +1,15 @@
 #! /usr/bin/env bash
 
+# shellcheck source=./common.sh
+source "$(dirname "$0")/common.sh"
+
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
 for dir in {gcc,sysroot,binutils,gdb}-install; do
     echo "$dir/"
     rsync "$dir/" tree-build -a --copy-links
 done
-mv "cmake-toolchain.cmake" "tree-build/${WPIPREFIX}"
-pushd tree-build
+xpushd tree-build
 du -hs .
 
 WPI_TREE_OUT="frc${V_YEAR}/${TOOLCHAIN_NAME}/"
@@ -19,13 +21,13 @@ rsync -a "./${TARGET_TUPLE}/" "${WPI_TREE_OUT}/${TARGET_TUPLE}"
 rsync -a "./${WPIPREFIX}/" "${WPI_TREE_OUT}/"
 rm -rf "./${WPIPREFIX}/"
 
-pushd "${WPI_TREE_OUT}"
+xpushd "${WPI_TREE_OUT}"
 rm -rf share/info share/man
 rm -rf lib/xtables
 
 du -hs .
 
-popd # frcYYYY/
-popd # tree-build
+xpopd # frcYYYY/
+xpopd # tree-build
 
 mv "tree-build/frc${V_YEAR}/" "tree-install/frc${V_YEAR}"

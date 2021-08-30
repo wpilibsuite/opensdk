@@ -52,9 +52,6 @@ xpopd
 
 xpushd "${BUILD_DIR}"
 PATH="${WPIPREFIX}/bin:${PATH}"
-PATH="${PWD}/binutils-install/${WPIPREFIX}/bin:${PATH}"
-PATH="${PWD}/gcc-install/${WPIPREFIX}/bin:${PATH}"
-PATH="${PWD}/gdb-install/${WPIPREFIX}/bin:${PATH}"
 export PATH
 [ ! -d "binutils-build" ] || die "unclean enviorment"
 
@@ -99,6 +96,8 @@ xpushd "${BUILD_DIR}/binutils-build"
 make -j"$JOBS" || die "binutils build failed"
 DESTDIR="${BUILD_DIR}/binutils-install" make \
     install || die "binutils install failed"
+# GCC needs binutils in prefix path
+sudo make install || die "binutils root install failed"
 xpopd
 
 xpushd "${BUILD_DIR}/gcc-build"

@@ -18,7 +18,6 @@ toolset: sysroot
 
 toolset-install: prefix-install toolset
 ifneq (${WPITARGET}, Mac)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/$(TARGET_TUPLE)/ /$(WPIPREFIX)/
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* /$(WPIPREFIX)/
 	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* /$(WPIPREFIX)/
 endif

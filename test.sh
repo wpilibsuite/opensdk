@@ -35,13 +35,13 @@ int main() {
     return 0;
 }
 EOF
-"./bin/${TARGET_TUPLE}-gcc" hello.c -o a.out || exit
+"./bin/${TARGET_PREFIX}gcc" hello.c -o a.out || exit
 file a.out
-"./bin/${TARGET_TUPLE}-g++" hello.cpp -o a.out || exit
+"./bin/${TARGET_PREFIX}g++" hello.cpp -o a.out || exit
 file a.out
 
 # Test sanitizer linkage
-"./bin/${TARGET_TUPLE}-gcc" hello.c -o a.out -fsanitize=undefined || exit
+"./bin/${TARGET_PREFIX}gcc" hello.c -o a.out -fsanitize=undefined || exit
 
 popd
 rm -r toolchain

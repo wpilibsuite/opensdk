@@ -52,6 +52,7 @@ xpopd
 
 xpushd "${BUILD_DIR}"
 PATH="${WPIPREFIX}/bin:${PATH}"
+PATH="/opt/frc/bin:${PATH}"
 export PATH
 [ ! -d "binutils-build" ] || die "unclean enviorment"
 
@@ -66,13 +67,16 @@ HOST_TUPLE="${WPIHOSTTARGET}"
 SYSROOT_PATH="${WPIPREFIX}/${TARGET_TUPLE}"
 SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
 
+if [ "${WPITARGET}" != "Mac" ]; then
+    command -v "${WPIHOSTTARGET}-gcc" || die "compiler not found"
+fi
+
 CONFIGURE_COMMON=(
     "--build=${BUILD_TUPLE}"
     "--host=${HOST_TUPLE}"
     "--target=${TARGET_TUPLE}"
     "--prefix=${WPIPREFIX}"
     "--program-prefix=${TARGET_PREFIX}"
-    "--disable-bootstrap"
     "--enable-lto"
     "--disable-nls"
     "--disable-werror"
@@ -96,8 +100,11 @@ xpushd "${BUILD_DIR}/binutils-build"
 make -j"$JOBS" || die "binutils build failed"
 DESTDIR="${BUILD_DIR}/binutils-install" make \
     install || die "binutils install failed"
-# GCC needs binutils in prefix path
-sudo make install || die "binutils root install failed"
+if [ "${WPITARGET}" != "Windows" ]; then
+    # GCC needs binutils in prefix path
+    sudo make install ||
+        die "binutils root install failed"
+fi
 xpopd
 
 xpushd "${BUILD_DIR}/gcc-build"

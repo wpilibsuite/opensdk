@@ -10,7 +10,7 @@ source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"
 
 if [ "${CANADIAN_STAGE_ONE:-false}" = "true" ]; then
-    TARGET_PREFIX="$TARGET_TUPLE-"
+    export TARGET_PREFIX="$TARGET_TUPLE-"
 fi
 
 cat <<EOF

@@ -10,6 +10,10 @@ source "$ROOT_DIR/scripts/setup.sh"
 source "$ROOT_DIR/scripts/downloads_tools.sh"
 set +a
 
+if [ "$WPITARGET" = "Windows" ]; then
+    ulimit -n 97816
+fi
+
 function onexit() {
     code="$?"
     if [ "${code}" != "0" ]; then

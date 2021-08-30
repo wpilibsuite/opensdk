@@ -8,6 +8,10 @@ if [ "$WPITARGET" = "Mac" ]; then
     CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
     CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
 
+    # MacOS/Clang does not contain ioctl in expected header? GDB Fails
+    CFLAGS+=" -Wno-implicit-function-declaration"
+    CXXFLAGS+=" -Wno-implicit-function-declaration"
+
     # Change visibility to make linker happy
     CFLAGS+=" -fvisibility=default"
     CXXFLAGS+=" -fvisibility=default"

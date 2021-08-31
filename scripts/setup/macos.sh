@@ -8,16 +8,6 @@ export PATH
 
 SDK_PATH="/Library/Developer/CommandLineTools/SDKs"
 
-CC="cc"
-CXX="c++"
-AR="ar"
-LD="ld"
-NM="nm"
-RANLIB="ranlib"
-LIPO="lipo"
-OBJDUMP="objdump"
-export CC CXX AR LD NM RANLIB LIPO OBJDUMP
-
 ls -l "$SDK_PATH"
 [ -d "$SDK_PATH/MacOSX${WPI_HOST_SDK_CUR}.sdk" ] || exit
 

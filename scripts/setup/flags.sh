@@ -8,6 +8,9 @@ if [ "$WPITARGET" = "Mac" ]; then
     CFLAGS+=" -fbracket-depth=512"
     CXXFLAGS+=" -fbracket-depth=512"
     
+    # Clang complains if you are building C code with the C++ compiler 
+    CXXFLAGS+=" -Wno-deprecated"
+
     # MacOS builds use Clang so changes need to me made to quite the logs
     CFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"
     CXXFLAGS+=" -Wno-array-bounds -Wno-mismatched-tags -Wno-unknown-warning-option"

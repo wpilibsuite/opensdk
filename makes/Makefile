@@ -10,11 +10,25 @@ clean:
 prefix-install:
 	sudo mkdir -p "/${WPIPREFIX}"
 
-sysroot:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/sysroot.sh
+sysroot: prefix-install
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/10-sysroot.sh
 
-toolset: sysroot
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/toolset.sh
+sources:
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/15-sources.sh
+
+binutils: sources prefix-install
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/20-binutils.sh
+
+gcc: sources sysroot binutils
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/30-gcc.sh
+
+gdb: sources
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/40-gdb.sh
+
+frcmake: sources
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/50-frcmake.sh
+
+toolset: sysroot binutils gcc gdb frcmake
 
 toolset-install: prefix-install toolset
 ifneq (${WPITARGET}, Mac)

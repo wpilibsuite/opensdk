@@ -5,7 +5,7 @@ source "$(dirname "$0")/common.sh"
 
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
-for dir in {gcc,sysroot,binutils,gdb}-install; do
+for dir in {gcc,sysroot,binutils,gdb,frcmake}-install; do
     echo "$dir/"
     rsync "$dir/" tree-build -a --copy-links
 done
@@ -22,6 +22,7 @@ rsync -a "./${WPIPREFIX}/" "${WPI_TREE_OUT}/"
 rm -rf "./${WPIPREFIX}/"
 
 xpushd "${WPI_TREE_OUT}"
+rm -rf include/
 rm -rf share/info share/man
 rm -rf lib/xtables
 

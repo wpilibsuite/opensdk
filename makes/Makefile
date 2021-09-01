@@ -16,16 +16,19 @@ sysroot: prefix-install
 sources:
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/11-sources.sh
 
-binutils: sources prefix-install
+patches: sources
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/12-patches.sh
+
+binutils: sources patches prefix-install
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/20-binutils.sh
 
-gcc: sources sysroot binutils
+gcc: sources patches sysroot binutils
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/30-gcc.sh
 
-gdb: sources
+gdb: sources patches
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/40-gdb.sh
 
-frcmake: sources
+frcmake: sources patches
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/50-frcmake.sh
 
 toolset: sysroot binutils gcc gdb frcmake

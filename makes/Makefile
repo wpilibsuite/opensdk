@@ -14,7 +14,7 @@ sysroot: prefix-install
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/10-sysroot.sh
 
 sources:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/15-sources.sh
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/11-sources.sh
 
 binutils: sources prefix-install
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/20-binutils.sh

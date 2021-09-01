@@ -29,10 +29,12 @@ if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
 fi
 xpopd
 
-xpushd "make-${V_MAKE}"
-patch -p1 -N -s <"${PATCH_DIR}/make.patch" ||
-    die "frcmake patch failed"
-xpopd
+if [ -e "${PATCH_DIR}/hosts/${WPIHOST}/make.patch" ]; then
+    xpushd "make-${V_MAKE}"
+    patch -p1 -N -s <"${PATCH_DIR}/hosts/${WPIHOST}/make.patch" ||
+        die "frcmake patch failed"
+    xpopd
+fi
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     xpushd "gcc-${V_GCC}"

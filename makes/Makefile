@@ -40,7 +40,7 @@ ifneq (${WPITARGET}, Mac)
 endif
 
 tree:
-	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree
+	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree.sh
 
 TREEIN_DIRECTORY=${BUILD_DIR}/tree-install/frc$(V_YEAR)/
 TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC)

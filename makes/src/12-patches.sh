@@ -4,36 +4,42 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
-if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
-    xpushd "${DOWNLOAD_DIR}/gcc-${V_GCC}"
-    for file in "${PATCH_DIR}"/gcc-"${V_GCC//.*/}"_*.patch; do
-        patch -p1 -N -s <"$file" ||
-            die "Versioned patch failed: ${file}"
-    done
+function patch_or_die() {
+    if ! [ -e "${1}" ]; then
+        die "${1} does not exist"
+    fi
+    patch -p1 -N -s <"${1}" ||
+        die "patch failed: ${1}"
+}
+
+function patch_project() {
+    xpushd "${DOWNLOAD_DIR}"
+    case "$1" in
+        bin) xpushd "binutils-${V_BIN}";;
+        gcc) xpushd "gcc-${V_GCC}";;
+        make) xpushd "make-${V_MAKE}";;
+        *) die "Unknown config";;
+    esac
+    
+    patch_or_die "$2"
+
     xpopd
+    xpopd
+}
+
+if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
+    for file in "${PATCH_DIR}"/gcc-"${V_GCC//.*/}"_*.patch; do
+        patch_project gcc "$file"
+    done
 fi
 
-if [ -e "${PATCH_DIR}/hosts/${WPIHOST}/make.patch" ]; then
-    xpushd "${DOWNLOAD_DIR}/make-${V_MAKE}"
-    patch -p1 -N -s <"${PATCH_DIR}/hosts/${WPIHOST}/make.patch" ||
-        die "frcmake patch failed"
-    xpopd
+if [ "${WPITARGET}" = "Linux" ]; then
+    patch_project make "${PATCH_DIR}/hosts/Linux/make.patch"
 fi
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    xpushd "${DOWNLOAD_DIR}/gcc-${V_GCC}"
-    patch -p1 -N -s <"${PATCH_DIR}/roborio/gcc.patch" ||
-        die "roborio gcc patch failed"
-    xpopd
+    patch_project gcc "${PATCH_DIR}/roborio/gcc.patch"
 else
-    export APPEND_TOOLLIBDIR=yes
-    xpushd "${DOWNLOAD_DIR}/binutils-${V_BIN}"
-    patch -p1 -N -s <"${PATCH_DIR}/debian/binutils-${V_BIN}.patch" ||
-        die "debian binutils patch failed"
-    xpopd
-    xpushd "${DOWNLOAD_DIR}/gcc-${V_GCC}"
-    patch -p1 -N -s <"${PATCH_DIR}/debian/gcc.patch" ||
-        die "debian gcc patch failed"
-    xpopd
+    patch_project bin "${PATCH_DIR}/debian/binutils-${V_BIN}.patch"
+    patch_project gcc "${PATCH_DIR}/debian/gcc.patch"
 fi
-

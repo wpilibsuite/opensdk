@@ -1,9 +1,4 @@
-name: Build All
-
-on:
-  push:
-    branches:
-      - "stable"
+name: Build
 
 jobs:
   build:

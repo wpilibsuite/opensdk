@@ -1,7 +1,0 @@
-#!/bin/sh
-
-SYSROOT="/usr/arm-frc-linux-gnueabi"
-TOOLCHAIN_FILE="$SYSROOT/share/cmake/toolchain.cmake"
-
-echo $TOOLCHAIN_FILE
-

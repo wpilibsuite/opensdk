@@ -14,7 +14,7 @@ xpushd "${BUILD_DIR}/frcmake-build"
 "$DOWNLOAD_DIR/make-${V_MAKE}/configure" \
     --build="${BUILD_TUPLE}" \
     --host="${HOST_TUPLE}" \
-    --prefix="${WPIPREFIX}" \
+    --prefix="${WPI_HOST_PREFIX}" \
     --program-prefix="frc" \
     --disable-nls ||
     die "frcmake configure failed"

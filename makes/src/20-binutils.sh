@@ -22,7 +22,7 @@ xpushd "${BUILD_DIR}/binutils-build"
 make -j"$JOBS" || die "binutils build failed"
 DESTDIR="${BUILD_DIR}/binutils-install" make \
     install || die "binutils install failed"
-if [ "${WPITARGET}" != "Windows" ]; then
+if [ "${WPI_HOST_NAME}" != "Windows" ]; then
     # GCC needs binutils in prefix path
     sudo make install ||
         die "binutils root install failed"

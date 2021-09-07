@@ -18,8 +18,8 @@ rm -rf "${WPI_TREE_OUT}"
 mkdir -p "${WPI_TREE_OUT}"
 
 rsync -a "./${TARGET_TUPLE}/" "${WPI_TREE_OUT}/${TARGET_TUPLE}"
-rsync -a "./${WPIPREFIX}/" "${WPI_TREE_OUT}/"
-rm -rf "./${WPIPREFIX}/"
+rsync -a "./${WPI_HOST_PREFIX}/" "${WPI_TREE_OUT}/"
+rm -rf "./${WPI_HOST_PREFIX}/"
 
 xpushd "${WPI_TREE_OUT}"
 rm -rf include/

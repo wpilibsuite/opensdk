@@ -33,7 +33,7 @@ if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
     done
 fi
 
-if [ "${WPITARGET}" = "Linux" ]; then
+if [ "${WPI_HOST_NAME}" = "Linux" ]; then
     patch_project make "${PATCH_DIR}/hosts/Linux/make.patch"
 fi
 

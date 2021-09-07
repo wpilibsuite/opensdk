@@ -8,7 +8,7 @@ clean:
 	mkdir -p ${BUILD_DIR}
 
 prefix-install:
-	sudo mkdir -p "/${WPIPREFIX}"
+	sudo mkdir -p "/${WPI_HOST_PREFIX}"
 
 sysroot: prefix-install
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/10-sysroot.sh
@@ -34,16 +34,16 @@ frcmake: sources patches
 toolset: sysroot binutils gcc gdb frcmake
 
 toolset-install: prefix-install toolset
-ifneq (${WPITARGET}, Mac)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPIPREFIX}/* /$(WPIPREFIX)/
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPIPREFIX}/* /$(WPIPREFIX)/
+ifneq (${WPI_HOST_NAME}, Mac)
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)/
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)/
 endif
 
 tree:
 	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree.sh
 
 TREEIN_DIRECTORY=${BUILD_DIR}/tree-install/frc$(V_YEAR)/
-TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPITARGET)-Toolchain-$(V_GCC)
+TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_NAME)-Toolchain-$(V_GCC)
 tarpkg:
 	cd ${TREEIN_DIRECTORY}; tar czf ${M}/$(TREEOUT_TEMPLATE).tar.gz .
 	cd ${TREEIN_DIRECTORY}; du -h ${M}/$(TREEOUT_TEMPLATE).tar.gz
@@ -53,7 +53,7 @@ zippkg:
 	cd ${TREEIN_DIRECTORY}; du -h $(M)/$(TREEOUT_TEMPLATE).zip
 
 pkg: tree
-ifeq ($(WPITARGET), Windows)
+ifeq ($(WPI_HOST_NAME), Windows)
 	$(MAKE) zippkg
 else
 	$(MAKE) tarpkg
@@ -65,7 +65,7 @@ print-treeout:
 	@echo $(TREEOUT_TEMPLATE)
 
 print-pkg:
-ifeq ($(WPITARGET), Windows)
+ifeq ($(WPI_HOST_NAME), Windows)
 	@echo $(TREEOUT_TEMPLATE).zip
 else
 	@echo $(TREEOUT_TEMPLATE).tar.gz

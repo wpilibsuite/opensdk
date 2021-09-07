@@ -3,7 +3,7 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
-if [ "${WPITARGET}" != "Windows" ]; then
+if [ "${WPI_HOST_NAME}" != "Windows" ]; then
     # Only on GCC for the time being
     CONFIGURE_COMMON[${#CONFIGURE_COMMON[@]}]="--with-system-zlib"
 fi

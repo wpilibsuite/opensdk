@@ -10,7 +10,7 @@ source "$ROOT_DIR/scripts/setup.sh"
 source "$ROOT_DIR/scripts/downloads_tools.sh"
 set +a
 
-if [ "$WPITARGET" = "Windows" ]; then
+if [ "$WPI_HOST_NAME" = "Windows" ]; then
     ulimit -n 97816
 fi
 

@@ -15,9 +15,9 @@ fi
 
 cat <<EOF
 Host System Info
-    OS: ${WPITARGET}
-    Tuple: ${WPIHOSTTARGET}
-    Prefix: ${WPIPREFIX}
+    OS: ${WPI_HOST_NAME}
+    Tuple: ${WPI_HOST_TUPLE}
+    Prefix: ${WPI_HOST_PREFIX}
 Toolchain Info:
     Name: ${TOOLCHAIN_NAME}
     CPU: ${TARGET_CPU}
@@ -29,7 +29,7 @@ DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}-${TARGET_PORT}/"
 REPACK_DIR="${ROOT_DIR}/repack/${TOOLCHAIN_NAME}-${TARGET_PORT}/"
 SCRIPT_DIR="${ROOT_DIR}/scripts/"
 PATCH_DIR="${ROOT_DIR}/patches/"
-BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}/${WPITARGET}/"
+BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}/${WPI_HOST_NAME}/"
 
-PATH="$PATH:$BUILD_DIR/gcc-install/${WPIPREFIX}/bin/"
+PATH="$PATH:$BUILD_DIR/gcc-install/${WPI_HOST_PREFIX}/bin/"
 export DOWNLOAD_DIR REPACK_DIR SCRIPT_DIR PATCH_DIR PATH

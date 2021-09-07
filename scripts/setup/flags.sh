@@ -3,7 +3,7 @@
 # Core flags
 CFLAGS="$CFLAGS -Os -g0"
 CXXFLAGS="$CXXFLAGS -Os -g0"
-if [ "$WPITARGET" = "Mac" ]; then
+if [ "$WPI_HOST_NAME" = "Mac" ]; then
     # Clang has a lower bracket depth than what GCC may have
     CFLAGS+=" -fbracket-depth=512"
     CXXFLAGS+=" -fbracket-depth=512"
@@ -23,7 +23,7 @@ if [ "$WPITARGET" = "Mac" ]; then
     CFLAGS+=" -fvisibility=default"
     CXXFLAGS+=" -fvisibility=default"
 fi
-if [ "$WPITARGET" != "Windows" ]; then
+if [ "$WPI_HOST_NAME" != "Windows" ]; then
     CFLAGS+=" -fPIC"
     CXXFLAGS+=" -fPIC"
 fi

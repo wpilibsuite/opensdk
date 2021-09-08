@@ -3,7 +3,7 @@
 ## Supported Languages
   * C
   * C++
-  * Fortran
+  * Fortran (roboRIO only)
 
 ## Supported Hosts
 | Architecture | OS | Requirments |
@@ -22,7 +22,7 @@
 
 | Architecture | Operating System | Tuple |
 | - | - | - |
-| ARMv7 (softfp) | N.I. Linux (RoboRIO) | arm-frc2021-linux-gnueabi |
+| ARMv7 (softfp) | N.I. Linux (roboRIO) | arm-frc2021-linux-gnueabi |
 | ARMv6z | Raspberry Pi OS 10 for Pi zero/one | arm-rpi0_buster-linux-gnueabihf |
 | ARMv6z | Raspberry Pi OS 11 for Pi zero/one | arm-rpi0_bullseye-linux-gnueabihf |
 | ARMv7 | Debian/Raspberry Pi OS 10 | arm-buster-linux-gnueabihf |

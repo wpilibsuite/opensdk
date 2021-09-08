@@ -15,7 +15,6 @@ CONFIGURE_GCC=(
     "--with-specs=${TARGET_SPECS}"
     "--enable-poison-system-directories"
     "--enable-threads=posix"
-    "--enable-languages=c,c++,fortran"
     "--enable-shared"
     "--with-gcc-major-version-only"
     "--enable-linker-build-id"
@@ -35,6 +34,7 @@ fi
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     # Pulled by running gcc -v on target device
     CONFIGURE_GCC+=(
+        "--enable-languages=c,c++,fortran"
         "--disable-libmudflap"
         "--enable-c99"
         "--enable-symvers=gnu"
@@ -54,6 +54,7 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
 else
     # Pulled by running gcc -v on target devices
     CONFIGURE_GCC+=(
+        "--enable-languages=c,c++"
         "--enable-clocal=gnu"
         "--without-included-gettext"
         "--enable-libstdcxx-debug"
@@ -86,18 +87,18 @@ xpushd "${BUILD_DIR}/gcc-build"
     die "gcc configure failed"
 
 make -j"$JOBS" \
-    all-gcc \
-    all-target-libgfortran ||
+    all-gcc ||
     die "gcc build failed"
 DESTDIR=${BUILD_DIR}/gcc-install make \
-    install-gcc \
-    install-target-libgfortran ||
+    install-gcc ||
     die "gcc install failed"
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     make -j"$JOBS" \
+        all-target-libgfortran \
         all-target-libsanitizer ||
         die "gcc sanitizer build failed"
     DESTDIR=${BUILD_DIR}/gcc-install make -j"$JOBS" \
+        install-target-libgfortran \
         install-target-libsanitizer ||
         die "gcc sanitizer install failed"
 fi

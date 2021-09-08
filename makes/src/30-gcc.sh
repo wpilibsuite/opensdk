@@ -23,11 +23,16 @@ CONFIGURE_GCC=(
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
 
-if [ "${WPI_HOST_NAME}" != "Windows" ]; then
+if [ "${WPI_HOST_NAME}" = "Windows" ]; then
+    CONFIGURE_GCC+=(
+        "--disable-plugin"
+    )
+else
     # Use system zlib when building target code on a *nix enviorment
     CONFIGURE_GCC+=(
         "--with-system-zlib"
         "--enable-default-pie"
+        "--enable-plugin"
     )
 fi
 
@@ -61,7 +66,6 @@ else
         "--enable-libstdcxx-time=yes"
         "--with-default-libstdcxx-abi=new"
         "--enable-gnu-unique-object"
-        "--enable-plugin"
     )
     case "${TARGET_PORT}" in
     amd64) CONFIGURE_GCC+=(
@@ -69,7 +73,6 @@ else
         "--enable-libmpx"
     ) ;;
     armhf) CONFIGURE_GCC+=(
-        "--disable-sjlj-exceptions"
         "--disable-libitm"
         "--disable-libquadmath"
         "--disable-libquadmath-support"

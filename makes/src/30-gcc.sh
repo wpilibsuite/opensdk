@@ -59,6 +59,7 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
 else
     # Pulled by running gcc -v on target devices
     CONFIGURE_GCC+=(
+        # Debian specific flags
         "--enable-languages=c,c++"
         "--enable-clocal=gnu"
         "--without-included-gettext"
@@ -68,6 +69,7 @@ else
         "--enable-gnu-unique-object"
     )
     case "${TARGET_PORT}" in
+    # Debian Port specific flags
     amd64) CONFIGURE_GCC+=(
         "--disable-vtable-verify"
         "--enable-libmpx"

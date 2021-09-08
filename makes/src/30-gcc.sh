@@ -26,7 +26,10 @@ CONFIGURE_GCC=(
 
 if [ "${WPI_HOST_NAME}" != "Windows" ]; then
     # Use system zlib when building target code on a *nix enviorment
-    CONFIGURE_GCC+=("--with-system-zlib")
+    CONFIGURE_GCC+=(
+        "--with-system-zlib"
+        "--enable-default-pie"
+    )
 fi
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
@@ -58,7 +61,6 @@ else
         "--with-default-libstdcxx-abi=new"
         "--enable-gnu-unique-object"
         "--enable-plugin"
-        "--enable-default-pie"
     )
     case "${TARGET_PORT}" in
     amd64) CONFIGURE_GCC+=(

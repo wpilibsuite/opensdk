@@ -9,7 +9,7 @@
 | Architecture | OS | Requirments |
 | - | - | - |
 | x86_64 | Linux | glibc 2.19 >= |
-| x86_64 | MacOS | 10.10 >= |
+| x86_64 | MacOS | 10.9 >= |
 | x86_64 | Win64 | 7 >= |
 | i686 | Win32 | 7 >= |
 

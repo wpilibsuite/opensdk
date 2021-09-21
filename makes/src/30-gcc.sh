@@ -72,6 +72,7 @@ else
     # Debian Port specific flags
     amd64) CONFIGURE_GCC+=(
         "--disable-vtable-verify"
+        "--disable-multilib"
         "--enable-libmpx"
     ) ;;
     armhf) CONFIGURE_GCC+=(

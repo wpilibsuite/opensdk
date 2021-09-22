@@ -11,16 +11,12 @@ jobs:
             { os: roborio, port: cortexa9_vfpv3 },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },
-            { os: bionic, port: amd64 },
             { os: focal, port: armhf },
             { os: focal, port: arm64 },
-            { os: focal, port: amd64 },
             { os: buster, port: armhf },
             { os: buster, port: arm64 },
-            { os: buster, port: amd64 },
             { os: bullseye, port: armhf },
             { os: bullseye, port: arm64 },
-            { os: bullseye, port: amd64 },
             { os: raspi-buster, port: armhf },
             { os: raspi-bullseye, port: armhf },
           ]
@@ -77,7 +73,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
-          path: build/${{matrix.target.os}}-${{matrix.target.port}}/*/*-*-*-Toolchain-*.*
+          path: build/${{matrix.target.os}}-${{matrix.target.port}}/*/${{matrix.target.port}}-${{matrix.target.os}}-*-*-Toolchain-*.*
   test-sysroot:
     needs: build
     strategy:
@@ -88,16 +84,12 @@ jobs:
             { os: roborio, port: cortexa9_vfpv3 },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },
-            { os: bionic, port: amd64 },
             { os: focal, port: armhf },
             { os: focal, port: arm64 },
-            { os: focal, port: amd64 },
             { os: buster, port: armhf },
             { os: buster, port: arm64 },
-            { os: buster, port: amd64 },
             { os: bullseye, port: armhf },
             { os: bullseye, port: arm64 },
-            { os: bullseye, port: amd64 },
             { os: raspi-buster, port: armhf },
             { os: raspi-bullseye, port: armhf },
           ]

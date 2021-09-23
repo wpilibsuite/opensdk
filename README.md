@@ -8,6 +8,8 @@
 ## Supported Hosts
 | Architecture | OS | Requirments |
 | - | - | - |
+| ARMv7 | Linux | glibc 2.19 >= |
+| ARMv8 | Linux | glibc 2.19 >= |
 | x86_64 | Linux | glibc 2.19 >= |
 | x86_64 | MacOS | 10.9 >= |
 | x86_64 | Win64 | 7 >= |

@@ -1,0 +1,180 @@
+# DP: Changes for the Linaro 7-2018.04 snapshot (documentation).
+
+--- a/gcc/doc/install.texi
++++ b/gcc/doc/install.texi
+@@ -1097,14 +1097,18 @@ for each target is given below.
+ 
+ @table @code
+ @item arm*-*-*
+-@var{list} is one of@code{default}, @code{aprofile} or @code{rmprofile}.
+-Specifying @code{default} is equivalent to omitting this option, ie. only the
+-default runtime library will be enabled.  Specifying @code{aprofile} or
+-@code{rmprofile} builds multilibs for a combination of ISA, architecture,
+-FPU available and floating-point ABI.
++@var{list} is a comma separated list of @code{aprofile} and @code{rmprofile}
++to build multilibs for A or R and M architecture profiles respectively.  Note
++that, due to some limitation of the current multilib framework, using the
++combined @code{aprofile,rmprofile} multilibs selects in some cases a less
++optimal multilib than when using the multilib profile for the architecture
++targetted.  The special value @code{default} is also accepted and is equivalent
++to omitting the option, ie. only the default run-time library will be enabled.
+ 
+ The table below gives the combination of ISAs, architectures, FPUs and
+ floating-point ABIs for which multilibs are built for each accepted value.
++The union of these options is considered when specifying both @code{aprofile}
++and @code{rmprofile}.
+ 
+ @multitable @columnfractions .15 .28 .30
+ @item Option @tab aprofile @tab rmprofile
+--- a/gcc/doc/invoke.texi
++++ b/gcc/doc/invoke.texi
+@@ -580,15 +580,14 @@ Objective-C and Objective-C++ Dialects}.
+ -mgeneral-regs-only @gol
+ -mcmodel=tiny  -mcmodel=small  -mcmodel=large @gol
+ -mstrict-align @gol
+--momit-leaf-frame-pointer  -mno-omit-leaf-frame-pointer @gol
++-momit-leaf-frame-pointer @gol
+ -mtls-dialect=desc  -mtls-dialect=traditional @gol
+ -mtls-size=@var{size} @gol
+--mfix-cortex-a53-835769  -mno-fix-cortex-a53-835769 @gol
+--mfix-cortex-a53-843419  -mno-fix-cortex-a53-843419 @gol
+--mlow-precision-recip-sqrt  -mno-low-precision-recip-sqrt@gol
+--mlow-precision-sqrt  -mno-low-precision-sqrt@gol
+--mlow-precision-div  -mno-low-precision-div @gol
+--march=@var{name}  -mcpu=@var{name}  -mtune=@var{name}}
++-mfix-cortex-a53-835769  -mfix-cortex-a53-843419 @gol
++-mlow-precision-recip-sqrt  -mlow-precision-sqrt  -mlow-precision-div @gol
++-mpc-relative-literal-loads @gol
++-msign-return-address=@var{scope} @gol
++-march=@var{name}  -mcpu=@var{name}  -mtune=@var{name}  -moverride=@var{string}}
+ 
+ @emph{Adapteva Epiphany Options}
+ @gccoptlist{-mhalf-reg-file  -mprefer-short-insn-regs @gol
+@@ -13967,7 +13966,7 @@ support for the ARMv8.2-A architecture extensions.
+ 
+ The value @samp{armv8.1-a} implies @samp{armv8-a} and enables compiler
+ support for the ARMv8.1-A architecture extension.  In particular, it
+-enables the @samp{+crc} and @samp{+lse} features.
++enables the @samp{+crc}, @samp{+lse}, and @samp{+rdma} features.
+ 
+ The value @samp{native} is available on native AArch64 GNU/Linux and
+ causes the compiler to pick the architecture of the host system.  This
+@@ -14040,8 +14039,10 @@ across releases.
+ This option is only intended to be useful when developing GCC.
+ 
+ @item -mpc-relative-literal-loads
++@itemx -mno-pc-relative-literal-loads
+ @opindex mpc-relative-literal-loads
+-Enable PC-relative literal loads.  With this option literal pools are
++@opindex mno-pc-relative-literal-loads
++Enable or disable PC-relative literal loads.  With this option literal pools are
+ accessed using a single instruction and emitted after each function.  This
+ limits the maximum size of functions to 1MB.  This is enabled by default for
+ @option{-mcmodel=tiny}.
+@@ -14080,8 +14081,17 @@ instructions.  This is on by default for all possible values for options
+ @item lse
+ Enable Large System Extension instructions.  This is on by default for
+ @option{-march=armv8.1-a}.
++@item rdma
++Enable Round Double Multiply Accumulate instructions.  This is on by default
++for @option{-march=armv8.1-a}.
+ @item fp16
+ Enable FP16 extension.  This also enables floating-point instructions.
++@item rcpc
++Enable the RcPc extension.  This does not change code generation from GCC,
++but is passed on to the assembler, enabling inline asm statements to use
++instructions from the RcPc extension.
++@item dotprod
++Enable the Dot Product extension.  This also enables Advanced SIMD instructions.
+ 
+ @end table
+ 
+@@ -15095,6 +15105,15 @@ ARMv8.2-A architecture with the optional FP16 instructions extension.
+ This also enables the features provided by @option{-march=armv8.1-a}
+ and implies @option{-mfp16-format=ieee}.
+ 
++@option{-march=armv8.2-a+dotprod} enables compiler support for the
++ARMv8.2-A architecture with the optional Dot Product instructions extension.
++This also enables the features provided by @option{-march=armv8.1-a}.
++
++@option{-march=armv8.2-a+fp16+dotprod} enables compiler support for the
++ARMv8.2-A architecture with the optional FP16 and Dot Product instructions
++extension.  This also enables the features provided by @option{-march=armv8.1-a}
++and implies @option{-mfp16-format=ieee}.
++
+ @option{-march=native} causes the compiler to auto-detect the architecture
+ of the build computer.  At present, this feature is only supported on
+ GNU/Linux, and not all architectures are recognized.  If the auto-detect
+--- a/gcc/doc/sourcebuild.texi
++++ b/gcc/doc/sourcebuild.texi
+@@ -1666,6 +1666,17 @@ ARM target supports executing instructions from ARMv8.2 with the FP16
+ extension.  Some multilibs may be incompatible with these options.
+ Implies arm_v8_2a_fp16_neon_ok and arm_v8_2a_fp16_scalar_hw.
+ 
++@item arm_v8_2a_dotprod_neon_ok
++@anchor{arm_v8_2a_dotprod_neon_ok}
++ARM target supports options to generate instructions from ARMv8.2 with
++the Dot Product extension. Some multilibs may be incompatible with these
++options.
++
++@item arm_v8_2a_dotprod_neon_hw
++ARM target supports executing instructions from ARMv8.2 with the Dot
++Product extension. Some multilibs may be incompatible with these options.
++Implies arm_v8_2a_dotprod_neon_ok.
++
+ @item arm_prefer_ldrd_strd
+ ARM target prefers @code{LDRD} and @code{STRD} instructions over
+ @code{LDM} and @code{STM} instructions.
+@@ -2241,6 +2252,11 @@ supported by the target; see the
+ @ref{arm_v8_2a_fp16_neon_ok,,arm_v8_2a_fp16_neon_ok} effective target
+ keyword.
+ 
++@item arm_v8_2a_dotprod_neon
++Add options for ARMv8.2 with Adv.SIMD Dot Product support, if this is
++supported by the target; see the
++@ref{arm_v8_2a_dotprod_neon_ok} effective target keyword.
++
+ @item bind_pic_locally
+ Add the target-specific flags needed to enable functions to bind
+ locally when using pic/PIC passes in the testsuite.
+@@ -2280,6 +2296,11 @@ the codeset to convert to.
+ Skip the test if the target does not support profiling with option
+ @var{profopt}.
+ 
++@item dg-require-stack-check @var{check}
++Skip the test if the target does not support the @code{-fstack-check}
++option.  If @var{check} is @code{""}, support for @code{-fstack-check}
++is checked, for @code{-fstack-check=("@var{check}")} otherwise.
++
+ @item dg-require-visibility @var{vis}
+ Skip the test if the target does not support the @code{visibility} attribute.
+ If @var{vis} is @code{""}, support for @code{visibility("hidden")} is
+--- a/gcc/doc/tm.texi
++++ b/gcc/doc/tm.texi
+@@ -3684,6 +3684,15 @@ such as the result of @code{get_frame_size ()} and the tables of
+ registers @code{df_regs_ever_live_p} and @code{call_used_regs}.
+ @end defmac
+ 
++@deftypefn {Target Hook} void TARGET_COMPUTE_FRAME_LAYOUT (void)
++This target hook is called once each time the frame layout needs to be
++recalculated.  The calculations can be cached by the target and can then
++be used by @code{INITIAL_ELIMINATION_OFFSET} instead of re-computing the
++layout on every invocation of that hook.  This is particularly useful
++for targets that have an expensive frame layout function.  Implementing
++this callback is optional.
++@end deftypefn
++
+ @node Stack Arguments
+ @subsection Passing Function Arguments on the Stack
+ @cindex arguments on stack
+--- a/gcc/doc/tm.texi.in
++++ b/gcc/doc/tm.texi.in
+@@ -3213,6 +3213,8 @@ such as the result of @code{get_frame_size ()} and the tables of
+ registers @code{df_regs_ever_live_p} and @code{call_used_regs}.
+ @end defmac
+ 
++@hook TARGET_COMPUTE_FRAME_LAYOUT
++
+ @node Stack Arguments
+ @subsection Passing Function Arguments on the Stack
+ @cindex arguments on stack

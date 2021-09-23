@@ -25,8 +25,11 @@ binutils: sources patches prefix-install
 gcc: sources patches sysroot binutils
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/30-gcc.sh
 
-gdb: sources patches
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/40-gdb.sh
+expat: sources
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/40-expat.sh
+
+gdb: sources patches expat
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/41-gdb.sh
 
 frcmake: sources patches
 	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/50-frcmake.sh
@@ -35,15 +38,16 @@ toolset: sysroot binutils gcc gdb frcmake
 
 toolset-install: prefix-install toolset
 ifneq (${WPI_HOST_NAME}, Mac)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)/
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)/
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)
+	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/* /$(WPI_HOST_PREFIX)
 endif
 
 tree:
-	cd ${BUILD_DIR}; V_YEAR=$(V_YEAR) V_GCC=$(V_GCC) ${ROOT_DIR}/makes/src/tree.sh
+	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/tree.sh
 
 TREEIN_DIRECTORY=${BUILD_DIR}/tree-install/frc$(V_YEAR)/
-TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_NAME)-Toolchain-$(V_GCC)
+TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_NAME)_$(TARGET_PORT)-Toolchain-$(V_GCC)
 tarpkg:
 	cd ${TREEIN_DIRECTORY}; tar czf ${M}/$(TREEOUT_TEMPLATE).tar.gz .
 	cd ${TREEIN_DIRECTORY}; du -h ${M}/$(TREEOUT_TEMPLATE).tar.gz

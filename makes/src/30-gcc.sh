@@ -87,25 +87,37 @@ else
     esac
 fi
 
+function _make() {
+    local msg
+    msg="$1"
+    shift
+    make -j"$JOBS" "${@}" || die "$msg"
+}
+
+function _make_installer() {
+    local msg
+    msg="$1"
+    shift
+    make \
+        DESTDIR="${BUILD_DIR}/gcc-install" \
+        "${@}" || die "$msg"
+}
+
+function _make_multi() {
+    _make "$1" "all-$2"
+    _make_installer "$1" "install-$2"
+}
+
 xpushd "${BUILD_DIR}/gcc-build"
 "$DOWNLOAD_DIR/gcc-${V_GCC}/configure" \
     "${CONFIGURE_GCC[@]}" ||
     die "gcc configure failed"
-
-make -j"$JOBS" \
-    all-gcc ||
-    die "gcc build failed"
-DESTDIR=${BUILD_DIR}/gcc-install make \
-    install-gcc ||
-    die "gcc install failed"
+_make_multi "gcc build failed" gcc
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    make -j"$JOBS" \
-        all-target-libgfortran \
-        all-target-libsanitizer ||
-        die "gcc sanitizer build failed"
-    DESTDIR=${BUILD_DIR}/gcc-install make -j"$JOBS" \
-        install-target-libgfortran \
-        install-target-libsanitizer ||
-        die "gcc sanitizer install failed"
+    if [ "${PREBUILD_CANADIAN}" != "true" ]; then
+        # We don't need support libraries for the first stage
+        _make_multi "gcc libgfortran failed" target-libgfortran
+        _make_multi "gcc libsanitizer failed" target-libsanitizer
+    fi
 fi
 xpopd

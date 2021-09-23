@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
 
-TAGS=( "16.04" "20.04" )
+TAGS=( "xenial" "focal" )
 BIN_PWD="$(dirname "$0")"
 
-if ! [[ " ${TAGS[@]} " =~ " $TAG " ]]; then
+if ! [[ " ${TAGS[*]} " =~ "$TAG" ]]; then
     echo "Tag not found. Try one of these..."
     echo "${TAGS[@]}"
     exit 1

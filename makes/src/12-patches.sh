@@ -15,12 +15,12 @@ function patch_or_die() {
 function patch_project() {
     xpushd "${DOWNLOAD_DIR}"
     case "$1" in
-        bin) xpushd "binutils-${V_BIN}";;
-        gcc) xpushd "gcc-${V_GCC}";;
-        make) xpushd "make-${V_MAKE}";;
-        *) die "Unknown config";;
+    bin) xpushd "binutils-${V_BIN}" ;;
+    gcc) xpushd "gcc-${V_GCC}" ;;
+    make) xpushd "make-${V_MAKE}" ;;
+    *) die "Unknown config" ;;
     esac
-    
+
     patch_or_die "$2"
 
     xpopd
@@ -42,4 +42,16 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
 else
     patch_project bin "${PATCH_DIR}/debian/binutils-${V_BIN}.patch"
     patch_project gcc "${PATCH_DIR}/debian/gcc.patch"
+    case "${V_GCC}" in
+    7.3.0)
+        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-7.3.0.patch"
+        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-7.3.0-docs.patch"
+        ;;
+    8.3.0)
+        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-8.3.0.patch"
+        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-8.3.0-docs.patch"
+        ;;
+    [4-8].*) die "Unexpected GCC release" ;;
+    *) ;; # Patch is no-op upstream
+    esac
 fi

@@ -13,7 +13,8 @@ mkdir "${BUILD_DIR}/gdb-build"
 xpushd "${BUILD_DIR}/gdb-build"
 "$DOWNLOAD_DIR/gdb-${V_GDB}/configure" \
     "${CONFIGURE_COMMON[@]}" \
-    --without-expat \
+    --with-expat \
+    --with-libexpat-prefix="${BUILD_DIR}/expat-install/${WPI_HOST_PREFIX}" \
     --disable-debug \
     --disable-python \
     --disable-sim ||

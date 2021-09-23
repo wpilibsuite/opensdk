@@ -7,7 +7,6 @@ set -a
 ROOT_DIR="${PWD}"
 # shellcheck source=./scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
-source "$ROOT_DIR/scripts/downloads_tools.sh"
 set +a
 
 if [ "$WPI_HOST_NAME" = "Windows" ]; then
@@ -16,11 +15,12 @@ fi
 
 function onexit() {
     code="$?"
-    if [ "${code}" != "0" ]; then
-        echo "[ERROR]: Exiting with code ${code}"
-    else
-        echo "[INFO]: Exiting with code ${code}"
-    fi
+    local msg
+    case "$code" in
+    0) msg="INFO" ;;
+    *) msg="ERROR" ;;
+    esac
+    echo "[${msg}]: Exiting with code ${code}"
 }
 trap onexit "err" "exit"
 
@@ -29,6 +29,15 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     CANADIAN_STAGE_ONE=true \
         PREBUILD_CANADIAN=false bash \
         "$0" "hosts/linux_x86_64.env" "$2" "$3" || exit
+    if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
+        echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
+        exit 1
+    fi
+    # TODO: This will break if the build machine is not x86_64
+    if ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86-64 ]]; then
+        echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} is built incorrectly"
+        exit 1
+    fi
 fi
 
 set -e

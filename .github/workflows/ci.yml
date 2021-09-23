@@ -26,19 +26,31 @@ jobs:
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: 16.04,
+              docker-img: "xenial",
+            },
+            {
+              os-cfg: linux_arm64,
+              runner: ubuntu-latest,
+              docker: true,
+              docker-img: "xenial",
+            },
+            {
+              os-cfg: linux_armhf,
+              runner: ubuntu-latest,
+              docker: true,
+              docker-img: "xenial",
             },
             {
               os-cfg: windows_i686,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: 20.04,
+              docker-img: "focal",
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: 20.04,
+              docker-img: "focal",
             },
             {
               os-cfg: macos_x86_64,
@@ -100,7 +112,7 @@ jobs:
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
       - name: Fix directory
-        run: mv Linux/* .
+        run: mv x86_64-linux-gnu-Linux/* .
       - name: Print directory for logging
         run: ls -lah
       - name: Run test

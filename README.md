@@ -6,19 +6,15 @@
   * Fortran (roboRIO only)
 
 ## Supported Hosts
-| Architecture | OS | Requirments |
-| - | - | - |
-| ARMv7 | Linux | glibc 2.19 >= |
-| ARMv8 | Linux | glibc 2.19 >= |
-| x86_64 | Linux | glibc 2.19 >= |
-| x86_64 | MacOS | 10.9 >= |
-| x86_64 | Win64 | 7 >= |
-| i686 | Win32 | 7 >= |
 
-### Using Compatability Layers
-  * Use i686 Windows builds for Windows 10 on ARM
-  * Use x86_64 Windows builds for Windows 10 on ARM (Insiders Channel)
-  * Use x86_64 macOS builds for macOS on Apple Silicon
+| Architecture | OS | Minimum Supported Release |
+| - | - | - |
+| ARMv7 | Linux | Ubuntu 16.04 |
+| ARMv8 | Linux | Ubuntu 16.04 |
+| x86_64 | Linux | Ubuntu 16.04 |
+| x86_64 | macOS | macOS 10.9 |
+| x86_64 | Win64 | Windows 7 |
+| i686 | Win32 | Windows 7 |
 
 ## Supported Targets
 

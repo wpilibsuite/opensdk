@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Prep MacOS
-        if: startsWith(matrix.host.runner, 'macos')
+        if: matrix.host.runner == 'macos-latest'
         run: brew install coreutils binutils gnu-tar gzip dpkg
       - name: Import Developer ID Certificate
         uses: wpilibsuite/import-signing-certificate@v1
@@ -67,8 +67,8 @@ jobs:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
           certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
-        if: github.repository_owner == 'wpilibsuite' && startsWith(matrix.host.runner, 'macos')
-      - name: Build on native
+        if: github.repository_owner == 'wpilibsuite' && matrix.host.runner == 'macos-latest'
+      - name: Build
         run: |
           ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
         env:

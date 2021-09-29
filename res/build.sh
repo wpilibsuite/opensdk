@@ -1,20 +1,11 @@
-#! /usr/bin/env bash
+#! /bin/sh
 
-TAGS=( "xenial" "focal" )
 BIN_PWD="$(dirname "$0")"
-
-if ! [[ " ${TAGS[*]} " =~ "$TAG" ]]; then
-    echo "Tag not found. Try one of these..."
-    echo "${TAGS[@]}"
-    exit 1
-fi
-
 DOCKERFILE=Dockerfile
 
-pushd "$BIN_PWD"
+cd "$BIN_PWD" || exit
 docker build \
-    --build-arg BASE="$TAG" \
-    -t "wpilib/toolchain-builder:$TAG" \
+    -t "wpilib/toolchain-builder:latest" \
     -f "$DOCKERFILE" \
     . || exit
-popd
+

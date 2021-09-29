@@ -3,6 +3,7 @@
 PYVER="python3.7"
 set -ex
 
+DISTRO="xenial"
 SOURCES="main restricted universe multiverse"
 MAIN_REPO="http://us.archive.ubuntu.com/ubuntu/"
 PORT_REPO="http://us.ports.ubuntu.com/ubuntu-ports/"

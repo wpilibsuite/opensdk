@@ -26,37 +26,31 @@ jobs:
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: "xenial",
             },
             {
               os-cfg: linux_arm64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: "xenial",
             },
             {
               os-cfg: linux_armhf,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: "xenial",
             },
             {
               os-cfg: windows_i686,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: "focal",
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
               docker: true,
-              docker-img: "focal",
             },
             {
               os-cfg: macos_x86_64,
               runner: macos-latest,
               docker: false,
-              docker-img: "",
             }
           ]
     name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
@@ -75,7 +69,7 @@ jobs:
         if: github.repository_owner == 'wpilibsuite' && startsWith(matrix.host.runner, 'macos')
       - name: Build on docker
         if: ${{ matrix.host.docker }}
-        run: ./build-docker.sh ${{matrix.host.docker-img}} hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
+        run: ./build-docker.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - name: Build on native
         if: startsWith(matrix.host.runner, 'macos')
         run: |

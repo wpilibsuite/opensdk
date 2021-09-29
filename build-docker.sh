@@ -1,8 +1,9 @@
-#! /usr/bin/env bash
+#! /bin/sh
 
 set -e
-TAG="$1" bash res/build.sh
+sh res/build.sh
 
+DOCKER_ARG=""
 if [ "$CI" != true ]; then
     DOCKER_ARG="-it"
 fi
@@ -10,5 +11,6 @@ fi
 docker run \
     --rm $DOCKER_ARG -v "${PWD}:/work" \
     -e CI="$CI" \
-    "wpilib/toolchain-builder:$1" \
-    bash -c "cd /work; ./build.sh '$2' '$3' '$4'"
+    "wpilib/toolchain-builder:latest" \
+    bash -c "cd /work; ./build.sh '$1' '$2' '$3'"
+

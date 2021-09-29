@@ -55,8 +55,7 @@ jobs:
           ]
     name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
-    container:
-      image: ${{ matrix.host.container }}
+    container: ${{ matrix.host.container }}
     steps:
       - uses: actions/checkout@v2
       - name: Prep MacOS

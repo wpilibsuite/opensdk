@@ -1,7 +1,4 @@
 FROM docker.io/ubuntu:xenial
-ARG BASE
-ENV DISTRO=${BASE}
-
 ENV TZ=UTC
 
 COPY build_internal.sh .

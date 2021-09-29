@@ -5,7 +5,7 @@ DOCKERFILE=Dockerfile
 
 cd "$BIN_PWD" || exit
 docker build \
-    -t "wpilib/toolchain-builder:latest" \
+    -t "ghcr.io/ryanhir/toolchain-builder:latest" \
     -f "$DOCKERFILE" \
     . || exit
 

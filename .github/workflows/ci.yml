@@ -97,7 +97,6 @@ jobs:
             { os: raspi-bullseye, port: armhf },
           ]
     runs-on: ubuntu-latest
-    container: ubuntu:xenial
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2

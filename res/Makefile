@@ -1,8 +1,10 @@
 TAG=ghcr.io/ryanhir/toolchain-builder:latest
-.PHONY: build push
+.PHONY: build pull push
 
-build:
+build: pull
 	docker build -t ${TAG} .
+pull:
+	docker pull ${TAG} || true
 push:
 	docker push ${TAG}
 

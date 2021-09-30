@@ -1,4 +1,5 @@
 FROM docker.io/ubuntu:xenial
+LABEL org.opencontainers.image.source "https://github.com/RyanHir/toolchain-builder"
 ENV TZ=UTC
 
 COPY src/setup.sh .

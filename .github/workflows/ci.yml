@@ -25,40 +25,41 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              docker: true,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest",
             },
             {
               os-cfg: linux_arm64,
               runner: ubuntu-latest,
-              docker: true,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest",
             },
             {
               os-cfg: linux_armhf,
               runner: ubuntu-latest,
-              docker: true,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest",
             },
             {
               os-cfg: windows_i686,
               runner: ubuntu-latest,
-              docker: true,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest",
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              docker: true,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest",
             },
             {
               os-cfg: macos_x86_64,
               runner: macos-latest,
-              docker: false,
+              container: "",
             }
           ]
     name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
+    container: ${{ matrix.host.container }}
     steps:
       - uses: actions/checkout@v2
       - name: Prep MacOS
-        if: startsWith(matrix.host.runner, 'macos')
+        if: matrix.host.runner == 'macos-latest'
         run: brew install coreutils binutils gnu-tar gzip dpkg
       - name: Import Developer ID Certificate
         uses: wpilibsuite/import-signing-certificate@v1
@@ -66,12 +67,8 @@ jobs:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
           certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
-        if: github.repository_owner == 'wpilibsuite' && startsWith(matrix.host.runner, 'macos')
-      - name: Build on docker
-        if: ${{ matrix.host.docker }}
-        run: ./build-docker.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
-      - name: Build on native
-        if: startsWith(matrix.host.runner, 'macos')
+        if: github.repository_owner == 'wpilibsuite' && matrix.host.runner == 'macos-latest'
+      - name: Build
         run: |
           ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
         env:

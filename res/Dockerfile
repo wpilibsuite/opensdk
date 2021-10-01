@@ -1,10 +1,6 @@
 FROM docker.io/ubuntu:xenial
-ARG BASE
-ENV DISTRO=${BASE}
-
+LABEL org.opencontainers.image.source "https://github.com/RyanHir/toolchain-builder"
 ENV TZ=UTC
 
-COPY build_internal.sh .
-RUN sh build_internal.sh && rm build_internal.sh
-
-WORKDIR /build
+COPY src/setup.sh .
+RUN sh setup.sh && rm setup.sh

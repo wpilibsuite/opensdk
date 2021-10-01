@@ -1,7 +1,6 @@
 #! /bin/sh
 
 set -e
-sh res/build.sh
 
 DOCKER_ARG=""
 if [ "$CI" != true ]; then
@@ -11,6 +10,6 @@ fi
 docker run \
     --rm $DOCKER_ARG -v "${PWD}:/work" \
     -e CI="$CI" \
-    "wpilib/toolchain-builder:latest" \
+    "ghcr.io/ryanhir/toolchain-builder:latest" \
     bash -c "cd /work; ./build.sh '$1' '$2' '$3'"
 

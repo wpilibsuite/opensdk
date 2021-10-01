@@ -3,7 +3,7 @@
 PYVER="python3.7"
 set -ex
 
-DISTRO="xenial"
+DISTRO="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | sed 's/.*=//g')"
 SOURCES="main restricted universe multiverse"
 MAIN_REPO="http://us.archive.ubuntu.com/ubuntu/"
 PORT_REPO="http://us.ports.ubuntu.com/ubuntu-ports/"
@@ -25,8 +25,6 @@ echo "$TZ" >/etc/timezone
 dpkg --add-architecture arm64
 dpkg --add-architecture armhf
 apt-get update
-apt-get install -y software-properties-common
-add-apt-repository -y ppa:deadsnakes/ppa
 
 # Install tools
 apt-get update
@@ -43,8 +41,8 @@ apt-get install -y \
     mingw-w64 \
     m4 \
     ninja-build \
-    "$PYVER" \
     rsync \
+    software-properties-common \
     sudo \
     texinfo \
     wget \
@@ -52,11 +50,18 @@ apt-get install -y \
     zlib1g-dev:amd64 \
     zlib1g-dev:armhf \
     zlib1g-dev:arm64
-rm -rf /var/lib/apt/lists/*
 
+# Install python3.7
+add-apt-repository -y ppa:deadsnakes/ppa
+apt-get update
+apt-get install -y "$PYVER"
 update-alternatives --install /usr/bin/python3 python3 /usr/bin/"$PYVER" 0
 
+# Setup pip with python3.7
 wget https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
 rm get-pip.py
+
+apt-get autoclean
+rm -rf /var/lib/apt/lists/*
 

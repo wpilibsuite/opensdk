@@ -9,7 +9,7 @@ Author: WPILib Developers <wpilib@wpi.edu>
      do {							\
  	if (OPTION_GLIBC)					\
  	  builtin_define ("__gnu_linux__");			\
-+	builtin_define ("__FRC_ROBORIO__=2021");	\
++	builtin_define ("__FRC_ROBORIO__=2022");	\
  	builtin_define_std ("linux");				\
  	builtin_define_std ("unix");				\
  	builtin_assert ("system=linux");			\

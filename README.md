@@ -20,8 +20,8 @@
 
 | Architecture | Operating System | Tuple |
 | - | - | - |
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Stable | arm-frc2021-linux-gnueabi |
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Staging | arm-frc2021-linux-gnueabi |
+| ARMv7 (softfp) | N.I. Linux (roboRIO) Stable | arm-frc2022-linux-gnueabi |
+| ARMv7 (softfp) | N.I. Linux (roboRIO) Staging | arm-frc2022-linux-gnueabi |
 | ARMv6z | Raspberry Pi OS 10 | armv6z-buster-linux-gnueabihf |
 | ARMv6z | Raspberry Pi OS 11 | armv6z-bullseye-linux-gnueabihf |
 | ARMv7 | Debian 10 | armv7-buster-linux-gnueabihf |

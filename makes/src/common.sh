@@ -20,25 +20,27 @@ function xcd() {
 
 function process_background() {
     local spin=("-" "\\" "|" "/")
-    local msg="$1"
-    local cmd="$2"
+    local msg="$1"; shift
     local rand="$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 10 | head -n 1)"
     mkdir -p "/tmp/toolchain_builder/"
+    local prefix
     if [ "$msg" ]; then
-        echo "[RUNNING]: $msg"
+        prefix="[RUNNING]: $msg"
     else
-        echo "[RUNNING]: Background task '$cmd'"
+        prefix="[RUNNING]: Background task '${*}'"
     fi
-    ($cmd) >"/tmp/toolchain_builder/${rand}.log" &
+    ("${@}") >"/tmp/toolchain_builder/${rand}.log" 2>&1 &
     local pid="$!"
-    if [ "$CI" = "true" ]; then
+    if [ "$CI" != "true" ]; then
         while (ps a | awk '{print $1}' | grep -q "$pid"); do
             for i in "${spin[@]}"; do
-                echo -ne "\b$i"
+                echo -ne "\r$prefix $i"
                 sleep 0.1
             done
         done
-        echo
+        echo -e "\r$prefix  "
+    else
+        echo "$prefix"
     fi
     wait "$pid"
     local retval="$?"

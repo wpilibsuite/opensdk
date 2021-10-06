@@ -11,13 +11,15 @@ rm -rf "${BUILD_DIR}/expat-build"
 mkdir "${BUILD_DIR}/expat-build"
 
 xpushd "${BUILD_DIR}/expat-build"
-"$DOWNLOAD_DIR/expat-${V_EXPAT}/configure" \
+process_background "Configuring expat" \
+    "$DOWNLOAD_DIR/expat-${V_EXPAT}/configure" \
     "${CONFIGURE_COMMON_LITE[@]}" \
     --enable-shared=no \
     --enable-static=yes ||
     die "expat configure failed"
-make -j"$JOBS" || die "expat build failed"
-DESTDIR="${BUILD_DIR}/expat-install" make \
+process_background "Building expat" \
+    make -j"$JOBS" || die "expat build failed"
+process_background "Installing expat" \
+    make DESTDIR="${BUILD_DIR}/expat-install" \
     install || die "expat install failed"
 xpopd
-

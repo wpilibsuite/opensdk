@@ -11,7 +11,8 @@ rm -rf "${BUILD_DIR}/gdb-build"
 mkdir "${BUILD_DIR}/gdb-build"
 
 xpushd "${BUILD_DIR}/gdb-build"
-"$DOWNLOAD_DIR/gdb-${V_GDB}/configure" \
+process_background "Configuring GDB" \
+    "$DOWNLOAD_DIR/gdb-${V_GDB}/configure" \
     "${CONFIGURE_COMMON[@]}" \
     --with-expat \
     --with-libexpat-prefix="${BUILD_DIR}/expat-install/${WPI_HOST_PREFIX}" \
@@ -19,7 +20,9 @@ xpushd "${BUILD_DIR}/gdb-build"
     --disable-python \
     --disable-sim ||
     die "gdb configure failed"
-make -j"$JOBS" || die "gdb build failed"
-DESTDIR="${BUILD_DIR}/gdb-install" make \
+process_background "Building GDB" \
+    make -j"$JOBS" || die "gdb build failed"
+process_background "Installing GDB" \
+    make DESTDIR="${BUILD_DIR}/gdb-install" \
     install || die "gdb install failed"
 xpopd

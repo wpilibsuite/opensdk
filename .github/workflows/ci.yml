@@ -8,7 +8,7 @@ jobs:
       matrix:
         target:
           [
-            { os: roborio, port: cortexa9_vfpv3 },
+            { os: roborio-stable, port: cortexa9_vfpv3 },
             { os: roborio-staging, port: cortexa9_vfpv3 },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },
@@ -85,7 +85,7 @@ jobs:
       matrix:
         target:
           [
-            { os: roborio, port: cortexa9_vfpv3 },
+            { os: roborio-stable, port: cortexa9_vfpv3 },
             { os: roborio-staging, port: cortexa9_vfpv3 },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },

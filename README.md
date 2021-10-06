@@ -24,8 +24,8 @@
 | ARMv7 (softfp) | N.I. Linux (roboRIO) Staging | arm-frc2022-linux-gnueabi |
 | ARMv6z | Raspberry Pi OS 10 | armv6z-buster-linux-gnueabihf |
 | ARMv6z | Raspberry Pi OS 11 | armv6z-bullseye-linux-gnueabihf |
-| ARMv7 | Debian 10 | armv7-buster-linux-gnueabihf |
-| ARMv7 | Debian 11 | armv7-bullseye-linux-gnueabihf |
+| ARMv7 | Debian/Raspberry Pi OS 10 | armv7-buster-linux-gnueabihf |
+| ARMv7 | Debian/Raspberry Pi OS 11 | armv7-bullseye-linux-gnueabihf |
 | ARMv7 | Ubuntu 18.04 | armv7-bionic-linux-gnueabihf |
 | ARMv7 | Ubuntu 20.04 | armv7-focal-linux-gnueabihf |
 | ARMv8 (64bit) | Debian/Raspberry Pi OS 10 | aarch64-buster-linux-gnu |

@@ -37,9 +37,9 @@ if [ "${WPI_HOST_NAME}" = "Linux" ]; then
     patch_project make "${PATCH_DIR}/hosts/Linux/make.patch"
 fi
 
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    patch_project gcc "${PATCH_DIR}/targets/roborio/gcc.patch"
-else
+patch_project gcc "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}/gcc.patch"
+
+if [ "${TARGET_DISTRO}" != "roborio" ]; then
     patch_project bin "${PATCH_DIR}/targets/debian/binutils-${V_BIN}.patch"
     patch_project gcc "${PATCH_DIR}/targets/debian/gcc.patch"
     case "${V_GCC}" in

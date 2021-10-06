@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+# shellcheck disable=SC2155
 
 function die() {
     echo "[FATAL]: $1" >&2
@@ -11,6 +12,41 @@ function xpushd() {
 
 function xpopd() {
     popd >/dev/null || die "popd failed"
+}
+
+function xcd() {
+    cd "$1" >/dev/null || die "cd failed"
+}
+
+function process_background() {
+    local spin=("-" "\\" "|" "/")
+    local msg="$1"
+    local cmd="$2"
+    local rand="$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 10 | head -n 1)"
+    mkdir -p "/tmp/toolchain_builder/"
+    if [ "$msg" ]; then
+        echo "[RUNNING]: $msg"
+    else
+        echo "[RUNNING]: Background task '$cmd'"
+    fi
+    ($cmd) >"/tmp/toolchain_builder/${rand}.log" &
+    local pid="$!"
+    if [ "$CI" = "true" ]; then
+        while (ps a | awk '{print $1}' | grep -q "$pid"); do
+            for i in "${spin[@]}"; do
+                echo -ne "\b$i"
+                sleep 0.1
+            done
+        done
+        echo
+    fi
+    wait "$pid"
+    local retval="$?"
+    if [ "$retval" -ne 0 ]; then
+        cat "/tmp/toolchain_builder/${rand}.log"
+    fi
+    rm "/tmp/toolchain_builder/${rand}.log"
+    return "$retval"
 }
 
 # If these fail, then others are bad aswell

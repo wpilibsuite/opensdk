@@ -38,18 +38,18 @@ if [ "${WPI_HOST_NAME}" = "Linux" ]; then
 fi
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    patch_project gcc "${PATCH_DIR}/roborio/gcc.patch"
+    patch_project gcc "${PATCH_DIR}/targets/roborio/gcc.patch"
 else
-    patch_project bin "${PATCH_DIR}/debian/binutils-${V_BIN}.patch"
-    patch_project gcc "${PATCH_DIR}/debian/gcc.patch"
+    patch_project bin "${PATCH_DIR}/targets/debian/binutils-${V_BIN}.patch"
+    patch_project gcc "${PATCH_DIR}/targets/debian/gcc.patch"
     case "${V_GCC}" in
     7.3.0)
-        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-7.3.0.patch"
-        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-7.3.0-docs.patch"
+        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-7.3.0.patch"
+        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-7.3.0-docs.patch"
         ;;
     8.3.0)
-        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-8.3.0.patch"
-        patch_project gcc "${PATCH_DIR}/debian/linaro/gcc-8.3.0-docs.patch"
+        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-8.3.0.patch"
+        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-8.3.0-docs.patch"
         ;;
     [4-8].*) die "Unexpected GCC release" ;;
     *) ;; # Patch is no-op upstream

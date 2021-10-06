@@ -32,6 +32,11 @@
 | ARMv8 (64bit) | Debian/Raspberry Pi OS 11 | aarch64-bullseye-linux-gnu |
 | ARMv8 (64bit) | Ubuntu 18.04 | aarch64-bionic-linux-gnu |
 | ARMv8 (64bit) | Ubuntu 20.04 | aarch64-focal-linux-gnu |
+| x86_64 | Debian 10 | x86_64-buster-linux-gnu |
+| x86_64 | Debian 11 | x86_64-bullseye-linux-gnu |
+| x86_64 | Ubuntu 18.04 | x86_64-bionic-linux-gnu |
+| x86_64 | Ubuntu 20.04 | x86_64-focal-linux-gnu |
+
 * Note: Debian toolchains should work with Raspberry Pi OS when ran on a Pi 2 or newer 
 -----
 

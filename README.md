@@ -22,16 +22,17 @@
 | - | - | - |
 | ARMv7 (softfp) | N.I. Linux (roboRIO) Stable | arm-frc2021-linux-gnueabi |
 | ARMv7 (softfp) | N.I. Linux (roboRIO) Staging | arm-frc2021-linux-gnueabi |
-| ARMv6z | Raspberry Pi OS 10 for Pi zero/one | arm-rpi0_buster-linux-gnueabihf |
-| ARMv6z | Raspberry Pi OS 11 for Pi zero/one | arm-rpi0_bullseye-linux-gnueabihf |
-| ARMv7 | Debian/Raspberry Pi OS 10 | arm-buster-linux-gnueabihf |
-| ARMv7 | Debian/Raspberry Pi OS 11 | arm-bullseye-linux-gnueabihf |
-| ARMv7 | Ubuntu 18.04 | arm-bionic-linux-gnueabihf |
-| ARMv7 | Ubuntu 20.04 | arm-focal-linux-gnueabihf |
+| ARMv6z | Raspberry Pi OS 10 | armv6z-buster-linux-gnueabihf |
+| ARMv6z | Raspberry Pi OS 11 | armv6z-bullseye-linux-gnueabihf |
+| ARMv7 | Debian 10 | armv7-buster-linux-gnueabihf |
+| ARMv7 | Debian 11 | armv7-bullseye-linux-gnueabihf |
+| ARMv7 | Ubuntu 18.04 | armv7-bionic-linux-gnueabihf |
+| ARMv7 | Ubuntu 20.04 | armv7-focal-linux-gnueabihf |
 | ARMv8 (64bit) | Debian/Raspberry Pi OS 10 | aarch64-buster-linux-gnu |
 | ARMv8 (64bit) | Debian/Raspberry Pi OS 11 | aarch64-bullseye-linux-gnu |
 | ARMv8 (64bit) | Ubuntu 18.04 | aarch64-bionic-linux-gnu |
 | ARMv8 (64bit) | Ubuntu 20.04 | aarch64-focal-linux-gnu |
+* Note: Debian toolchains should work with Raspberry Pi OS when ran on a Pi 2 or newer 
 -----
 
 ## Resources

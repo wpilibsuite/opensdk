@@ -87,23 +87,22 @@ else
     esac
 fi
 
-function _make() {
-    local msg
-    msg="$1"
-    shift
-    make -j"$JOBS" "${@}" || die "$msg"
-}
-
-function _make_installer() {
-    local msg
-    msg="$1"
-    shift
-    make \
-        DESTDIR="${BUILD_DIR}/gcc-install" \
-        "${@}" || die "$msg"
-}
-
 function _make_multi() {
+    function _make() {
+        local msg
+        msg="$1"
+        shift
+        make -j"$JOBS" "${@}" || die "$msg"
+    }
+
+    function _make_installer() {
+        local msg
+        msg="$1"
+        shift
+        make \
+            DESTDIR="${BUILD_DIR}/gcc-install" \
+            "${@}" || die "$msg"
+    }
     _make "$1" "all-$2"
     _make_installer "$1" "install-$2"
 }
@@ -112,12 +111,25 @@ xpushd "${BUILD_DIR}/gcc-build"
 "$DOWNLOAD_DIR/gcc-${V_GCC}/configure" \
     "${CONFIGURE_GCC[@]}" ||
     die "gcc configure failed"
+# Build the core compiler without libraries
 _make_multi "gcc build failed" gcc
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    if [ "${PREBUILD_CANADIAN}" != "true" ]; then
-        # We don't need support libraries for the first stage
-        _make_multi "gcc libgfortran failed" target-libgfortran
-        _make_multi "gcc libsanitizer failed" target-libsanitizer
-    fi
+
+if [ "${PREBUILD_CANADIAN}" = "true" ]; then
+    # We don't need support libraries for the first stage
+    exit 0
 fi
+
+case "${TARGET_DISTRO}" in
+roborio)
+    _make_multi "gcc libgfortran failed" target-libgfortran
+    _make_multi "gcc libsanitizer failed" target-libsanitizer
+    if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
+        # Only rebuild what came from the original sysroot
+        _make_multi "gcc libgcc failed" target-libgcc
+        _make_multi "gcc libatomic failed" target-libatomic
+        _make_multi "gcc libstdc++ failed" target-libstdc++-v3
+    fi
+    ;;
+*) ;; # No current need to build support libraries for debian targets
+esac
 xpopd

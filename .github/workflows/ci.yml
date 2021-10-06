@@ -9,6 +9,7 @@ jobs:
         target:
           [
             { os: roborio, port: cortexa9_vfpv3 },
+            { os: roborio-staging, port: cortexa9_vfpv3 },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },
             { os: focal, port: armhf },
@@ -85,6 +86,7 @@ jobs:
         target:
           [
             { os: roborio, port: cortexa9_vfpv3 },
+            { os: roborio-staging, port: cortexa9_vfpv3 },
             { os: bionic, port: armhf },
             { os: bionic, port: arm64 },
             { os: focal, port: armhf },

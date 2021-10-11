@@ -49,8 +49,8 @@ tree:
 TREEIN_DIRECTORY=${BUILD_DIR}/tree-install/frc$(V_YEAR)/
 TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_NAME)_$(TARGET_PORT)-Toolchain-$(V_GCC)
 tarpkg:
-	cd ${TREEIN_DIRECTORY}; tar czf ${M}/$(TREEOUT_TEMPLATE).tar.gz .
-	cd ${TREEIN_DIRECTORY}; du -h ${M}/$(TREEOUT_TEMPLATE).tar.gz
+	cd ${TREEIN_DIRECTORY}; XZ_OPT=-T0 tar -c --xz -f ${M}/$(TREEOUT_TEMPLATE).txz .
+	cd ${TREEIN_DIRECTORY}; du -h ${M}/$(TREEOUT_TEMPLATE).txz
 
 zippkg:
 	cd ${TREEIN_DIRECTORY}; zip -r $(M)/$(TREEOUT_TEMPLATE).zip .
@@ -72,7 +72,7 @@ print-pkg:
 ifeq ($(WPI_HOST_NAME), Windows)
 	@echo $(TREEOUT_TEMPLATE).zip
 else
-	@echo $(TREEOUT_TEMPLATE).tar.gz
+	@echo $(TREEOUT_TEMPLATE).txz
 endif
 
 clean:

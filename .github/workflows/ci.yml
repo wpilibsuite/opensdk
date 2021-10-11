@@ -71,7 +71,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Prep MacOS
         if: matrix.host.runner == 'macos-latest'
-        run: brew install coreutils binutils gnu-tar gzip dpkg
+        run: brew install coreutils binutils gnu-tar gzip dpkg xz
       - name: Import Developer ID Certificate
         uses: wpilibsuite/import-signing-certificate@v1
         with:

@@ -18,7 +18,7 @@ python3 -m opensysroot \
     . || die "opensysroot failed"
 SYSROOT_DIR="./${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}/sysroot"
 xpushd "${SYSROOT_DIR}/usr/lib/gcc"
-find . -type f -perm /111 -exec rm {} \;
+find . -type f -perm +111 -exec rm {} \;
 xpopd
 mv "./${SYSROOT_DIR}/"* \
     "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}" ||

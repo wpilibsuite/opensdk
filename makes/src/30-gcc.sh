@@ -64,7 +64,7 @@ else
     # Pulled by running gcc -v on target devices
     CONFIGURE_GCC+=(
         # Debian specific flags
-        "--libdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}" \
+        "--libdir=${SYSROOT_PATH}/usr/lib/" \
         "--with-toolexeclibdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}" \
         "--enable-languages=c,c++"
         "--enable-clocal=gnu"
@@ -127,22 +127,25 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     exit 0
 fi
 
+TASKS=()
 case "${TARGET_DISTRO}" in
 roborio)
-    process_background "Building libfortran" \
-        _make_multi "gcc libgfortran failed" target-libgfortran
-    process_background "Building libsanitizer" \
-        _make_multi "gcc libsanitizer failed" target-libsanitizer
+    TASKS+=(
+        target-libgfortran
+        target-libsanitizer
+    )
     if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
-        # Only rebuild what came from the original sysroot
-        process_background "Building libgcc" \
-            _make_multi "gcc libgcc failed" target-libgcc
-        process_background "Building libfortran" \
-            _make_multi "gcc libatomic failed" target-libatomic
-        process_background "Building libstdc++" \
-            _make_multi "gcc libstdc++ failed" target-libstdc++-v3
+        TASKS+=(
+            target-libgcc
+            target-libatomic
+            target-libstdc++-v3
+        )
     fi
     ;;
 *) ;; # No current need to build support libraries for debian targets
 esac
+for task in "${TASKS[@]}"; do
+    process_background "Building GCC $task" \
+        _make_multi "GCC $task" "$task"
+done
 xpopd

@@ -8,7 +8,7 @@ source "$(dirname "$0")/common.sh"
 rm -rf "${BUILD_DIR}/sysroot-build"
 rm -rf "${BUILD_DIR}/sysroot-install"
 mkdir "${BUILD_DIR}/sysroot-build"
-mkdir -p "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}"
+mkdir -p "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
 xpushd "${BUILD_DIR}/sysroot-build"
 python3 -m opensysroot \
@@ -16,13 +16,14 @@ python3 -m opensysroot \
     "${TARGET_PORT}" \
     "${TARGET_DISTRO_RELEASE}" \
     . || die "opensysroot failed"
-SYSROOT_DIR="./${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}/sysroot"
-xpushd "${SYSROOT_DIR}/usr/lib/gcc"
+SYSROOT_DIR="${PWD}/${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}"
+xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
 find . -type f -or -type l \
     -exec /usr/bin/test -x {} \; \
     -exec /bin/rm {} \;
 xpopd
-mv "./${SYSROOT_DIR}/"* \
-    "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}" ||
+rsync -a \
+    "${SYSROOT_DIR}/sysroot/" \
+    "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot" ||
     die "sysroot transfer failed"
 xpopd

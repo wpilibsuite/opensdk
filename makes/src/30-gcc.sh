@@ -19,7 +19,6 @@ CONFIGURE_GCC=(
     "--with-gcc-major-version-only"
     "--enable-linker-build-id"
     "--enable-__cxa_atexit" # Should be enabled on glibc devices
-    "--libdir=${SYSROOT_PATH}/usr/lib"
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
 
@@ -28,9 +27,12 @@ if [ "${WPI_HOST_NAME}" = "Windows" ]; then
         "--disable-plugin"
     )
 else
-    # Use system zlib when building target code on a *nix enviorment
+    if [ "${WPI_HOST_NAME}" = "Linux" ]; then
+        # Use system zlib when building target code on Linux
+        CONFIGURE_GCC+=("--with-system-zlib")
+    fi
+    # Don't use zlib on MacOS as it is not ensured that zlib is avaliable
     CONFIGURE_GCC+=(
-        "--with-system-zlib"
         "--enable-default-pie"
         "--enable-plugin"
     )
@@ -39,6 +41,8 @@ fi
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     # Pulled by running gcc -v on target device
     CONFIGURE_GCC+=(
+        "--libdir=${SYSROOT_PATH}/usr/lib" \
+        "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib" \
         "--enable-languages=c,c++,fortran"
         "--disable-libmudflap"
         "--enable-c99"
@@ -60,6 +64,8 @@ else
     # Pulled by running gcc -v on target devices
     CONFIGURE_GCC+=(
         # Debian specific flags
+        "--libdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}" \
+        "--with-toolexeclibdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}" \
         "--enable-languages=c,c++"
         "--enable-clocal=gnu"
         "--without-included-gettext"

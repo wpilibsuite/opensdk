@@ -61,8 +61,8 @@ function process_background() {
 
 BUILD_TUPLE="$(gcc -dumpmachine)"
 HOST_TUPLE="${WPI_HOST_TUPLE}"
-SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}"
-SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/$TARGET_TUPLE"
+SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
+SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"
 
 CONFIGURE_COMMON_LITE=(
     "--build=${BUILD_TUPLE}"
@@ -80,6 +80,8 @@ CONFIGURE_COMMON=(
     "--target=${TARGET_TUPLE}"
     "--with-sysroot=${SYSROOT_PATH}"
     "--with-build-sysroot=${SYSROOT_BUILD_PATH}"
+    "--libdir=${WPI_HOST_PREFIX}/${TARGET_TUPLE}/lib" \
+    "--libexecdir=${WPI_HOST_PREFIX}/${TARGET_TUPLE}/libexec"
 )
 
 export PATH="/opt/frc/bin:${PATH}"

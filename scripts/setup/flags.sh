@@ -23,10 +23,6 @@ if [ "$WPI_HOST_NAME" = "Mac" ]; then
     CFLAGS+=" -fvisibility=default"
     CXXFLAGS+=" -fvisibility=default"
 fi
-if [ "$WPI_HOST_NAME" != "Windows" ]; then
-    CFLAGS+=" -fPIC"
-    CXXFLAGS+=" -fPIC"
-fi
 export CFLAGS CXXFLAGS
 
 # Make-server processes

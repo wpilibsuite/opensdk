@@ -17,16 +17,11 @@ python3 -m opensysroot \
     "${TARGET_DISTRO_RELEASE}" \
     . || die "opensysroot failed"
 SYSROOT_DIR="${PWD}/${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}"
-xpushd "${SYSROOT_DIR}/sysroot"
-if [ -d "lib64" ]; then
-    rm -r "lib64"
-fi
-xpushd "usr/lib/gcc"
+xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
 find . -type f -or -type l \
     -exec /usr/bin/test -x {} \; \
     -exec /bin/rm {} \;
-xpopd # usr/lib/gcc
-xpopd # sysroot
+xpopd
 rsync -a \
     "${SYSROOT_DIR}/sysroot/" \
     "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot" ||

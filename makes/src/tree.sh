@@ -44,7 +44,7 @@ for exec in *; do
         # Skip scripts
         continue
     fi
-    "${STRIP_CMD}" "${exec}" || die "Host binary strip failed"
+    # "${STRIP_CMD}" "${exec}" || die "Host binary strip failed"
 done
 
 xpopd # bin

@@ -6,7 +6,8 @@ source "$(dirname "$0")/common.sh"
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
 for dir in {gcc,sysroot,binutils,gdb,frcmake}-install; do
-    rsync -a "$dir/" tree-build
+    # -L will destroy symlinks and just duplicate
+    rsync -aL "$dir/" tree-build
 done
 xpushd tree-build
 du -hs .
@@ -25,7 +26,9 @@ rm -rf include share
 
 xpushd bin
 
-if command -v "${HOST_TUPLE}-strip" &>/dev/null; then
+if [ -x "${STRIP}" ]; then
+    STRIP_CMD="${STRIP}"
+elif command -v "${HOST_TUPLE}" &>/dev/null; then
     STRIP_CMD="${HOST_TUPLE}-strip"
 else
     STRIP_CMD="strip"
@@ -40,7 +43,7 @@ done
 
 # Remove any executables that may have the incorrect names
 for exec in "${TARGET_TUPLE}-${TARGET_PREFIX}"* "${TARGET_TUPLE}"-gcc-*; do
-    rm "${exec}"
+    rm "${exec}" &>/dev/null || true
 done
 
 xpopd # bin

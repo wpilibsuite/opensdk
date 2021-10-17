@@ -40,11 +40,9 @@ for exec in "${TARGET_TUPLE}-${TARGET_PREFIX}"* "${TARGET_TUPLE}"-gcc-*; do
 done
 
 for exec in *; do
-    if file "${exec}" | grep -q "script"; then
-        # Skip scripts
-        continue
+    if file "${exec}" | grep -qiF -e "elf" -e "mach-o"; then
+        "${STRIP_CMD}" "${exec}" || die "Host binary strip failed"
     fi
-    # "${STRIP_CMD}" "${exec}" || die "Host binary strip failed"
 done
 
 xpopd # bin

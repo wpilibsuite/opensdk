@@ -41,7 +41,7 @@ done
 
 for exec in *; do
     if file "${exec}" | grep -qiF -e "elf" -e "mach-o"; then
-        "${STRIP_CMD}" "${exec}" || die "Host binary strip failed"
+        "${STRIP_CMD}" "${exec}" || echo "[WARN] Could not strip ${exec}"
     fi
 done
 

@@ -33,17 +33,18 @@ elif command -v "${HOST_TUPLE}" &>/dev/null; then
 else
     STRIP_CMD="strip"
 fi
+
+# Remove any executables that may have the incorrect names
+for exec in "${TARGET_TUPLE}-${TARGET_PREFIX}"* "${TARGET_TUPLE}"-gcc-*; do
+    rm "${exec}" &>/dev/null || true
+done
+
 for exec in *; do
     if file "${exec}" | grep -q "script"; then
         # Skip scripts
         continue
     fi
     "${STRIP_CMD}" "${exec}" || die "Host binary strip failed"
-done
-
-# Remove any executables that may have the incorrect names
-for exec in "${TARGET_TUPLE}-${TARGET_PREFIX}"* "${TARGET_TUPLE}"-gcc-*; do
-    rm "${exec}" &>/dev/null || true
 done
 
 xpopd # bin

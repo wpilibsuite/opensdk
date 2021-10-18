@@ -43,7 +43,7 @@ done
 
 for exec in *; do
     if file "${exec}" | grep -qiF -e "elf" -e "mach-o"; then
-        "${STRIP_CMD}" "${exec}" || echo "[WARN] Could not strip ${exec}"
+        "${STRIP_CMD}" "${exec}" || die "Could not strip ${exec}"
     fi
 done
 

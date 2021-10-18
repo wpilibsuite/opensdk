@@ -34,29 +34,34 @@ jobs:
         host:
           [
             {
-              os-cfg: linux_x86_64,
-              runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest",
-            },
-            {
               os-cfg: linux_arm64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest",
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },
             {
               os-cfg: linux_armhf,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest",
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
+            },
+            {
+              os-cfg: linux_i686,
+              runner: ubuntu-latest,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-i686",
+            },
+            {
+              os-cfg: linux_x86_64,
+              runner: ubuntu-latest,
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },
             {
               os-cfg: windows_i686,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest",
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest",
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },
             {
               os-cfg: macos_x86_64,
@@ -68,7 +73,7 @@ jobs:
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - name: Prep MacOS
         if: matrix.host.runner == 'macos-latest'
         run: brew install coreutils binutils gnu-tar gzip dpkg xz

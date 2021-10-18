@@ -11,10 +11,11 @@
 | - | - | - |
 | ARMv7 | Linux | Ubuntu 16.04 |
 | ARMv8 | Linux | Ubuntu 16.04 |
+| i686 | Linux | Ubuntu 16.04 |
 | x86_64 | Linux | Ubuntu 16.04 |
-| x86_64 | macOS | macOS 10.9 |
-| x86_64 | Win64 | Windows 7 |
 | i686 | Win32 | Windows 7 |
+| x86_64 | Win64 | Windows 7 |
+| x86_64 | macOS | macOS 10.9 |
 
 ## Supported Targets
 

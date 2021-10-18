@@ -43,7 +43,7 @@ fi
 set -e
 
 # Prep builds
-mkdir -p "${DOWNLOAD_DIR}" "${REPACK_DIR}"
+mkdir -p "${DOWNLOAD_DIR}"
 pushd "${DOWNLOAD_DIR}"
 popd
 

@@ -87,7 +87,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
-          path: build/${{matrix.target.os}}-${{matrix.target.port}}/*/${{matrix.target.port}}-${{matrix.target.os}}-*-*-Toolchain-*.*
+          path: output/*
   test-sysroot:
     needs: build
     strategy:
@@ -118,8 +118,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
-      - name: Fix directory
-        run: mv x86_64-linux-gnu-Linux/* .
       - name: Print directory for logging
         run: ls -lah
       - name: Run test

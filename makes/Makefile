@@ -1,6 +1,11 @@
 include $(ROOT_DIR)/consts.env
 include $(ROOT_DIR)/targets/${TOOLCHAIN_NAME}/version.env
 
+MAKEFLAGS+= --no-print-directory
+
+.SILENT:
+.ONESHELL:
+
 all: clean toolset-install
 
 clean:
@@ -11,54 +16,70 @@ prefix-install:
 	sudo mkdir -p "/${WPI_HOST_PREFIX}"
 
 sysroot: prefix-install
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/10-sysroot.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/10-sysroot.sh
 
 sources:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/11-sources.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/11-sources.sh
 
 patches: sources
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/12-patches.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/12-patches.sh
 
 binutils: sources patches prefix-install
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/20-binutils.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/20-binutils.sh
 
 gcc: sources patches sysroot binutils
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/30-gcc.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/30-gcc.sh
 
 expat: sources
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/40-expat.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/40-expat.sh
 
 gdb: sources patches expat
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/41-gdb.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/41-gdb.sh
 
 frcmake: sources patches
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/50-frcmake.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/50-frcmake.sh
 
 toolset: sysroot binutils gcc gdb frcmake
 
 toolset-install: prefix-install toolset
 ifneq (${WPI_HOST_NAME}, Mac)
+ifneq (${PREBUILD_CANADIAN}, true)
+	cd ${BUILD_DIR}
 	sudo mkdir -p $(WPI_HOST_PREFIX)
-	cd ${BUILD_DIR}; \
-		sudo cp -r binutils-install/$(WPI_HOST_PREFIX)/* $(WPI_HOST_PREFIX)
-	cd ${BUILD_DIR}; \
-		sudo cp -r gcc-install/$(WPI_HOST_PREFIX)/* $(WPI_HOST_PREFIX)
-	cd ${BUILD_DIR}; \
-		sudo cp -r sysroot-install/* $(WPI_HOST_PREFIX)
+	sudo cp -r binutils-install/$(WPI_HOST_PREFIX)/* $(WPI_HOST_PREFIX)
+	sudo cp -r gcc-install/$(WPI_HOST_PREFIX)/* $(WPI_HOST_PREFIX)
+	sudo cp -r sysroot-install/* $(WPI_HOST_PREFIX)
+endif
 endif
 
 tree:
-	cd ${BUILD_DIR}; bash ${ROOT_DIR}/makes/src/tree.sh
+	cd ${BUILD_DIR}
+	bash ${ROOT_DIR}/makes/src/tree.sh
+
+${OUTPUT_DIR}:
+	mkdir $@
 
 TREEIN_DIRECTORY=${BUILD_DIR}/tree-install/frc$(V_YEAR)/
-TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_NAME)_$(TARGET_PORT)-Toolchain-$(V_GCC)
-tarpkg:
-	cd ${TREEIN_DIRECTORY}; XZ_OPT=-T0 tar -c --xz -f ${M}/$(TREEOUT_TEMPLATE).txz .
-	cd ${TREEIN_DIRECTORY}; du -h ${M}/$(TREEOUT_TEMPLATE).txz
+TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_TUPLE)-Toolchain-$(V_GCC)
+tarpkg: $(OUTPUT_DIR)
+	cd ${TREEIN_DIRECTORY}
+	XZ_OPT=-T0 tar -c --xz -f $(OUTPUT_DIR)/$(TREEOUT_TEMPLATE).txz .
+	cd $(OUTPUT_DIR)
+	du -h $(TREEOUT_TEMPLATE).txz
 
-zippkg:
-	cd ${TREEIN_DIRECTORY}; zip -r $(M)/$(TREEOUT_TEMPLATE).zip .
-	cd ${TREEIN_DIRECTORY}; du -h $(M)/$(TREEOUT_TEMPLATE).zip
+zippkg: $(OUTPUT_DIR)
+	cd ${TREEIN_DIRECTORY}
+	zip -r $(OUTPUT_DIR)/$(TREEOUT_TEMPLATE).zip .
+	cd $(OUTPUT_DIR)
+	du -h $(TREEOUT_TEMPLATE).zip
 
 pkg: tree
 ifeq ($(WPI_HOST_NAME), Windows)
@@ -67,16 +88,14 @@ else
 	$(MAKE) tarpkg
 endif
 print-treein:
-	@echo ${TREEIN_DIRECTORY}
+	echo ${TREEIN_DIRECTORY}
 
 print-treeout:
-	@echo $(TREEOUT_TEMPLATE)
+	echo $(TREEOUT_TEMPLATE)
 
 print-pkg:
 ifeq ($(WPI_HOST_NAME), Windows)
-	@echo $(TREEOUT_TEMPLATE).zip
+	echo $(TREEOUT_TEMPLATE).zip
 else
-	@echo $(TREEOUT_TEMPLATE).txz
+	echo $(TREEOUT_TEMPLATE).txz
 endif
-
-clean:

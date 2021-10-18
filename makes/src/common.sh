@@ -57,7 +57,6 @@ function process_background() {
 [ "${V_GCC:-fail}" != fail ] || die "V_GCC"
 [ "${WPI_HOST_PREFIX:-fail}" != fail ] || die "prefix dir"
 [ "${DOWNLOAD_DIR:-fail}" != fail ] || die "Download Dir"
-[ "${REPACK_DIR:-fail}" != fail ] || die "Repack Dir"
 
 BUILD_TUPLE="$(gcc -dumpmachine)"
 HOST_TUPLE="${WPI_HOST_TUPLE}"

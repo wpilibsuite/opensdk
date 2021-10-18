@@ -122,7 +122,7 @@ process_background "Configuring GCC" \
 process_background "Building GCC frontend" \
     _make_multi "gcc build failed" gcc
 
-if [ "${PREBUILD_CANADIAN}" = "true" ]; then
+if [ "${CANADIAN_STAGE_ONE}" = "true" ]; then
     # We don't need support libraries for the first stage
     exit 0
 fi

@@ -28,10 +28,12 @@ xpushd bin
 
 if [ -x "${STRIP}" ]; then
     STRIP_CMD="${STRIP}"
-elif command -v "${HOST_TUPLE}" &>/dev/null; then
-    STRIP_CMD="${HOST_TUPLE}-strip"
-else
+elif [ -e "/usr/bin/${HOST_TUPLE}-strip" ]; then
+    STRIP_CMD="/usr/bin/${HOST_TUPLE}-strip"
+elif [ "${WPI_HOST_NAME}" = "Mac" ]; then
     STRIP_CMD="strip"
+else
+    die "Cannot find proper strip command"
 fi
 
 # Remove any executables that may have the incorrect names

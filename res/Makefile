@@ -2,23 +2,22 @@ export DOCKER_BUILDKIT=0
 TAG=ghcr.io/ryanhir/toolchain-builder:latest
 .PHONY: build pull push
 
-all: build push manifest
+ARCH_LIST=amd64 i386
 
-build: build-amd64 build-i386
-push: push-amd64 push-i386
+all: $(foreach arch,${ARCH_LIST},build-${arch} push-${arch}) manifest
 
-manifest: push
+manifest:
 	docker manifest create ${TAG} \
-		--amend ${TAG}-i386 \
-		--amend ${TAG}-amd64
+		$(foreach arch,${ARCH_LIST},--amend ${TAG}-${arch})
 	docker manifest push ${TAG}
+
 build-%:
 	docker build \
-		-t ${TAG}-$(patsubst build-%,%,$@) \
-		--platform linux/$(patsubst build-%,%,$@) \
-		--build-arg ARCH=$(patsubst build-%,%,$@) \
+		-t ${TAG}-$* \
+		--platform linux/$* \
+		--build-arg ARCH=$* \
 		.
-push-%:
+push-%: build-%
 	docker push \
-		${TAG}-$(patsubst push-%,%,$@)
+		${TAG}-$*
 

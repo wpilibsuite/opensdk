@@ -44,12 +44,12 @@ jobs:
               container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },
             {
-              os-cfg: linux_i686,
+              os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest-i386",
+              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },
             {
-              os-cfg: linux_x86_64,
+              os-cfg: windows_i686,
               runner: ubuntu-latest,
               container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
             },

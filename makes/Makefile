@@ -38,9 +38,13 @@ toolset: sysroot binutils gcc gdb frcmake
 
 toolset-install: prefix-install toolset
 ifneq (${WPI_HOST_NAME}, Mac)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/binutils-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/gcc-install/${WPI_HOST_PREFIX}/* /$(WPI_HOST_PREFIX)
-	cd ${BUILD_DIR}; sudo cp -r ${BUILD_DIR}/sysroot-install/* /$(WPI_HOST_PREFIX)
+	sudo mkdir -p $(WPI_HOST_PREFIX)
+	cd ${BUILD_DIR}; \
+		sudo cp -r binutils-install/$(WPI_HOST_PREFIX)/* $(WPI_HOST_PREFIX)
+	cd ${BUILD_DIR}; \
+		sudo cp -r gcc-install/$(WPI_HOST_PREFIX)/* $(WPI_HOST_PREFIX)
+	cd ${BUILD_DIR}; \
+		sudo cp -r sysroot-install/* $(WPI_HOST_PREFIX)
 endif
 
 tree:

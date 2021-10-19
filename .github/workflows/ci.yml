@@ -84,41 +84,16 @@ jobs:
           ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
+      - name: Test
+        if:
+          matrix.host.os-cfg == 'macos_x86_64' ||
+          matrix.host.os-cfg == 'linux_x86_64'
+        run:
+          ./test.sh \
+            hosts/${{matrix.host.os-cfg}}.env \
+            targets/${{matrix.target.os}} \
+            ${{matrix.target.port}}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
-  test-sysroot:
-    needs: build
-    strategy:
-      fail-fast: true
-      matrix:
-        target:
-          [
-            { os: roborio-stable, port: cortexa9_vfpv3 },
-            { os: roborio-staging, port: cortexa9_vfpv3 },
-            { os: bionic, port: amd64 },
-            { os: bionic, port: armhf },
-            { os: bionic, port: arm64 },
-            { os: focal, port: amd64 },
-            { os: focal, port: armhf },
-            { os: focal, port: arm64 },
-            { os: buster, port: amd64 },
-            { os: buster, port: armhf },
-            { os: buster, port: arm64 },
-            { os: bullseye, port: amd64 },
-            { os: bullseye, port: armhf },
-            { os: bullseye, port: arm64 },
-            { os: raspi-buster, port: armhf },
-            { os: raspi-bullseye, port: armhf },
-          ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-linux_x86_64
-      - name: Print directory for logging
-        run: ls -lah
-      - name: Run test
-        run: ./test.sh hosts/linux_x86_64.env targets/${{matrix.target.os}} ${{matrix.target.port}}

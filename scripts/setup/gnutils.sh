@@ -2,7 +2,7 @@
 
 if is-mac; then
     BREW_PREFIX="$(brew --prefix)"
-    GNU_PROJECTS=(coreutils binutils gnu-tar make)
+    GNU_PROJECTS=(gnu-tar)
     for project in "${GNU_PROJECTS[@]}"; do
         PATH="${BREW_PREFIX}/opt/${project}/bin:$PATH"
         PATH="${BREW_PREFIX}/opt/${project}/libexec/gnubin:$PATH"

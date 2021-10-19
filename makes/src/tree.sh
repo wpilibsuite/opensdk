@@ -3,11 +3,24 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
+PROJECT_EXPORT=(
+    sysroot
+    binutils
+    gcc
+    gdb
+    frcmake
+)
+
 rm -rf tree-{build,install}
 mkdir tree-{build,install}
-for dir in {gcc,sysroot,binutils,gdb,frcmake}-install; do
+for project in "${PROJECT_EXPORT[@]}"; do
+    if ! [ -d "${project}-install" ]; then
+        die "${project} install missing"
+    fi
     # -L will destroy symlinks and just duplicate
-    rsync -arEL "$dir/" tree-build/ || die "rsync tree build failed - $dir"
+    rsync -aEL \
+        "${project}-install/" tree-build/ ||
+        die "rsync tree build failed - $project"
 done
 xpushd tree-build
 du -hs .
@@ -17,8 +30,8 @@ TREE_OUT="frc${V_YEAR}/${TOOLCHAIN_NAME}/"
 rm -rf "${TREE_OUT}"
 mkdir -p "${TREE_OUT}"
 
-rsync -a "./${TARGET_TUPLE}/" "${TREE_OUT}/${TARGET_TUPLE}"
-rsync -a "./${WPI_HOST_PREFIX}/" "${TREE_OUT}"
+rsync -aE "./${TARGET_TUPLE}/" "${TREE_OUT}/${TARGET_TUPLE}"
+rsync -aE "./${WPI_HOST_PREFIX}/" "${TREE_OUT}"
 rm -rf "./${WPI_HOST_PREFIX}" "./${TARGET_TUPLE}"
 
 xpushd "${TREE_OUT}"

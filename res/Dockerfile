@@ -1,5 +1,6 @@
 ARG ARCH=amd64
-FROM docker.io/${ARCH}/ubuntu:xenial
+ARG RELEASE=xenial
+FROM docker.io/${ARCH}/ubuntu:${RELEASE}
 LABEL org.opencontainers.image.source "https://github.com/RyanHir/toolchain-builder"
 ENV TZ=UTC
 

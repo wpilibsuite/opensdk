@@ -36,27 +36,27 @@ jobs:
             {
               os-cfg: linux_arm64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
+              container: "ghcr.io/ryanhir/toolchain-builder:xenial",
             },
             {
               os-cfg: linux_armhf,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
+              container: "ghcr.io/ryanhir/toolchain-builder:xenial",
             },
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
+              container: "ghcr.io/ryanhir/toolchain-builder:xenial",
             },
             {
               os-cfg: windows_i686,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
+              container: "ghcr.io/ryanhir/toolchain-builder:bionic",
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:latest-amd64",
+              container: "ghcr.io/ryanhir/toolchain-builder:bionic",
             },
             {
               os-cfg: macos_x86_64,

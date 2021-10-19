@@ -1,22 +1,35 @@
 export DOCKER_BUILDKIT=0
-TAG=ghcr.io/ryanhir/toolchain-builder:latest
-.PHONY: build pull push
+TAG=ghcr.io/ryanhir/toolchain-builder
+
+.PHONY: all
+all: manifest
 
 # Cannot be a part of the Ubuntu Ports
 ARCH_LIST=amd64 i386
 
-manifest: $(foreach arch,${ARCH_LIST},build-${arch} push-${arch})
-	docker manifest create ${TAG} \
-		$(foreach arch,${ARCH_LIST},--amend ${TAG}-${arch})
-	docker manifest push ${TAG}
+manifest: manifest-bionic manifest-xenial
+	/bin/true
 
-build-%:
+manifest-%: $(foreach arch,${ARCH_LIST},%/build-${arch})
+	docker manifest create ${TAG}:$* \
+		$(foreach arch,${ARCH_LIST},--amend ${TAG}:$*-${arch})
+	docker manifest push ${TAG}:$*
+
+
+bionic/build-%:
 	docker build \
-		-t ${TAG}-$* \
+		-t ${TAG}:bionic-$* \
 		--platform linux/$* \
 		--build-arg ARCH=$* \
+		--build-arg RELEASE=bionic \
 		.
-push-%: build-%
-	docker push \
-		${TAG}-$*
+	docker push ${TAG}:bionic-$*
 
+xenial/build-%:
+	docker build \
+		-t ${TAG}:xenial-$* \
+		--platform linux/$* \
+		--build-arg ARCH=$* \
+		--build-arg RELEASE=xenial \
+		.
+	docker push ${TAG}:xenial-$*

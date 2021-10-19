@@ -10,14 +10,13 @@ IS_GNU=true
 
 for cmd in "${TO_TEST[@]}"
 do
-    printf "Testing $cmd... "
-    cmd-check $cmd
-    if [ "$?" != 0 ]; then
+    printf "Testing %s... " "$cmd"
+    if cmd-check "$cmd"; then
+        echo "Passed"
+    else
         echo "Failed"
         IS_GNU=false
         break
-    else
-        echo "Passed"
     fi
 done
 

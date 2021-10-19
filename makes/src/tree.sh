@@ -7,7 +7,7 @@ rm -rf tree-{build,install}
 mkdir tree-{build,install}
 for dir in {gcc,sysroot,binutils,gdb,frcmake}-install; do
     # -L will destroy symlinks and just duplicate
-    rsync -aL "$dir/" tree-build
+    rsync -arEL "$dir/" tree-build/ || die "rsync tree build failed - $dir"
 done
 xpushd tree-build
 du -hs .

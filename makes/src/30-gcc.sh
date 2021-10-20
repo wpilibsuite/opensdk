@@ -95,24 +95,16 @@ fi
 
 function _make_multi() {
     function _make() {
-        local msg
-        msg="$1"
-        shift
-        make -j"$JOBS" "${@}" || die "$msg"
+        make -j"$JOBS" "${@}" || return
+    }
+    function _make_installer() {
+        make DESTDIR="${BUILD_DIR}/gcc-install" "${@}" || return
     }
 
-    function _make_installer() {
-        local msg
-        msg="$1"
-        shift
-        make \
-            DESTDIR="${BUILD_DIR}/gcc-install" \
-            "${@}" || die "$msg"
-    }
-    process_background "Building GCC '$2'" \
-        _make "$1" "all-$2"
-    process_background "Installing GCC '$2'" \
-        _make_installer "$1" "install-$2"
+    process_background "Building GCC '$1'" _make "all-$1" ||
+        die "GCC build '$1'"
+    process_background "Installing GCC '$1'" _make_installer "install-$1" ||
+        die "GCC install '$1'"
 }
 
 xpushd "${BUILD_DIR}/gcc-build"
@@ -122,7 +114,7 @@ process_background "Configuring GCC" \
     die "gcc configure failed"
 
 # Build the core compiler without libraries
-_make_multi "gcc build failed" gcc
+_make_multi gcc
 
 # libgcc is a complicated beast. Its easier to just build it ourselves
 TASKS=(target-libgcc)
@@ -145,6 +137,6 @@ if [ "${CANADIAN_STAGE_ONE}" != "true" ]; then
     esac
 fi
 for task in "${TASKS[@]}"; do
-    _make_multi "GCC $task" "$task"
+    _make_multi "$task"
 done
 xpopd

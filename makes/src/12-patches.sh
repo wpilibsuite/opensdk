@@ -33,9 +33,10 @@ if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
     done
 fi
 
-if [ "${WPI_HOST_NAME}" = "Linux" ]; then
-    patch_project make "${PATCH_DIR}/hosts/Linux/make.patch"
-fi
+case "${WPI_HOST_NAME}" in
+Linux) patch_project make "${PATCH_DIR}/hosts/Linux/make.patch" ;;
+Mac) patch_project gcc "${PATCH_DIR}/hosts/Mac/gcc.patch" ;;
+esac
 
 patch_project gcc "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}/gcc.patch"
 

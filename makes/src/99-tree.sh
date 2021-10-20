@@ -59,7 +59,7 @@ for exec in "${TARGET_TUPLE}-${TARGET_PREFIX}"* "${TARGET_TUPLE}"-gcc-*; do
 done
 
 for exec in *; do
-    if file "${exec}" | grep -qiF -e "elf" -e "mach-o"; then
+    if file "${exec}" | grep -qiF -e "elf" -e "mach-o" -o "pe32+"; then
         "${STRIP_CMD}" "${exec}" || die "Could not strip ${exec}"
     fi
 done

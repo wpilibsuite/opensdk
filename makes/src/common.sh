@@ -58,6 +58,10 @@ function process_background() {
 [ "${WPI_HOST_PREFIX:-fail}" != fail ] || die "prefix dir"
 [ "${DOWNLOAD_DIR:-fail}" != fail ] || die "Download Dir"
 
+if [ "${FUNC_ONLY}" = "true" ]; then
+    return 0
+fi
+
 BUILD_TUPLE="$(sh "${DOWNLOAD_DIR}"/config.guess)"
 if [ -n "${WPI_HOST_TUPLE}" ]; then
     HOST_TUPLE="$(sh "${DOWNLOAD_DIR}"/config.sub "${WPI_HOST_TUPLE}")"

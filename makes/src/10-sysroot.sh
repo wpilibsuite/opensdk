@@ -1,6 +1,7 @@
 #! /usr/bin/bash
 
 set -e
+FUNC_ONLY=true
 
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"

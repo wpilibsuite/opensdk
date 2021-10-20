@@ -1,6 +1,8 @@
 #! /usr/bin/bash
 # shellcheck disable=SC2010
 
+FUNC_ONLY=true
+
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 

@@ -89,10 +89,7 @@ jobs:
           matrix.host.os-cfg == 'macos_x86_64' ||
           matrix.host.os-cfg == 'linux_x86_64'
         run:
-          ./test.sh \
-            hosts/${{matrix.host.os-cfg}}.env \
-            targets/${{matrix.target.os}} \
-            ${{matrix.target.port}}
+          ./test.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}

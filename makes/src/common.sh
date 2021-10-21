@@ -63,7 +63,7 @@ if [ "${FUNC_ONLY}" = "true" ]; then
 fi
 
 BUILD_TUPLE="$(sh "${DOWNLOAD_DIR}"/config.guess)"
-HOST_TUPLE="${BUILD_TUPLE}"
+HOST_TUPLE="${WPI_HOST_TUPLE}"
 SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
 SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"
 

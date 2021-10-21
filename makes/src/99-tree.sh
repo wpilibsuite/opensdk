@@ -47,6 +47,8 @@ if [ -x "${STRIP}" ]; then
     STRIP_CMD="${STRIP}"
 elif [ -e "/usr/bin/${HOST_TUPLE}-strip" ]; then
     STRIP_CMD="/usr/bin/${HOST_TUPLE}-strip"
+elif [ -e "/usr/bin/${WPI_HOST_TUPLE}-strip" ]; then
+    STRIP_CMD="/usr/bin/${WPI_HOST_TUPLE}-strip"
 elif [ "${WPI_HOST_NAME}" = "Mac" ]; then
     STRIP_CMD="strip"
 else

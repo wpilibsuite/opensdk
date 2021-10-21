@@ -13,46 +13,80 @@ function patch_or_die() {
 }
 
 function patch_project() {
-    xpushd "${DOWNLOAD_DIR}"
+    local proj
+    local src
+    local ver
     case "$1" in
-    bin) xpushd "binutils-${V_BIN}" ;;
-    gcc) xpushd "gcc-${V_GCC}" ;;
-    make) xpushd "make-${V_MAKE}" ;;
+    bin)
+        proj="binutils"
+        src="binutils-${V_BIN}"
+        ver="${V_BIN}"
+        ;;
+    gcc)
+        proj="gcc"
+        src="gcc-${V_GCC}"
+        ver="${V_GCC}"
+        ;;
+    make)
+        proj="make"
+        src="make-${V_MAKE}"
+        ver="${V_MAKE}"
+        ;;
     *) die "Unknown config" ;;
     esac
 
-    patch_or_die "$2"
+    function patch_loop() {
+        local _skip
+        xpushd "${1}"
+        for _patch in *; do
+            _skip=false
+            case "$_patch" in
+            *darwin*)
+                if [ "$WPI_HOST_NAME" != "Mac" ]; then
+                    _skip=true
+                fi
+                ;;
+            *debian*)
+                if [ "$TARGET_DISTRO" = "roborio" ]; then
+                    _skip=true
+                fi
+                ;;
+            *) ;;
+            esac
+            if $_skip; then
+                continue
+            fi
+            _patch="${PWD}/$_patch"
+            xpushd "${DOWNLOAD_DIR}/${src}"
+            patch_or_die "$_patch"
+            xpopd
+        done
+        xpopd
+    }
 
-    xpopd
-    xpopd
+    if [ -d "${PATCH_DIR}/${proj}" ]; then
+        xpushd "${PATCH_DIR}/${proj}"
+        if [ -d "./any" ]; then
+            patch_loop "any"
+        fi
+        if [ -d "./${ver}" ]; then
+            patch_loop "${ver}"
+        fi
+        xpopd
+    fi
 }
 
-if ls -l "${PATCH_DIR}/" | grep -q "gcc-${V_GCC//.*/}"; then
-    for file in "${PATCH_DIR}"/gcc-"${V_GCC//.*/}"_*.patch; do
-        patch_project gcc "$file"
+patch_project bin
+patch_project gcc
+patch_project make
+
+if [ -d "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}" ]; then
+    xpushd "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}"
+    for _patch in *; do
+        _patch="${PWD}/$_patch"
+        xpushd "${DOWNLOAD_DIR}/gcc-${V_GCC}"
+        patch_or_die "$_patch"
+        xpopd
     done
-fi
-
-case "${WPI_HOST_NAME}" in
-Linux) patch_project make "${PATCH_DIR}/hosts/Linux/make.patch" ;;
-Mac) patch_project gcc "${PATCH_DIR}/hosts/Mac/gcc.patch" ;;
-esac
-
-patch_project gcc "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}/gcc.patch"
-
-if [ "${TARGET_DISTRO}" != "roborio" ]; then
-    patch_project bin "${PATCH_DIR}/targets/debian/binutils-${V_BIN}.patch"
-    patch_project gcc "${PATCH_DIR}/targets/debian/gcc.patch"
-    case "${V_GCC}" in
-    7.3.0)
-        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-7.3.0.patch"
-        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-7.3.0-docs.patch"
-        ;;
-    8.3.0)
-        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-8.3.0.patch"
-        patch_project gcc "${PATCH_DIR}/targets/debian/linaro/gcc-8.3.0-docs.patch"
-        ;;
-    [4-8].*) die "Unexpected GCC release" ;;
-    *) ;; # Patch is no-op upstream
-    esac
+    xpopd
 fi

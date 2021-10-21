@@ -10,6 +10,7 @@ function patch_or_die() {
     fi
     patch -p1 -N -s <"${1}" ||
         die "patch failed: ${1}"
+    echo "[INFO]: Applied patch ${1}"
 }
 
 function patch_project() {

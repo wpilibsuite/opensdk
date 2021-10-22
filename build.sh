@@ -14,27 +14,31 @@ if [ "$WPI_HOST_NAME" = "Windows" ]; then
 fi
 
 function onexit() {
-    code="$?"
-    local msg
-    case "$code" in
-    0) msg="INFO" ;;
-    *) msg="ERROR" ;;
-    esac
-    echo "[${msg}]: Exiting with code ${code}"
+    local -r code="$?"
+    echo "[ERROR]: Exiting with code ${code}"
 }
-trap onexit "err" "exit"
 
 if [ "${PREBUILD_CANADIAN}" = "true" ]; then
+    if [ "$(uname -m)" != "x86_64" ]; then
+        echo "[ERROR]: Canadian builds require x86 build machines"
+        exit 1
+    fi
+    case "$(uname)" in
+    Linux) _os="linux" ;;
+    Darwin) _os="macos" ;;
+    *)
+        echo "[ERROR]: Unsupported build system"
+        exit 1
+        ;;
+    esac
     # Recursivly build to setup host to help the canadian build
-    CANADIAN_STAGE_ONE=true \
-        PREBUILD_CANADIAN=false bash \
-        "$0" "hosts/linux_x86_64.env" "$2" "$3" || exit
+    CANADIAN_STAGE_ONE=true PREBUILD_CANADIAN=false bash \
+        "$0" "hosts/${_os}_x86_64.env" "$2" "$3" || exit
+    unset _os
     if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
         exit 1
-    fi
-    # TODO: This will break if the build machine is not x86_64
-    if ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86-64 ]]; then
+    elif ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86-64 ]]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} is built incorrectly"
         exit 1
     fi
@@ -46,6 +50,8 @@ set -e
 mkdir -p "${DOWNLOAD_DIR}"
 pushd "${DOWNLOAD_DIR}"
 popd
+
+trap onexit "err" "exit"
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR} --no-print-directory"
@@ -60,3 +66,5 @@ fi
 
 # Package build for release
 ${MAKE} pkg
+
+trap - "err" "exit"

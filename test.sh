@@ -21,27 +21,45 @@ mkdir -p toolchain
 pushd toolchain
 tar xf "$ROOT_DIR/output/$ARCHIVE_NAME"
 cd "${TOOLCHAIN_NAME}"
-cat << EOF > hello.c
+
+CC="./bin/${TARGET_PREFIX}gcc"
+CXX="./bin/${TARGET_PREFIX}g++"
+STRIP="./bin/${TARGET_PREFIX}strip"
+
+C_CODE='
 #include <stdio.h>
 int main() {
     puts("Hello World");
     return 0;
 }
-EOF
-cat << EOF > hello.cpp
+'
+
+CXX_CODE='
 #include <iostream>
 int main() {
+    struct exception {};
     std::cout << "Hello World" << std::endl;
+    try { throw exception{}; }
+    catch (exception) {}
+    catch (...) {}
     return 0;
 }
-EOF
-"./bin/${TARGET_PREFIX}gcc" hello.c -o a.out || exit
-file a.out
-"./bin/${TARGET_PREFIX}g++" hello.cpp -o a.out || exit
-file a.out
+'
 
-# Test sanitizer linkage
-"./bin/${TARGET_PREFIX}gcc" hello.c -o a.out -fsanitize=undefined || exit
+echo "[INFO]: Testing C Compiler"
+echo "$C_CODE" | "$CC" -x c -o a.out -
+
+echo "[INFO]: Testing C++ Compiler"
+echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -
+
+echo "[INFO]: Testing shared linkage"
+echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -fsanitize=undefined -
+
+echo "[INFO]: Testing ELF strip"
+"${STRIP}" a.out
+
+echo "[INFO]: Logging basic compiler file result"
+file a.out
 
 popd
 rm -r toolchain

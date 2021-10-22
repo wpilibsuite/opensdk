@@ -105,7 +105,23 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     # compilers may be intended for different systems even though they have
     # the same prefix due to the tuple matching.
     if [ "${WPI_HOST_NAME}" = "Mac" ]; then
-        die "macOS cross-compiling not yet supported"
+        xcode_arch_flag=""
+        case "${WPI_HOST_TUPLE}" in
+        x86_64) xcode_arch_flag="-arch x86_64" ;;
+        arm64* | aarch64*) xcode_arch_flag="-arch arm64" ;;
+        *) die "Unsupported Canadian config" ;;
+        esac
+        # At the moment it is not clear what programs need the arch flag
+        AR="$(xcrun -find ar)"
+        AS="$(xcrun -find as)"
+        LD="$(xcrun -find ld)"
+        NM="$(xcrun -find nm)"
+        RANLIB="$(xcrun -find ranlib)"
+        STRIP="$(xcrun -find strip)"
+        OBJCOPY="$(xcrun -find objcopy)"
+        OBJDUMP="$(xcrun -find objdump)"
+        CC="$(xcrun -find clang) $xcode_arch_flag"
+        CXX="$(xcrun -find clang++) $xcode_arch_flag"
     else
         AR="/usr/bin/${HOST_TUPLE}-ar"
         AS="/usr/bin/${HOST_TUPLE}-as"

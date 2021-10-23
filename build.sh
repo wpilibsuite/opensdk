@@ -38,7 +38,7 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
         exit 1
-    elif ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86-64 ]]; then
+    elif ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86[-_]64 ]]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} is built incorrectly"
         exit 1
     fi

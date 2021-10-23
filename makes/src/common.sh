@@ -106,22 +106,24 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     # the same prefix due to the tuple matching.
     if [ "${WPI_HOST_NAME}" = "Mac" ]; then
         xcode_arch_flag=""
+        xcode_sdk_flag="-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
         case "${WPI_HOST_TUPLE}" in
         x86_64) xcode_arch_flag="-arch x86_64" ;;
         arm64* | aarch64*) xcode_arch_flag="-arch arm64" ;;
         *) die "Unsupported Canadian config" ;;
         esac
+        xcrun_find="xcrun --sdk macosx -f"
         # At the moment it is not clear what programs need the arch flag
-        AR="$(xcrun -find ar)"
-        AS="$(xcrun -find as)"
-        LD="$(xcrun -find ld)"
-        NM="$(xcrun -find nm)"
-        RANLIB="$(xcrun -find ranlib)"
-        STRIP="$(xcrun -find strip)"
-        OBJCOPY="$(xcrun -find objcopy)"
-        OBJDUMP="$(xcrun -find objdump)"
-        CC="$(xcrun -find clang) $xcode_arch_flag"
-        CXX="$(xcrun -find clang++) $xcode_arch_flag"
+        AR="$($xcrun_find ar)"
+        AS="$($xcrun_find as) $xcode_arch_flag"
+        LD="$($xcrun_find ld) $xcode_arch_flag $xcode_sdk_flag"
+        NM="$($xcrun_find nm) $xcode_arch_flag"
+        STRIP="$($xcrun_find strip) $xcode_arch_flag"
+        RANLIB="$($xcrun_find ranlib)"
+        OBJDUMP="$($xcrun_find objdump)"
+        CC="$($xcrun_find cc) $xcode_arch_flag $xcode_sdk_flag"
+        CXX="$($xcrun_find c++) $xcode_arch_flag $xcode_sdk_flag"
+        CPP="$($xcrun_find cpp) $xcode_arch_flag $xcode_sdk_flag"
     else
         AR="/usr/bin/${HOST_TUPLE}-ar"
         AS="/usr/bin/${HOST_TUPLE}-as"
@@ -146,6 +148,7 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     export READELF
     export CC
     export CXX
+    export CPP
 
     AR_FOR_TARGET="/opt/frc/bin/${TARGET_TUPLE}-ar"
     export AR_FOR_TARGET

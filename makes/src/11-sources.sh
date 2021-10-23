@@ -20,11 +20,12 @@ function update_config_tools() {
     if ! [ -d "${1}" ]; then
         die "Input directory does not exist!"
     fi
+    # gcc/mpc fails without sudo (??)
     if [ -e "${1}/config.guess" ]; then
-        cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
+        sudo cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
     fi
     if [ -e "${1}/config.sub" ]; then
-        cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
+        sudo cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
     fi
 }
 
@@ -48,13 +49,13 @@ xpushd "gcc-${V_GCC}"
 xpopd
 
 update_config_tools "binutils-${V_BIN}"
+update_config_tools "expat-${V_EXPAT}/conftools"
 update_config_tools "gcc-${V_GCC}"
 update_config_tools "gcc-${V_GCC}/gmp"
 update_config_tools "gcc-${V_GCC}/isl"
 update_config_tools "gcc-${V_GCC}/mpc"
 update_config_tools "gcc-${V_GCC}/mpfr"
-update_config_tools "expat-${V_EXPAT}/conftools"
 update_config_tools "gdb-${V_GDB}"
-update_config_tools "make-${V_MAKE}"
+update_config_tools "make-${V_MAKE}/config"
 
 xpopd

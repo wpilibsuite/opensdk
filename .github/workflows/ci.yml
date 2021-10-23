@@ -3,9 +3,11 @@ name: Build
 on:
   push:
     paths-ignore:
+      - '.vscode'
       - '**.md'
   pull_request:
     paths-ignore:
+      - '.vscode'
       - '**.md'
 
 jobs:

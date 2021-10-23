@@ -57,6 +57,7 @@ mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR} --no-print-directory"
 ${MAKE} all
 if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
+    trap - "err" "exit"
     exit 0
 fi
 

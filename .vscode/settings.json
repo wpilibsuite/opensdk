@@ -1,5 +1,11 @@
 {
     "shellcheck.customArgs": [
         "-x"
-    ]
+    ],
+    "files.associations": {
+        "*.env": "shellscript"
+    },
+    "shellcheck.ignorePatterns": {
+        "**/*.env": true
+    }
 }

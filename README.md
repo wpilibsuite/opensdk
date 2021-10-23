@@ -15,6 +15,7 @@
 | x86_64 | Linux | Ubuntu 16.04 |
 | i686 | Win32 | Windows 7 |
 | x86_64 | Win64 | Windows 7 |
+| ARMv8 | macOS | macOS 11.0 |
 | x86_64 | macOS | macOS 10.9 |
 
 ## Supported Targets

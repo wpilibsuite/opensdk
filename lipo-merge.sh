@@ -33,9 +33,9 @@ else
 fi
 
 MAKE="make -C ${ROOT_DIR}/makes/"
-ARM_MAKE="WPI_HOST_TUPLE=arm64-apple-darwin ${MAKE}"
-X86_MAKE="WPI_HOST_TUPLE=x86_64-apple-darwin ${MAKE}"
-UNIVERSAL_MAKE="WPI_HOST_TUPLE=universal-apple-darwin ${MAKE}"
+ARM_MAKE="$MAKE WPI_HOST_TUPLE=arm64-apple-darwin"
+X86_MAKE="$MAKE WPI_HOST_TUPLE=x86_64-apple-darwin"
+UNIVERSAL_MAKE="$MAKE WPI_HOST_TUPLE=universal-apple-darwin"
 
 ARM_ARCHIVE="$ROOT_DIR/output/$(${ARM_MAKE} --no-print-directory print-pkg)"
 X86_ARCHIVE="$ROOT_DIR/output/$(${X86_MAKE} --no-print-directory print-pkg)"
@@ -60,26 +60,32 @@ pushd "${ROOT_DIR}/output" || die "pushd"
 rm -r ./*
 popd || die "popd"
 
+# The stat command has a different interface on Mac and Linux
+case "$(uname)" in
+Linux) STAT="stat -c %a";;
+Darwin) STAT="stat -f %p";;
+esac
+
 # Recreate folder structure
 (cd x86 && find . -type d) | while read -r FILE; do
     mkdir -p "universal/${FILE}"
-    PERM=$(stat -f "%p" "x86/${FILE}")
-    chmod "${PERM}" "universal/${FILE}"
+    PERM=$($STAT "x86/${FILE}")
+    chmod "$PERM" "universal/${FILE}"
 done
 
 # Scan the primary tree for files and make them in the output
 (cd x86 && find . -type f) | while read -r FILE; do
-    TYPE=$(lipo -info "x86/${FILE}" 2>/dev/null)
-    if [[ "${TYPE}" == *"is architecture: x86_64"* ]]; then # It's a binary
-        $LIPO -create "x86/${FILE}" "arm/${FILE}" -output "universal/${FILE}"
+    TYPE=$($LIPO -info "x86/${FILE}" 2>/dev/null)
+    if [[ "$TYPE" =~ "Non-fat" ]]; then # It's a binary
+        $LIPO -create "x86/$FILE" "arm/$FILE" -output "universal/$FILE"
     else
-        cp "x86/${FILE}" "universal/${FILE}"
+        cp "x86/$FILE" "universal/$FILE"
     fi  
-    PERM=$(stat -f %p "x86/${FILE}")
-    chmod "${PERM}" "universal/${FILE}"
+    PERM=$($STAT "x86/$FILE")
+    chmod "$PERM" "universal/$FILE"
 done
 
-ARCHIVE="$ROOT_DIR/output/$(${UNIVERSAL_MAKE} --no-print-directory print-pkg)"
+ARCHIVE="$(${UNIVERSAL_MAKE} --no-print-directory print-pkg)"
 OUTPUT_DIR="${ROOT_DIR}/output"
 ARCHIVE_PATH="${OUTPUT_DIR}/${ARCHIVE}"
 

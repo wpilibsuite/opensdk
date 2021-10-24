@@ -43,8 +43,11 @@
 -----
 
 ## Resources
- * [How to cross compile with LLVM based tools](https://archive.fosdem.org/2018/schedule/event/crosscompile/attachments/slides/2107/export/events/attachments/crosscompile/slides/2107/How_to_cross_compile_with_LLVM_based_tools.pdf)
-   * Good content but we are not using much LLVM specific stuff.
- * [Linaro GCC toolchains](https://releases.linaro.org/components/toolchain/binaries/)
-   * Good examples of (generic) ARM toolchains
- * [GCC Build instructions and configs](https://gcc.gnu.org/install/)
+  * [Linaro GCC toolchains](https://releases.linaro.org/components/toolchain/binaries/)
+    * Good examples of (generic) ARM toolchains
+  * [GCC Build instructions and configs](https://gcc.gnu.org/install/)
+
+## Credits
+  * (majenko) [Using lipo to combine toolchains](https://majenko.co.uk/blog/how-i-cross-compile-fat-binary-cross-compiler-os-x-big-sur)
+  * (crosstool-ng) [GCC patches for M1 hosting](https://github.com/crosstool-ng/crosstool-ng/)
+    * Copyright is owned by original authors of the patches and the Free Software Foundation where applicable

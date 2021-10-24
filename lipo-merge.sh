@@ -10,6 +10,9 @@ die() {
 }
 
 ROOT_DIR="${PWD}"
+source "${ROOT_DIR}/scripts/setup/tools.sh"
+source "${ROOT_DIR}/scripts/setup/gnutils.sh"
+
 TARGET_CFG="$(readlink -f "$1")"
 TARGET_PORT="$2"
 TOOLCHAIN_NAME="$(basename "$TARGET_CFG")"
@@ -90,4 +93,4 @@ OUTPUT_DIR="${ROOT_DIR}/output"
 ARCHIVE_PATH="${OUTPUT_DIR}/${ARCHIVE}"
 
 cd universal || die "cd"
-tar -c --xz -f "${ARCHIVE_PATH}" .
+tar -c --xz -f "${ARCHIVE_PATH}" . || die "tar"

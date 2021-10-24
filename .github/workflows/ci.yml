@@ -102,6 +102,7 @@ jobs:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
   lipo-merge:
+    depends: build
     strategy:
       matrix:
         target:

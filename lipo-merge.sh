@@ -89,4 +89,5 @@ ARCHIVE="$(${UNIVERSAL_MAKE} --no-print-directory print-pkg)"
 OUTPUT_DIR="${ROOT_DIR}/output"
 ARCHIVE_PATH="${OUTPUT_DIR}/${ARCHIVE}"
 
-(cd universal && tar -c --xz -f "${ARCHIVE_PATH}" .)
+cd universal || die "cd"
+tar -c --xz -f "${ARCHIVE_PATH}" .

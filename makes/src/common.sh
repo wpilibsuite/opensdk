@@ -63,7 +63,11 @@ if [ "${FUNC_ONLY}" = "true" ]; then
     return 0
 fi
 
-BUILD_TUPLE="$(gcc -dumpmachine)"
+if [ "$WPI_BUILD_TUPLE" ]; then
+    BUILD_TUPLE="$WPI_BUILD_TUPLE"
+else
+    BUILD_TUPLE="$(gcc -dumpmachine)"
+fi
 HOST_TUPLE="${WPI_HOST_TUPLE}"
 SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
 SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"

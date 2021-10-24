@@ -102,25 +102,26 @@ jobs:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
   lipo-merge:
-    matrix:
-      [
-        { os: roborio-stable, port: cortexa9_vfpv3 },
-        { os: roborio-staging, port: cortexa9_vfpv3 },
-        { os: bionic, port: amd64 },
-        { os: bionic, port: armhf },
-        { os: bionic, port: arm64 },
-        { os: focal, port: amd64 },
-        { os: focal, port: armhf },
-        { os: focal, port: arm64 },
-        { os: buster, port: amd64 },
-        { os: buster, port: armhf },
-        { os: buster, port: arm64 },
-        { os: bullseye, port: amd64 },
-        { os: bullseye, port: armhf },
-        { os: bullseye, port: arm64 },
-        { os: raspi-buster, port: armhf },
-        { os: raspi-bullseye, port: armhf },
-      ]
+    strategy:
+      matrix:
+        [
+          { os: roborio-stable, port: cortexa9_vfpv3 },
+          { os: roborio-staging, port: cortexa9_vfpv3 },
+          { os: bionic, port: amd64 },
+          { os: bionic, port: armhf },
+          { os: bionic, port: arm64 },
+          { os: focal, port: amd64 },
+          { os: focal, port: armhf },
+          { os: focal, port: arm64 },
+          { os: buster, port: amd64 },
+          { os: buster, port: armhf },
+          { os: buster, port: arm64 },
+          { os: bullseye, port: amd64 },
+          { os: bullseye, port: armhf },
+          { os: bullseye, port: arm64 },
+          { os: raspi-buster, port: armhf },
+          { os: raspi-bullseye, port: armhf },
+        ]
     name: Create Universal Binary for ${{matrix.os}}_${{matrix.port}}
     runs-on: macos-latest
     steps:

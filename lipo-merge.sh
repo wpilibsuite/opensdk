@@ -76,7 +76,7 @@ done
         cp "x86/${FILE}" "universal/${FILE}"
     fi  
     PERM=$(stat -f %p "x86/${FILE}")
-    chmod "${PERM}" "${OUT}/${FILE}"
+    chmod "${PERM}" "universal/${FILE}"
 done
 
 ARCHIVE="$ROOT_DIR/output/$(${UNIVERSAL_MAKE} --no-print-directory print-pkg)"

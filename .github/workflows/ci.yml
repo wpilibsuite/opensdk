@@ -101,3 +101,48 @@ jobs:
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
+  lipo-merge:
+    matrix:
+      [
+        { os: roborio-stable, port: cortexa9_vfpv3 },
+        { os: roborio-staging, port: cortexa9_vfpv3 },
+        { os: bionic, port: amd64 },
+        { os: bionic, port: armhf },
+        { os: bionic, port: arm64 },
+        { os: focal, port: amd64 },
+        { os: focal, port: armhf },
+        { os: focal, port: arm64 },
+        { os: buster, port: amd64 },
+        { os: buster, port: armhf },
+        { os: buster, port: arm64 },
+        { os: bullseye, port: amd64 },
+        { os: bullseye, port: armhf },
+        { os: bullseye, port: arm64 },
+        { os: raspi-buster, port: armhf },
+        { os: raspi-bullseye, port: armhf },
+      ]
+    name: Create Universal Binary for ${{matrix.os}}_${{matrix.port}}
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup
+        run: brew install coreutils dpkg gnu-tar gzip rsync xz
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.os}}-${{matrix.port}}-macos_arm64
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.os}}-${{matrix.port}}-macos_x86_64
+      - name: Import Developer ID Certificate
+        uses: wpilibsuite/import-signing-certificate@v1
+        with:
+          certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
+          certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+        if: github.repository_owner == 'wpilibsuite'
+      - name: Merge Toolchains
+        run: ./lipo-merge.sh targets/${{matrix.os}} ${{matrix.port}}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{matrix.os}}-${{matrix.port}}-macos_universal
+          path: output/*

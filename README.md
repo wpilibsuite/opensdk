@@ -7,16 +7,19 @@
 
 ## Supported Hosts
 
-| Architecture | OS | Minimum Supported Release |
+| OS | Arch | Minimum Supported Release |
 | - | - | - |
-| ARMv7 | Linux | Ubuntu 16.04 |
-| ARMv8 | Linux | Ubuntu 16.04 |
-| i686 | Linux | Ubuntu 16.04 |
-| x86_64 | Linux | Ubuntu 16.04 |
-| i686 | Win32 | Windows 7 |
-| x86_64 | Win64 | Windows 7 |
-| ARMv8 | macOS | macOS 11.0 |
-| x86_64 | macOS | macOS 10.9 |
+| Windows | i686 | Windows 7 |
+| Windows | x86_64 | Windows 7 |
+| Linux | armv7 | Ubuntu 16.04 |
+| Linux | arm64 | Ubuntu 16.04 |
+| Linux | i686 * | Ubuntu 16.04 |
+| Linux | x86_64 | Ubuntu 16.04 |
+| Mac | arm64 | macOS 11.0 |
+| Mac | x86_64 | macOS 10.9 |
+| Mac | Universal | - |
+
+\* Linux i686 is only built for Raspbian targets
 
 ## Supported Targets
 

@@ -96,11 +96,13 @@ jobs:
       matrix:
         target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
     name: Create Universal Binary for ${{matrix.target.os}}_${{matrix.target.port}}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Setup
-        run: brew install coreutils dpkg gnu-tar gzip rsync xz
+        run: |
+          apt-get update
+          apt-get install -y -–no-install-recommends llvm
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_arm64

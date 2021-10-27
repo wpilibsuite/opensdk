@@ -97,12 +97,14 @@ jobs:
         target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
     name: Create Universal Binary for ${{matrix.target.os}}_${{matrix.target.port}}
     runs-on: ubuntu-latest
+    container: docker.io/archlinux:base-devel
     steps:
       - uses: actions/checkout@v1
       - name: Setup
         run: |
-          sudo apt-get update
-          sudo apt-get install -y llvm
+          pacman-key --init
+          pacman -Syu
+          pacman -S llvm
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_arm64

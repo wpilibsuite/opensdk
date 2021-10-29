@@ -7,16 +7,19 @@
 
 ## Supported Hosts
 
-| Architecture | OS | Minimum Supported Release |
+| OS | Arch | Minimum Supported Release |
 | - | - | - |
-| ARMv7 | Linux | Ubuntu 16.04 |
-| ARMv8 | Linux | Ubuntu 16.04 |
-| i686 | Linux | Ubuntu 16.04 |
-| x86_64 | Linux | Ubuntu 16.04 |
-| i686 | Win32 | Windows 7 |
-| x86_64 | Win64 | Windows 7 |
-| ARMv8 | macOS | macOS 11.0 |
-| x86_64 | macOS | macOS 10.9 |
+| Windows | i686 | Windows 7 |
+| Windows | x86_64 | Windows 7 |
+| Linux | armv7 | Ubuntu 16.04 |
+| Linux | arm64 | Ubuntu 16.04 |
+| Linux | i686 * | Ubuntu 16.04 |
+| Linux | x86_64 | Ubuntu 16.04 |
+| Mac | arm64 | macOS 11.0 |
+| Mac | x86_64 | macOS 10.9 |
+| Mac | Universal | - |
+
+\* Linux i686 is only built for Raspbian targets
 
 ## Supported Targets
 
@@ -43,8 +46,11 @@
 -----
 
 ## Resources
- * [How to cross compile with LLVM based tools](https://archive.fosdem.org/2018/schedule/event/crosscompile/attachments/slides/2107/export/events/attachments/crosscompile/slides/2107/How_to_cross_compile_with_LLVM_based_tools.pdf)
-   * Good content but we are not using much LLVM specific stuff.
- * [Linaro GCC toolchains](https://releases.linaro.org/components/toolchain/binaries/)
-   * Good examples of (generic) ARM toolchains
- * [GCC Build instructions and configs](https://gcc.gnu.org/install/)
+  * [Linaro GCC toolchains](https://releases.linaro.org/components/toolchain/binaries/)
+    * Good examples of (generic) ARM toolchains
+  * [GCC Build instructions and configs](https://gcc.gnu.org/install/)
+
+## Credits
+  * (majenko) [Using lipo to combine toolchains](https://majenko.co.uk/blog/how-i-cross-compile-fat-binary-cross-compiler-os-x-big-sur)
+  * (crosstool-ng) [GCC patches for M1 hosting](https://github.com/crosstool-ng/crosstool-ng/)
+    * Copyright is owned by original authors of the patches and the Free Software Foundation where applicable

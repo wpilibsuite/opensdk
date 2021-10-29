@@ -1,3 +1,11 @@
 #! /bin/sh
 
-python3 -m pip install git+https://github.com/RyanHir/opensysroot@feb6778
+MIRROR="https://github.com/RyanHir/opensysroot"
+COMMIT=feb6778
+
+if ! python3 -m pip install "git+${MIRROR}@${COMMIT}" > /tmp/.pylog; then
+    cat /tmp/.pylog
+    exit 1
+fi
+
+rm /tmp/.pylog

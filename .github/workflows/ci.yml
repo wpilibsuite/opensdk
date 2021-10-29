@@ -11,28 +11,26 @@ on:
       - '**.md'
 
 jobs:
+  targets:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v1
+      - id: set-matrix
+        run: |
+          # Load targets into runtime variable to reduce complexity
+          JSON="$(cat .github/workflows/targets.json)"
+          # Remove newlines
+          JSON="${JSON//'%'/'%25'}"
+          JSON="${JSON//$'\n'/'%0A'}"
+          JSON="${JSON//$'\r'/'%0D'}"
+          echo "::set-output name=matrix::${JSON}"
   build:
+    needs: targets
     strategy:
       matrix:
-        target:
-          [
-            { os: roborio-stable, port: cortexa9_vfpv3 },
-            { os: roborio-staging, port: cortexa9_vfpv3 },
-            { os: bionic, port: amd64 },
-            { os: bionic, port: armhf },
-            { os: bionic, port: arm64 },
-            { os: focal, port: amd64 },
-            { os: focal, port: armhf },
-            { os: focal, port: arm64 },
-            { os: buster, port: amd64 },
-            { os: buster, port: armhf },
-            { os: buster, port: arm64 },
-            { os: bullseye, port: amd64 },
-            { os: bullseye, port: armhf },
-            { os: bullseye, port: arm64 },
-            { os: raspi-buster, port: armhf },
-            { os: raspi-bullseye, port: armhf },
-          ]
+        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
         host:
           [
             {
@@ -79,18 +77,9 @@ jobs:
       - name: Prep MacOS
         if: matrix.host.runner == 'macos-latest'
         run: brew install coreutils dpkg gnu-tar gzip rsync xz
-      - name: Import Developer ID Certificate
-        uses: wpilibsuite/import-signing-certificate@v1
-        with:
-          certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
-          certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
-        if: github.repository_owner == 'wpilibsuite' && matrix.host.runner == 'macos-latest'
       - name: Build
         run: |
           ./build.sh hosts/${{matrix.host.os-cfg}}.env targets/${{matrix.target.os}} ${{matrix.target.port}}
-        env:
-          APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
       - name: Test
         if:
           matrix.host.os-cfg == 'macos_x86_64' ||
@@ -101,3 +90,58 @@ jobs:
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
+  lipo-merge:
+    needs: [targets, build]
+    strategy:
+      matrix:
+        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
+    name: Create Universal Binary for ${{matrix.target.os}}_${{matrix.target.port}}
+    runs-on: ubuntu-latest
+    container: docker.io/archlinux:base-devel
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup
+        run: |
+          pacman-key --init
+          pacman --noconfirm -Syu llvm
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_arm64
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_x86_64
+      - name: Move toolchains
+        run: |
+          mkdir output
+          mv ./*.txz output
+      - name: Merge Toolchains
+        run: ./lipo-merge.sh targets/${{matrix.target.os}} ${{matrix.target.port}}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_universal
+          path: output/*
+  xcode-sign:
+    needs: [targets, lipo-merge]
+    if: github.repository_owner == 'wpilibsuite'
+    strategy:
+      matrix:
+        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
+    name: Sign macOS binaries for ${{matrix.target.os}}_${{matrix.target.port}}
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Import Developer ID Certificate
+        uses: wpilibsuite/import-signing-certificate@v1
+        with:
+          certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
+          certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_x86_64
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_arm64
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_universal

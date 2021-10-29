@@ -61,10 +61,6 @@ if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
     exit 0
 fi
 
-if is-mac-codesign; then
-    bash scripts/codesign.sh
-fi
-
 # Package build for release
 ${MAKE} pkg
 

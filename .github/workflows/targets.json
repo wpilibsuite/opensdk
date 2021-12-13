@@ -1,11 +1,11 @@
 {
     "tasks": [
         {
-            "os": "roborio-stable",
+            "os": "roborio-sumo",
             "port": "cortexa9_vfpv3"
         },
         {
-            "os": "roborio-staging",
+            "os": "roborio-hardknott",
             "port": "cortexa9_vfpv3"
         },
         {

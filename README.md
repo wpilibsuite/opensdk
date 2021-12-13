@@ -23,24 +23,24 @@
 
 ## Supported Targets
 
-| Architecture | Operating System | Tuple |
+| Architecture | Operating System | Version |
 | - | - | - |
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Stable | arm-frc2022-linux-gnueabi |
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Staging | arm-frc2022-linux-gnueabi |
-| ARMv6z | Raspberry Pi OS 10 | armv6z-buster-linux-gnueabihf |
-| ARMv6z | Raspberry Pi OS 11 | armv6z-bullseye-linux-gnueabihf |
-| ARMv7 | Debian/Raspberry Pi OS 10 | armv7-buster-linux-gnueabihf |
-| ARMv7 | Debian/Raspberry Pi OS 11 | armv7-bullseye-linux-gnueabihf |
-| ARMv7 | Ubuntu 18.04 | armv7-bionic-linux-gnueabihf |
-| ARMv7 | Ubuntu 20.04 | armv7-focal-linux-gnueabihf |
-| ARMv8 (64bit) | Debian/Raspberry Pi OS 10 | aarch64-buster-linux-gnu |
-| ARMv8 (64bit) | Debian/Raspberry Pi OS 11 | aarch64-bullseye-linux-gnu |
-| ARMv8 (64bit) | Ubuntu 18.04 | aarch64-bionic-linux-gnu |
-| ARMv8 (64bit) | Ubuntu 20.04 | aarch64-focal-linux-gnu |
-| x86_64 | Debian 10 | x86_64-buster-linux-gnu |
-| x86_64 | Debian 11 | x86_64-bullseye-linux-gnu |
-| x86_64 | Ubuntu 18.04 | x86_64-bionic-linux-gnu |
-| x86_64 | Ubuntu 20.04 | x86_64-focal-linux-gnu |
+| ARMv7 (softfp) | N.I. Linux (roboRIO) Sumo | GCC 7.3
+| ARMv7 (softfp) | N.I. Linux (roboRIO) Hardknott | GCC 10.2
+| ARMv6z | Raspberry Pi OS 10 | GCC 8.3
+| ARMv6z | Raspberry Pi OS 11 | GCC 10.2
+| ARMv7 | Debian/Raspberry Pi OS 10 | GCC 8.3
+| ARMv7 | Debian/Raspberry Pi OS 11 | GCC 10.2
+| ARMv7 | Ubuntu 18.04 | GCC 7.3
+| ARMv7 | Ubuntu 20.04 | GCC 9.3
+| ARMv8 (64bit) | Debian/Raspberry Pi OS 10 | GCC 8.3
+| ARMv8 (64bit) | Debian/Raspberry Pi OS 11 | GCC 10.2
+| ARMv8 (64bit) | Ubuntu 18.04 | GCC 7.3
+| ARMv8 (64bit) | Ubuntu 20.04 | GCC 9.3
+| x86_64 | Debian 10 | GCC 8.3
+| x86_64 | Debian 11 | GCC 10.2
+| x86_64 | Ubuntu 18.04 | GCC 7.3
+| x86_64 | Ubuntu 20.04 | GCC 9.3
 
 * Note: Debian toolchains should work with Raspberry Pi OS when ran on a Pi 2 or newer 
 -----

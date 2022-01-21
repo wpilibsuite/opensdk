@@ -34,16 +34,6 @@ jobs:
         host:
           [
             {
-              os-cfg: linux_arm64,
-              runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:xenial",
-            },
-            {
-              os-cfg: linux_armhf,
-              runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:xenial",
-            },
-            {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
               container: "ghcr.io/ryanhir/toolchain-builder:xenial",
@@ -57,11 +47,6 @@ jobs:
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
               container: "ghcr.io/ryanhir/toolchain-builder:bionic",
-            },
-            {
-              os-cfg: macos_arm64,
-              runner: macos-10.15,
-              container: "",
             },
             {
               os-cfg: macos_x86_64,
@@ -95,38 +80,8 @@ jobs:
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
-  lipo-merge:
-    needs: [targets, build]
-    strategy:
-      matrix:
-        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
-    name: Create Universal Binary for ${{matrix.target.os}}_${{matrix.target.port}}
-    runs-on: ubuntu-latest
-    container: docker.io/archlinux:base-devel
-    steps:
-      - uses: actions/checkout@v1
-      - name: Setup
-        run: |
-          pacman-key --init
-          pacman --noconfirm -Syu llvm
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_arm64
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_x86_64
-      - name: Move toolchains
-        run: |
-          mkdir output
-          mv ./*.txz output
-      - name: Merge Toolchains
-        run: ./lipo-merge.sh targets/${{matrix.target.os}} ${{matrix.target.port}}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_universal
-          path: output/*
   xcode-sign:
-    needs: [targets, lipo-merge]
+    needs: build
     if: github.repository_owner == 'wpilibsuite'
     strategy:
       matrix:
@@ -144,9 +99,3 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_x86_64
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_arm64
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_universal

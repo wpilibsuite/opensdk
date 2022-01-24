@@ -39,11 +39,6 @@ jobs:
               container: "ghcr.io/ryanhir/toolchain-builder:xenial",
             },
             {
-              os-cfg: windows_i686,
-              runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:bionic",
-            },
-            {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
               container: "ghcr.io/ryanhir/toolchain-builder:bionic",

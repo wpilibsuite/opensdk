@@ -7,19 +7,26 @@
 
 ## Supported Hosts
 
+### Tier 1
+
+| OS | Arch | Minimum Supported Release |
+| - | - | - |
+| Windows | x86_64 | Windows 7 |
+| Linux | x86_64 | Ubuntu 16.04 |
+| Mac | x86_64 | macOS 10.9 |
+
+### Tier 2
+
+NOTE: Tier 2 is not supported, but pull requests are accepted.
+
 | OS | Arch | Minimum Supported Release |
 | - | - | - |
 | Windows | i686 | Windows 7 |
-| Windows | x86_64 | Windows 7 |
 | Linux | armv7 | Ubuntu 16.04 |
 | Linux | arm64 | Ubuntu 16.04 |
-| Linux | i686 * | Ubuntu 16.04 |
-| Linux | x86_64 | Ubuntu 16.04 |
+| Linux | i686 | Ubuntu 16.04 |
 | Mac | arm64 | macOS 11.0 |
-| Mac | x86_64 | macOS 10.9 |
 | Mac | Universal | - |
-
-\* Linux i686 is only built for Raspbian targets
 
 ## Supported Targets
 

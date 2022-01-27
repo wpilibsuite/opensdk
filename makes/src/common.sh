@@ -110,7 +110,8 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     # the same prefix due to the tuple matching.
     if [ "${WPI_HOST_NAME}" = "Mac" ]; then
         xcode_arch_flag=""
-        xcode_sdk_flag="-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+        xcode_sdk_flag=""
+        # xcode_sdk_flag="-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
         case "${WPI_HOST_TUPLE}" in
         arm64* | aarch64*) xcode_arch_flag="-arch arm64" ;;
         *) die "Unsupported Canadian config" ;;

@@ -12,7 +12,7 @@
 | OS | Arch | Minimum Supported Release | Note |
 | - | - | - | - |
 | Windows | x86_64 | Windows 7 | - |
-| Linux | i686 | Ubuntu 18.04 | Only for Raspberry Pi OS |
+| Linux | i686 | Ubuntu 18.04 | Only for Raspberry Pi OS targets |
 | Linux | x86_64 | Ubuntu 18.04 | - |
 | Mac | x86_64 | macOS 10.9 | - |
 
@@ -25,7 +25,7 @@ NOTE: Tier 2 is not supported, but pull requests are accepted.
 | Windows | i686 | Windows 7 |
 | Linux | armv7 | Ubuntu 18.04 |
 | Linux | arm64 | Ubuntu 18.04 |
-| Linux | i686 | Ubuntu 16.04 |
+| Linux | i686 | Ubuntu 18.04 |
 | Mac | arm64 | macOS 11.0 |
 | Mac | Universal | - |
 

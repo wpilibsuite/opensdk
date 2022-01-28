@@ -36,7 +36,7 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:xenial",
+              container: "ghcr.io/ryanhir/toolchain-builder:bionic",
             },
             {
               os-cfg: windows_x86_64,
@@ -49,6 +49,21 @@ jobs:
               container: "",
             }
           ]
+        include:
+          - host:
+              os-cfg: linux_i686
+              runner: ubuntu-latest
+              container: ghcr.io/ryanhir/toolchain-builder:bionic
+            target:
+              os: raspi-buster
+              port: armhf
+          - host:
+              os-cfg: linux_i686
+              runner: ubuntu-latest
+              container: ghcr.io/ryanhir/toolchain-builder:bionic
+            target:
+              os: raspi-bullseye
+              port: armhf
     name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}

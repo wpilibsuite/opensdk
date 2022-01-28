@@ -43,6 +43,8 @@ apt-get install -y \
     git \
     mingw-w64 \
     m4 \
+    python3 \
+    python3-pip \
     rsync \
     sudo \
     texinfo \

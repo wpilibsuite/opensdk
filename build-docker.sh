@@ -8,14 +8,7 @@ if [ "$CI" != true ]; then
 fi
 
 PLATFORM="linux/amd64"
-if [[ "$1" =~ "linux_i686" ]]; then
-    PLATFORM="linux/386"
-fi
-
-VERSION="xenial"
-if [[ "$1" =~ "windows" ]]; then
-    VERSION="bionic"
-fi
+VERSION="bionic"
 
 docker run \
     --rm $DOCKER_ARG -v "${PWD}:/work" \

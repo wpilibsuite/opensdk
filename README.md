@@ -4,29 +4,37 @@
   * C
   * C++
   * Fortran (roboRIO only)
+    * To power the [RobotPy](https://github.com/robotpy) project
 
 ## Supported Hosts
 
 ### Tier 1
 
-| OS | Arch | Minimum Supported Release | Note |
-| - | - | - | - |
-| Windows | x86_64 | Windows XP | - |
-| Linux | i686 | Ubuntu 18.04 | Only for Raspberry Pi OS targets |
-| Linux | x86_64 | Ubuntu 18.04 | - |
-| Mac | x86_64 | macOS 10.9 | - |
+| OS | Arch | Minimum Supported Release |
+| - | - | - |
+| Windows | x86_64 | Windows XP |
+| Linux | x86_64 | Ubuntu 18.04 |
+| Mac | x86_64 | macOS 10.9 |
 
 ### Tier 2
 
-NOTE: Tier 2 is not supported, but pull requests are accepted.
+Tier 2 is used for select targets on an as needed basis.
+
+| OS | Arch | Minimum Supported Release | Note |
+| - | - | - | - |
+| Linux | i686 | Ubuntu 18.04 | Only for Raspberry Pi OS targets |
+
+### Tier 3
+
+Tier 3 is not built in CI nor is tested, but bug/merge requests will be addressed.
 
 | OS | Arch | Minimum Supported Release |
 | - | - | - |
 | Windows | i686 | Windows XP |
-| Linux | armv7 | Ubuntu 18.04 |
-| Linux | arm64 | Ubuntu 18.04 |
 | Linux | i686 | Ubuntu 18.04 |
-| Mac | arm64 | macOS 11.0 |
+| Linux | ARMv7 | Ubuntu 18.04 |
+| Linux | ARMv8 | Ubuntu 18.04 |
+| Mac | ARMv8 | macOS 11.0 |
 | Mac | Universal | - |
 
 ## Supported Targets
@@ -50,7 +58,6 @@ NOTE: Tier 2 is not supported, but pull requests are accepted.
 | x86_64 | Ubuntu 18.04 | GCC 7.3
 | x86_64 | Ubuntu 20.04 | GCC 9.3
 
-* Note: Debian toolchains should work with Raspberry Pi OS when ran on a Pi 2 or newer 
 -----
 
 ## Resources

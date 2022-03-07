@@ -1,4 +1,4 @@
-Copyright (c) 2021, Ryan Hirasaki
+Copyright (c) 2021-2022, Ryan Hirasaki
 
 All rights reserved.
 

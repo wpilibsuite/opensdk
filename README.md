@@ -49,10 +49,10 @@ Tier 3 is not built in CI nor is tested, but bug/merge requests will be addresse
 | ARMv7 | Debian/Raspberry Pi OS 11 | GCC 10.2
 | ARMv7 | Ubuntu 18.04 | GCC 7.3
 | ARMv7 | Ubuntu 20.04 | GCC 9.3
-| ARMv8 (64bit) | Debian/Raspberry Pi OS 10 | GCC 8.3
-| ARMv8 (64bit) | Debian/Raspberry Pi OS 11 | GCC 10.2
-| ARMv8 (64bit) | Ubuntu 18.04 | GCC 7.3
-| ARMv8 (64bit) | Ubuntu 20.04 | GCC 9.3
+| ARMv8 | Debian/Raspberry Pi OS 10 | GCC 8.3
+| ARMv8 | Debian/Raspberry Pi OS 11 | GCC 10.2
+| ARMv8 | Ubuntu 18.04 | GCC 7.3
+| ARMv8 | Ubuntu 20.04 | GCC 9.3
 
 -----
 

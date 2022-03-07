@@ -10,10 +10,6 @@
         },
         {
             "os": "bionic",
-            "port": "amd64"
-        },
-        {
-            "os": "bionic",
             "port": "armhf"
         },
         {
@@ -22,10 +18,6 @@
         },
         {
             "os": "focal",
-            "port": "amd64"
-        },
-        {
-            "os": "focal",
             "port": "armhf"
         },
         {
@@ -34,19 +26,11 @@
         },
         {
             "os": "buster",
-            "port": "amd64"
-        },
-        {
-            "os": "buster",
             "port": "armhf"
         },
         {
             "os": "buster",
             "port": "arm64"
-        },
-        {
-            "os": "bullseye",
-            "port": "amd64"
         },
         {
             "os": "bullseye",

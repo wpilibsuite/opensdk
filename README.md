@@ -53,10 +53,6 @@ Tier 3 is not built in CI nor is tested, but bug/merge requests will be addresse
 | ARMv8 (64bit) | Debian/Raspberry Pi OS 11 | GCC 10.2
 | ARMv8 (64bit) | Ubuntu 18.04 | GCC 7.3
 | ARMv8 (64bit) | Ubuntu 20.04 | GCC 9.3
-| x86_64 | Debian 10 | GCC 8.3
-| x86_64 | Debian 11 | GCC 10.2
-| x86_64 | Ubuntu 18.04 | GCC 7.3
-| x86_64 | Ubuntu 20.04 | GCC 9.3
 
 -----
 

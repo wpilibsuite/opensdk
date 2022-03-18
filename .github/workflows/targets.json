@@ -9,6 +9,10 @@
             "port": "cortexa9_vfpv3"
         },
         {
+            "os": "roborio-staging",
+            "port": "cortexa9_vfpv3"
+        },
+        {
             "os": "bionic",
             "port": "armhf"
         },

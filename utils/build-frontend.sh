@@ -24,11 +24,29 @@ if [ "$(uname -m)" != "x86_64" ]; then
     die "Toolchain builds require x86 build machines"
 fi
 
-# Check if system is a Linux or Mac system
-if [ "$(uname)" != "Linux" ] && [ "$(uname)" != "Darwin" ]; then
-    die "Unsupported build operating system"
+# TODO: Now that the libraries are built in linux,
+# could the build work in windows?
+if [ "${PREBUILD_CANADIAN}" = "true" ]; then
+    case "$(uname)" in
+    Linux) _os="linux" ;;
+    Darwin) _os="macos" ;;
+    *)
+        echo "[ERROR]: Unsupported build system"
+        exit 1
+        ;;
+    esac
+    # Recursivly build to setup host to help the canadian build
+    CANADIAN_STAGE_ONE=true PREBUILD_CANADIAN=false bash \
+        "$0" "hosts/${_os}_x86_64.env" "$2" "$3" || exit
+    unset _os
+    if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
+        echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
+        exit 1
+    elif ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86[-_]64 ]]; then
+        echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} is built incorrectly"
+        exit 1
+    fi
 fi
-# TODO: Now that the libraries are built in linux, could the build work in windows?
 
 # Set callback on error
 function onexit() {

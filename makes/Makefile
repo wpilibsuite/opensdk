@@ -11,7 +11,7 @@ endif
 
 SHELL := /bin/bash
 TASKS := clean \
-		task/10-sysroot \
+		task/10-import-sysroot \
 		task/11-sources \
 		task/12-patches \
 		task/20-binutils \
@@ -26,19 +26,12 @@ TASKS := clean \
 .NOTPARALLEL:
 
 all: $(TASKS)
-ifeq ($(CANADIAN_STAGE_ONE), true)
-	sudo mkdir -p $(WPI_HOST_PREFIX)
-	sudo cp -r \
-		${BUILD_DIR}/binutils-install/$(WPI_HOST_PREFIX)/* \
-		${BUILD_DIR}/gcc-install/$(WPI_HOST_PREFIX)/* \
-		${BUILD_DIR}/sysroot-install/* \
-		$(WPI_HOST_PREFIX)
-endif
+	/bin/true
 
 $(BUILD_DIR) $(OUTPUT_DIR):
 	mkdir -p $@
 
-task/%: ${BUILD_DIR}
+task/%: $(BUILD_DIR)
 	cd ${BUILD_DIR} && $(SHELL) $(ROOT_DIR)/makes/src/$*.sh
 
 clean:

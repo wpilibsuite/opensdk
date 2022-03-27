@@ -3,22 +3,35 @@
 # Always ensure proper path
 cd "$(dirname "$0")" || exit
 
+die() {
+    echo "[FATAL]: $1" >&2
+    exit 1
+}
+
+xpushd() {
+    pushd "$1" >/dev/null || die "pushd failed: $1"
+}
+
+xpopd() {
+    popd >/dev/null || die "popd failed"
+}
+
 ROOT_DIR="${PWD}" && export ROOT_DIR
 TEST_SYS_GCC=false && export TEST_SYS_GCC
 # shellcheck source=./scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
 
-MAKE="make -C ${ROOT_DIR}/makes/ M=${BUILD_DIR}"
+MAKE="make -C ${ROOT_DIR}/makes/ --no-print-directory"
 
-ARCHIVE_NAME=$(${MAKE} --no-print-directory print-pkg)
+ARCHIVE_NAME=$(${MAKE} print-pkg)
 if [ ! -f "$ROOT_DIR/output/$ARCHIVE_NAME" ]; then
     echo "[ERR] $ARCHIVE_NAME not found in output directory"
     exit 1
 fi
 
-pushd /tmp/
+xpushd /tmp/
 mkdir -p toolchain
-pushd toolchain
+xpushd toolchain
 tar xf "$ROOT_DIR/output/$ARCHIVE_NAME"
 cd "${TOOLCHAIN_NAME}"
 
@@ -61,6 +74,6 @@ echo "[INFO]: Testing ELF strip"
 echo "[INFO]: Logging basic compiler file result"
 file a.out
 
-popd
+xpopd
 rm -r toolchain
-popd
+xpopd

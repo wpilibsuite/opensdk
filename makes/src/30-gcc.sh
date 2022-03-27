@@ -116,12 +116,11 @@ process_background "Configuring GCC" \
 # Build the core compiler without libraries
 _make_multi gcc
 
-# libgcc is a complicated beast. Its easier to just build it ourselves
-TASKS=(target-libgcc)
-
-if [ "${CANADIAN_STAGE_ONE}" != "true" ]; then
-    case "${TARGET_DISTRO}" in
-    roborio)
+if [ "${BUILD_BACKEND}" = "true" ]; then
+    # libgcc is complicated to work with preexisting artifacts
+    # so we just rebuild the runtime for all platforms.
+    TASKS=(target-libgcc)
+    if [ "${TARGET_DISTRO}" = "roborio" ]; then
         TASKS+=(
             target-libgfortran
             target-libsanitizer
@@ -132,11 +131,9 @@ if [ "${CANADIAN_STAGE_ONE}" != "true" ]; then
                 target-libstdc++-v3
             )
         fi
-        ;;
-    *) ;; # No current need to build support libraries for debian targets
-    esac
+    fi
+    for task in "${TASKS[@]}"; do
+        _make_multi "$task"
+    done
 fi
-for task in "${TASKS[@]}"; do
-    _make_multi "$task"
-done
 xpopd

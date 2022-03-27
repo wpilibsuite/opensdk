@@ -20,13 +20,13 @@ die() {
 }
 
 # Check if system is a x86_64 system
-if [ "$(uname -m)" != "x86_64" ]; then
-    die "Canadian builds require x86 build machines"
+if [ "$(uname -m)" = "x86_64" ]; then
+    die "Toolchain builds require x86 build machines"
 fi
 
 # Check if system is a Linux or Mac system
 if [ "$(uname)" != "Linux" ] && [ "$(uname)" != "Darwin" ]; then
-    die "Unsupported build system"
+    die "Unsupported build operating system"
 fi
 # TODO: Now that the libraries are built in linux, could the build work in windows?
 

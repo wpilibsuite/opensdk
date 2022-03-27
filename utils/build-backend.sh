@@ -15,7 +15,7 @@ die() {
 }
 
 # Check if system is a Linux x86_64 system
-if [ "$(uname)" = "Linux" ] && [ "$(uname -m)" != "x86_64" ]; then
+if [ "$(uname)" != "Linux" ] || [ "$(uname -m)" != "x86_64" ]; then
     die "Backend builds require a x86_64 Linux system"
 fi
 

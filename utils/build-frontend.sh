@@ -20,7 +20,7 @@ die() {
 }
 
 # Check if system is a x86_64 system
-if [ "$(uname -m)" = "x86_64" ]; then
+if [ "$(uname -m)" != "x86_64" ]; then
     die "Toolchain builds require x86 build machines"
 fi
 

@@ -39,7 +39,6 @@ jobs:
       - name: Build sysroot
         run: |
           make \
-            HOST=${{matrix.host.os-cfg}} \
             TARGET=${{matrix.target.os}} \
             TARGET_PORT=${{matrix.target.port}} \
             backend

@@ -6,7 +6,6 @@
 # Exit if something does not look right
 SETUP_DIR="$ROOT_DIR/scripts/setup"
 
-bash "$SETUP_DIR/python.sh" || exit
 source "$SETUP_DIR/tools.sh"
 echo "Enabling GNUtils"
 source "$SETUP_DIR/gnutils.sh"

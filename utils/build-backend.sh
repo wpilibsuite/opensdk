@@ -7,6 +7,8 @@ set -a
 ROOT_DIR="${PWD}"
 # shellcheck source=../scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
+# shellcheck source=../scripts/setup_opensysroot.sh
+source "$ROOT_DIR/scripts/setup_opensysroot.sh"
 set +a
 
 die() {

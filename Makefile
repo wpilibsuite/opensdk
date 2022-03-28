@@ -1,6 +1,15 @@
 HOST := linux_x86_64
 TARGET := roborio-sumo
 TARGET_PORT := cortexa9_vfpv3
+DOCKER := false
+
+mk_file_dir := $(abspath $(shell dirname $(MAKE)))
+
+ifeq ($(DOCKER), true)
+	runner := $(mk_file_dir)/docker.sh
+else
+	runner :=
+endif
 
 .PHONY: any frontend backend test clean
 
@@ -12,24 +21,24 @@ any:
 # name collisions if the tuple is the same. (roborio sumo vs. roborio-hardknott)
 
 frontend:
-	bash ./utils/build-frontend.sh \
+	$(runner) bash ./utils/build-frontend.sh \
 		${PWD}/hosts/${HOST}.env \
 		${PWD}/targets/${TARGET} \
 		${TARGET_PORT}
 
 backend:
-	bash ./utils/build-backend.sh \
+	$(runner) bash ./utils/build-backend.sh \
 		${PWD}/hosts/${HOST}.env \
 		${PWD}/targets/${TARGET} \
 		${TARGET_PORT}
 
 test:
-	bash ./utils/test-toolchain.sh \
+	$(runner) bash ./utils/test-toolchain.sh \
 		${PWD}/hosts/${HOST}.env \
 		${PWD}/targets/${TARGET} \
 		${TARGET_PORT}
 
 clean:
-	rm -r build downloads
+	$(runner) rm -r build downloads
 
 

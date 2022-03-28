@@ -5,10 +5,6 @@
             "port": "cortexa9_vfpv3"
         },
         {
-            "os": "roborio-hardknott",
-            "port": "cortexa9_vfpv3"
-        },
-        {
             "os": "roborio-staging",
             "port": "cortexa9_vfpv3"
         },

@@ -7,8 +7,10 @@ mk_file_dir := $(abspath $(shell dirname $(MAKE)))
 
 ifeq ($(DOCKER), true)
 	runner := $(mk_file_dir)/docker.sh
+	workdir := /work
 else
 	runner :=
+	workdir := $(PWD)
 endif
 
 .PHONY: any frontend backend test clean
@@ -22,20 +24,20 @@ any:
 
 frontend:
 	$(runner) bash ./utils/build-frontend.sh \
-		${PWD}/hosts/${HOST}.env \
-		${PWD}/targets/${TARGET} \
+		${workdir}/hosts/${HOST}.env \
+		${workdir}/targets/${TARGET} \
 		${TARGET_PORT}
 
 backend:
 	$(runner) bash ./utils/build-backend.sh \
-		${PWD}/hosts/${HOST}.env \
-		${PWD}/targets/${TARGET} \
+		${workdir}/hosts/${HOST}.env \
+		${workdir}/targets/${TARGET} \
 		${TARGET_PORT}
 
 test:
 	$(runner) bash ./utils/test-toolchain.sh \
-		${PWD}/hosts/${HOST}.env \
-		${PWD}/targets/${TARGET} \
+		${workdir}/hosts/${HOST}.env \
+		${workdir}/targets/${TARGET} \
 		${TARGET_PORT}
 
 clean:

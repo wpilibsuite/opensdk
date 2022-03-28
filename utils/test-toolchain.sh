@@ -33,7 +33,9 @@ if [ ! -f "$ROOT_DIR/output/$ARCHIVE_NAME" ]; then
     exit 1
 fi
 
-xpushd /tmp/
+tmp="$(mktemp -d)"
+xpushd "${tmp}"
+
 mkdir -p toolchain
 xpushd toolchain
 tar xf "$ROOT_DIR/output/$ARCHIVE_NAME"
@@ -81,3 +83,5 @@ file a.out || exit
 xpopd
 rm -r toolchain
 xpopd
+
+rm -r "$tmp"

@@ -71,7 +71,10 @@ echo "$C_CODE" | "$CC" -x c -o a.out - || exit
 echo "[INFO]: Testing C++ Compiler"
 echo "$CXX_CODE" | "$CXX" -x c++ -o a.out - || exit
 
-echo "[INFO]: Testing external shared linkage"
+echo "[INFO]: Testing C sanitizer linkage"
+echo "$C_CODE" | "$CC" -x c -o a.out -fsanitize=undefined - || exit
+
+echo "[INFO]: Testing C++ sanitizer linkage"
 echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -fsanitize=undefined - || exit
 
 echo "[INFO]: Testing ELF strip"

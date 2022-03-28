@@ -65,6 +65,9 @@ int main() {
 }
 '
 
+echo "[INFO] Printing compiler version"
+"${CC}" -dumpversion
+
 echo "[INFO]: Testing C Compiler"
 echo "$C_CODE" | "$CC" -x c -o a.out - || exit
 

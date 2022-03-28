@@ -38,11 +38,28 @@ else
     )
 fi
 
+if [ "$TARGET_LIB_REBUILD" = "true" ]; then
+    # https://gcc.gnu.org/legacy-ml/gcc-patches/2020-01/msg01652.html
+    # A really cool feature to seperate target libraries that only exist in
+    # newer releases of GCC.
+    gcclib_dir="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/gcclib"
+    CONFIGURE_GCC+=(
+        "--with-slibdir=${gcclib_dir}"
+        "--with-toolexeclibdir=${gcclib_dir}"
+    )
+else
+    # These flags were here previously, but should not be doing anything.
+    if [ "${TARGET_DISTRO}" = "roborio" ]; then
+        "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
+    else
+        "--with-toolexeclibdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}"
+    fi
+fi
+
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     # Pulled by running gcc -v on target device
     CONFIGURE_GCC+=(
         "--libdir=${SYSROOT_PATH}/usr/lib"
-        "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
         "--disable-libmudflap"
         "--enable-c99"
         "--enable-symvers=gnu"
@@ -64,7 +81,6 @@ else
     CONFIGURE_GCC+=(
         # Debian specific flags
         "--libdir=${SYSROOT_PATH}/usr/lib/"
-        "--with-toolexeclibdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}"
         "--enable-clocal=gnu"
         "--without-included-gettext"
         "--enable-libstdcxx-debug"
@@ -91,14 +107,12 @@ else
     esac
 fi
 
-if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
-    # gcc is needed just for pulling specs, so only C is needed.
-    CONFIGURE_GCC+=("--enable-languages=c")
-elif [ "${TARGET_DISTRO}" = "roborio" ]; then
-    CONFIGURE_GCC+=("--enable-languages=c,c++,fortran")
-else
-    CONFIGURE_GCC+=("--enable-languages=c,c++")
+enabled_languages="--enabled-languages=c,c++"
+
+if [ "${TARGET_DISTRO}" = "roborio" ]; then
+    enabled_languages+=",fortran"
 fi
+CONFIGURE_GCC+=(enabled_languages)
 
 function _make_multi() {
     function _make() {

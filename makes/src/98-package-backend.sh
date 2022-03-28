@@ -11,6 +11,7 @@ rsync -aEL \
     "backend-install/opt/frc/"
 rsync -aEL \
     "gcc-install/opt/frc/${TARGET_TUPLE}/lib" \
+    "gcc-install/opt/frc/${TARGET_TUPLE}/gcclib" \
     "gcc-install/opt/frc/${TARGET_TUPLE}/sysroot" \
     "backend-install/opt/frc/${TARGET_TUPLE}"
 

@@ -29,6 +29,11 @@ if ! command -v docker >/dev/null 2>&1; then
     die "Docker is not installed"
 fi
 
+# Check if the user is in the docker group
+if ! groups | grep -q docker; then
+    die "You must be in the docker group"
+fi
+
 # Check if docker daemon is running
 if ! docker info >/dev/null 2>&1; then
     die "Docker daemon is not running"

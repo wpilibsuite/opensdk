@@ -140,11 +140,11 @@ check_if_canandian_stage_one_succeded() {
 }
 
 # If these fail, then others are bad aswell
-[ "${V_BIN:-fail}" != fail ] || die "V_BIN"
-[ "${V_GDB:-fail}" != fail ] || die "V_GDB"
-[ "${V_GCC:-fail}" != fail ] || die "V_GCC"
-[ "${WPI_HOST_PREFIX:-fail}" != fail ] || die "prefix dir"
-[ "${DOWNLOAD_DIR:-fail}" != fail ] || die "Download Dir"
+env_exists V_BIN
+env_exists V_GDB
+env_exists V_GCC
+env_exists WPI_HOST_PREFIX
+env_exists DOWNLOAD_DIR
 
 if [ "${FUNC_ONLY}" = "true" ]; then
     return 0

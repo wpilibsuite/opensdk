@@ -38,10 +38,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build sysroot
         run: |
-          make \
-            TARGET=${{matrix.target.os}} \
-            TARGET_PORT=${{matrix.target.port}} \
-            backend
+          make TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} backend
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-sysroot
@@ -103,22 +100,14 @@ jobs:
         if: matrix.host.runner == 'macos-10.15'
       - name: Build
         run: |
-          make \
-            HOST=${{matrix.host.os-cfg}} \
-            TARGET=${{matrix.target.os}} \
-            TARGET_PORT=${{matrix.target.port}} \
-            frontend
+          make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} frontend
           rm output/*.tar
       - name: Test
         if:
           matrix.host.os-cfg == 'macos_x86_64' ||
           matrix.host.os-cfg == 'linux_x86_64'
         run:
-          make \
-            HOST=${{matrix.host.os-cfg}} \
-            TARGET=${{matrix.target.os}} \
-            TARGET_PORT=${{matrix.target.port}} \
-            test
+          make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} test
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}

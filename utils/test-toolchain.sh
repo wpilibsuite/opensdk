@@ -1,11 +1,15 @@
 #! /usr/bin/env bash
 
 # Always ensure proper path
-cd "$(dirname "$0")" || exit
+cd "$(dirname "$0")/.." || exit
 
 die() {
     echo "[FATAL]: $1" >&2
     exit 1
+}
+
+xcd() {
+    cd "$1" >/dev/null || die "cd failed"
 }
 
 xpushd() {
@@ -18,7 +22,7 @@ xpopd() {
 
 ROOT_DIR="${PWD}" && export ROOT_DIR
 TEST_SYS_GCC=false && export TEST_SYS_GCC
-# shellcheck source=./scripts/setup.sh
+# shellcheck source=./../scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
 
 MAKE="make -C ${ROOT_DIR}/makes/ --no-print-directory"
@@ -33,7 +37,7 @@ xpushd /tmp/
 mkdir -p toolchain
 xpushd toolchain
 tar xf "$ROOT_DIR/output/$ARCHIVE_NAME"
-cd "${TOOLCHAIN_NAME}"
+xcd "${TOOLCHAIN_NAME}"
 
 CC="./bin/${TARGET_PREFIX}gcc"
 CXX="./bin/${TARGET_PREFIX}g++"
@@ -60,19 +64,19 @@ int main() {
 '
 
 echo "[INFO]: Testing C Compiler"
-echo "$C_CODE" | "$CC" -x c -o a.out -
+echo "$C_CODE" | "$CC" -x c -o a.out - || exit
 
 echo "[INFO]: Testing C++ Compiler"
-echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -
+echo "$CXX_CODE" | "$CXX" -x c++ -o a.out - || exit
 
-echo "[INFO]: Testing shared linkage"
-echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -fsanitize=undefined -
+echo "[INFO]: Testing external shared linkage"
+echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -fsanitize=undefined - || exit
 
 echo "[INFO]: Testing ELF strip"
-"${STRIP}" a.out
+"${STRIP}" a.out || exit
 
 echo "[INFO]: Logging basic compiler file result"
-file a.out
+file a.out || exit
 
 xpopd
 rm -r toolchain

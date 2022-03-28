@@ -20,7 +20,7 @@ backend:
 		${TARGET_PORT}
 
 test:
-	bash ./test.sh \
+	bash ./utils/test-toolchain.sh \
 		${PWD}/hosts/${HOST}.env \
 		${PWD}/targets/${TARGET} \
 		${TARGET_PORT}

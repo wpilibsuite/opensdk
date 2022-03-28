@@ -3,8 +3,8 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
-rm -rf "${BUILD_DIR}/gcc-build"
-mkdir "${BUILD_DIR}/gcc-build"
+rm -rf "${BUILD_DIR}/gcc-build" "${BUILD_DIR}/gcc-install"
+mkdir "${BUILD_DIR}/gcc-build" "${BUILD_DIR}/gcc-install"
 
 CONFIGURE_GCC=(
     "${CONFIGURE_COMMON[@]}"
@@ -43,7 +43,6 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
     CONFIGURE_GCC+=(
         "--libdir=${SYSROOT_PATH}/usr/lib"
         "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
-        "--enable-languages=c,c++,fortran"
         "--disable-libmudflap"
         "--enable-c99"
         "--enable-symvers=gnu"
@@ -66,7 +65,6 @@ else
         # Debian specific flags
         "--libdir=${SYSROOT_PATH}/usr/lib/"
         "--with-toolexeclibdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}"
-        "--enable-languages=c,c++"
         "--enable-clocal=gnu"
         "--without-included-gettext"
         "--enable-libstdcxx-debug"
@@ -91,6 +89,15 @@ else
         "--disable-libquadmath-support"
     ) ;;
     esac
+fi
+
+if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
+    # gcc is needed just for pulling specs, so only C is needed.
+    CONFIGURE_GCC+=("--enable-languages=c")
+elif [ "${TARGET_DISTRO}" = "roborio" ]; then
+    CONFIGURE_GCC+=("--enable-languages=c,c++,fortran")
+else
+    CONFIGURE_GCC+=("--enable-languages=c,c++")
 fi
 
 function _make_multi() {

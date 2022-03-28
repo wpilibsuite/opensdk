@@ -41,6 +41,7 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     unset _os
     if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
+        bash
         exit 1
     elif ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86[-_]64 ]]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} is built incorrectly"
@@ -67,4 +68,13 @@ ${MAKE} \
     task/41-gdb \
     task/50-frcmake \
     task/99-tree \
-    pkg
+
+if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
+    sudo mkdir -p /opt/frc
+    cp -r "${BUILD_DIR}/backend-install"/* /opt/frc/
+    cp -r "${BUILD_DIR}/binutils-install/opt/frc"/* /opt/frc/
+    cp -r "${BUILD_DIR}/gcc-install/opt/frc"/* /opt/frc/
+    exit 0
+fi
+
+${MAKE} pkg

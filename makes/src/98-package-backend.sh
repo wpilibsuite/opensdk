@@ -4,15 +4,14 @@
 source "$(dirname "$0")/common.sh"
 
 rm -rf backend-install
-mkdir backend-install
-mkdir backend-install/opt
-mkdir backend-install/opt/frc
+mkdir -p backend-install/opt/frc
 
 rsync -aEL \
     "sysroot-install/" \
     "backend-install/opt/frc/"
 rsync -aEL \
     "gcc-install/opt/frc/${TARGET_TUPLE}/lib" \
+    "gcc-install/opt/frc/${TARGET_TUPLE}/sysroot" \
     "backend-install/opt/frc/${TARGET_TUPLE}"
 
 xpushd backend-install

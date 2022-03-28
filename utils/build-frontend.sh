@@ -31,8 +31,7 @@ if [ "${PREBUILD_CANADIAN}" = "true" ]; then
     Linux) _os="linux" ;;
     Darwin) _os="macos" ;;
     *)
-        echo "[ERROR]: Unsupported build system"
-        exit 1
+        die "Unsupported build system"
         ;;
     esac
     # Recursivly build to setup host to help the canadian build
@@ -67,13 +66,15 @@ ${MAKE} \
     task/40-expat \
     task/41-gdb \
     task/50-frcmake \
-    task/99-tree \
+    task/99-tree
 
 if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
     sudo mkdir -p /opt/frc
-    cp -r "${BUILD_DIR}/backend-install"/* /opt/frc/
-    cp -r "${BUILD_DIR}/binutils-install/opt/frc"/* /opt/frc/
-    cp -r "${BUILD_DIR}/gcc-install/opt/frc"/* /opt/frc/
+    rsync -aEL \
+        "${BUILD_DIR}/sysroot-install/" \
+        "${BUILD_DIR}/binutils-install/opt/frc/" \
+        "${BUILD_DIR}/gcc-install/opt/frc/" \
+        /opt/frc/
     exit 0
 fi
 

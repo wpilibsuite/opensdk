@@ -9,7 +9,7 @@ source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"
 
-if [ "${CANADIAN_STAGE_ONE:-false}" = "true" ]; then
+if [ "${CANADIAN_STAGE_ONE}" = "true" ]; then
     export TARGET_PREFIX="$TARGET_TUPLE-"
 fi
 

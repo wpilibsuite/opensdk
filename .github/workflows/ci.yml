@@ -47,7 +47,7 @@ jobs:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-sysroot
           path: output/*
   build-platform-utils:
-    needs: build-sysroot
+    needs: [targets, build-sysroot]
     strategy:
       matrix:
         target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
@@ -124,7 +124,7 @@ jobs:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
   xcode-sign:
-    needs: build-platform-utils
+    needs: [targets, build-platform-utils]
     if: github.repository_owner == 'wpilibsuite'
     strategy:
       matrix:

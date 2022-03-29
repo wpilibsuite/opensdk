@@ -6,6 +6,10 @@ function die() {
     exit 1
 }
 
+function warn() {
+    echo "[WARN]: $1" >&2
+}
+
 function xpushd() {
     pushd "$1" >/dev/null || die "pushd failed: $1"
 }
@@ -107,12 +111,12 @@ configure_target_vars() {
     env_exists TARGET_TUPLE
 
     define_target_export() {
-        local var="$1"
-        local tool="$2"
+        local var="${1}_FOR_TARGET"
+        local tool="${TARGET_TUPLE}-$2"
         if [ "${!var}" ]; then
-            die "$var is already set"
+            die "$var is already set with '${!var}'"
         else
-            export "${var}_FOR_TARGET"="/opt/frc/bin/${TARGET_TUPLE}-$tool"
+            export "${var}"="/opt/frc/bin/${tool}"
         fi
     }
 

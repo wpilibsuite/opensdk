@@ -29,8 +29,9 @@ CONFIGURE_COMMON_LITE=(
     "--host=${HOST_TUPLE}"
     "--prefix=${WPI_HOST_PREFIX}"
     "--program-prefix=${TARGET_PREFIX}"
-    "--enable-lto"
+    "--disable-lto"
     "--disable-nls"
+    "--disable-plugin"
     "--disable-werror"
     "--disable-dependency-tracking"
 )
@@ -40,6 +41,7 @@ CONFIGURE_COMMON=(
     "--target=${TARGET_TUPLE}"
     "--libexecdir=${WPI_HOST_PREFIX}/${TARGET_TUPLE}/libexec"
     "--with-sysroot=${SYSROOT_PATH}"
+    "--libdir=${SYSROOT_PATH}/usr/lib/"
 )
 
 if [ "${PREBUILD_CANADIAN}" != "true" ]; then

@@ -38,7 +38,9 @@ ${MAKE} \
     task/11-sources \
     task/12-patches \
     task/20-binutils \
-    task/30-gcc \
+    task/30-gcc-configure \
+    task/31-gcc-frontend \
+    task/32-gcc-backend \
     task/98-package-backend
 
 mkdir -p "${OUTPUT_DIR}"

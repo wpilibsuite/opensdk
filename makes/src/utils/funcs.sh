@@ -65,6 +65,14 @@ env_exists() {
     fi
 }
 
+is_simple_cross() {
+    if [ "${PREBUILD_CANADIAN}x" != "x" ] || [ "${CANADIAN_STAGE_ONE}x" != "x" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 configure_host_vars() {
     local xcode_arch_flag
     local xcode_sdk_flag

@@ -62,7 +62,8 @@ ${MAKE} \
     task/11-sources \
     task/12-patches \
     task/20-binutils \
-    task/30-gcc \
+    task/30-gcc-configure \
+    task/31-gcc-frontend \
     task/40-expat \
     task/41-gdb \
     task/50-frcmake \

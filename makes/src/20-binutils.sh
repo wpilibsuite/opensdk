@@ -19,18 +19,6 @@ CONFIGURE_BINUTILS=(
     "--enable-deterministic-archives"
 )
 
-if [ "$TARGET_LIB_REBUILD" = "true" ]; then
-    # https://gcc.gnu.org/legacy-ml/gcc-patches/2020-01/msg01652.html
-    # A really cool feature to seperate target libraries that only exist in
-    # newer releases of GCC.
-    gcclib_dir="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/gcclib"
-    CONFIGURE_BINUTILS+=(
-        "--libdir=${gcclib_dir}"
-        "--with-slibdir=${gcclib_dir}"
-        "--with-toolexeclibdir=${gcclib_dir}"
-    )
-fi
-
 xpushd "${BUILD_DIR}/binutils-build"
 process_background "Configuring binutils" \
     "$DOWNLOAD_DIR/binutils-${V_BIN}/configure" \

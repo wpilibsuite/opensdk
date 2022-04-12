@@ -20,12 +20,13 @@ function update_config_tools() {
     if ! [ -d "${1}" ]; then
         die "Input directory does not exist!"
     fi
-    # gcc/mpc fails without sudo (??)
     if [ -e "${1}/config.guess" ]; then
-        sudo cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
+        chmod +rwx "${1}/config.guess"
+        cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
     fi
     if [ -e "${1}/config.sub" ]; then
-        sudo cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
+        chmod +rwx "${1}/config.sub"
+        cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
     fi
 }
 

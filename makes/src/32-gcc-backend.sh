@@ -4,6 +4,10 @@
 source "$(dirname "$0")/common.sh"
 source "$(dirname "$0")/utils/conf-gcc.sh"
 
+if ! is_lib_rebuild_required && [ "$BUILD_BACKEND" = true ]; then
+    exit 0
+fi
+
 xcd "${BUILD_DIR}/gcc-build"
 
 TASKS=()
@@ -23,11 +27,6 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
             target-libstdc++-v3
         )
     fi
-fi
-
-if [ "${#TASKS[@]}" = 0 ]; then
-    # No work needed
-    exit 0
 fi
 
 for task in "${TASKS[@]}"; do

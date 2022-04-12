@@ -73,6 +73,14 @@ is_simple_cross() {
     fi
 }
 
+is_lib_rebuild_required() {
+    # Currently only the roborio requires a rebuild of the GCC runtime.
+    if [ "${TARGET_DISTRO}" = "roborio" ]; then
+        return 0
+    fi
+    return 1
+}
+
 configure_host_vars() {
     local xcode_arch_flag
     local xcode_sdk_flag

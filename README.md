@@ -8,9 +8,16 @@
 
 ## Supported Hosts
 
+All tiers should compile with these scripts. But support will only
+be given if the OS vendor supports the platform.
+
+For example, these tools should work on Windows XP but support
+will only be given to Windows 8.1 or newer. The same logic applies
+for macOS and Ubuntu.
+
 ### Tier 1
 
-| OS | Arch | Minimum Supported Release |
+| OS | Arch | Known to work on |
 | - | - | - |
 | Windows | x86_64 | Windows XP |
 | Linux | x86_64 | Ubuntu 18.04 |
@@ -20,7 +27,7 @@
 
 Tier 2 is used for select targets on an as needed basis.
 
-| OS | Arch | Minimum Supported Release | Note |
+| OS | Arch | Known to work on | Note |
 | - | - | - | - |
 | Linux | i686 | Ubuntu 18.04 | Only for Raspberry Pi OS targets |
 
@@ -28,7 +35,7 @@ Tier 2 is used for select targets on an as needed basis.
 
 Tier 3 is not built in CI nor is tested, but bug/merge requests will be addressed.
 
-| OS | Arch | Minimum Supported Release |
+| OS | Arch | Known to work on |
 | - | - | - |
 | Windows | i686 | Windows XP |
 | Linux | i686 | Ubuntu 18.04 |

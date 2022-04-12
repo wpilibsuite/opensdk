@@ -19,13 +19,13 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
         # If the build system is intending to use a unsupported compiler
         # then just rebuild all the libraries.
         TASKS+=(
-            libatomic
-            libstdc++-v3
+            target-libatomic
+            target-libstdc++-v3
         )
     fi
 fi
 
-if [ "${TASKS[#]}" = 0 ]; then
+if [ "${#TASKS[@]}" = 0 ]; then
     # No work needed
     return 0
 fi
@@ -35,17 +35,11 @@ for task in "${TASKS[@]}"; do
 done
 
 if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
-    CONFIGURE_GCC+=(
-        "--libdir=${gcclib_dir}"
-        "--with-slibdir=${gcclib_dir}"
-        "--with-toolexeclibdir=${gcclib_dir}"
-    )
-    process_background "Configuring GCC for duallib" \
-        "$DOWNLOAD_DIR/gcc-${V_GCC}/configure" \
-        "${CONFIGURE_GCC[@]}" ||
-        die "gcc configure failed"
-
-    for task in "${TASKS[@]}"; do
-        gcc_make_multi "$task"
-    done
+    # Duplicate the GCC runtime artifacts to a seperate directory
+    # so it can later be scp'd to the roboRIO.
+    rsync -aEL \
+        "${BUILD_DIR}/gcc-install/opt/frc/${TARGET_TUPLE}/sysroot/usr/lib/" \
+        "${BUILD_DIR}/gcc-install/opt/frc/${TARGET_TUPLE}/gcclib/"
+    # We don't need the static libraries of the GCC runtime
+    rm -r "${BUILD_DIR}/gcc-install/opt/frc/${TARGET_TUPLE}/gcclib/gcc"
 fi

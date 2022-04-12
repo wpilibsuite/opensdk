@@ -37,7 +37,7 @@ ${MAKE} \
     task/10-sysroot \
     task/11-sources \
     task/12-patches \
-    task/13-cleanup \
+    task/13-normalize \
     task/20-binutils \
     task/30-gcc-configure \
     task/31-gcc-frontend \

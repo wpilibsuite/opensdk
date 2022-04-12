@@ -6,15 +6,12 @@ source "$(dirname "$0")/utils/conf-gcc.sh"
 
 xcd "${BUILD_DIR}/gcc-build"
 
-# Debian/Ubuntu places libgcc in a unusual location, so as a workaround
-# we will just rebuild it. Since libgcc is already required to be rebuilt
-# for the RoboRIO, we will just make it the default start point.
-TASKS=(target-libgcc)
-
+TASKS=()
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     # libgcc is complicated to work with preexisting artifacts
     # so we just rebuild the runtime for all platforms.
     TASKS+=(
+        target-libgcc
         target-libgfortran
         target-libsanitizer
     )
@@ -26,6 +23,11 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
             target-libstdc++-v3
         )
     fi
+fi
+
+if [ "${#TASKS[@]}" = 0 ]; then
+    # No work needed
+    exit 0
 fi
 
 for task in "${TASKS[@]}"; do

@@ -41,19 +41,9 @@ CONFIGURE_COMMON=(
     "--target=${TARGET_TUPLE}"
     "--libexecdir=${WPI_HOST_PREFIX}/${TARGET_TUPLE}/libexec"
     "--with-sysroot=${SYSROOT_PATH}"
+    "--libdir=${SYSROOT_PATH}/usr/lib"
+    "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
 )
-
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    CONFIGURE_COMMON+=(
-        "--libdir=${SYSROOT_PATH}/usr/lib"
-        "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
-    )
-else
-    CONFIGURE_COMMON+=(
-        "--libdir=${SYSROOT_PATH}/usr/lib/${TARGET_TUPLE}"
-        "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib/${TARGET_TUPLE}"
-    )
-fi
 
 if [ "${PREBUILD_CANADIAN}" != "true" ]; then
     # Normally use our in-tree sysroot unless we are on the second stage build

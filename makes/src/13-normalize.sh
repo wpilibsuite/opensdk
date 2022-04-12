@@ -5,6 +5,9 @@
 # Debian and NI Linux. The goal is to have everyone follow a
 # layout similar to NI Linux as it is easier to navigate.
 
+# We do however modify the NI Linux layout to have libgcc_s
+# in /usr/lib instead of /lib out of convenience.
+
 # The Debian filesystem is better for multilib environments
 # but this causes issues with a more vanilla version of
 # binutils and GCC. So by using the NI Linux layout, we can
@@ -15,6 +18,9 @@ source "$(dirname "$0")/common.sh"
 xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
+    mv lib/libgcc_s.* usr/lib/
+    cp usr/lib/libgcc_s.so.1 usr/lib/libgcc_s.so
+
     # Why is this here on the rio?
     rm -rf lib/cpp
 else
@@ -49,6 +55,7 @@ if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
 
     # Delete GCC runtime artifacts
     rm -rf usr/lib/gcc/
+    rm -rf usr/lib/libgcc_s.so*
     rm -rf usr/lib/libatomic.so*
     rm -rf usr/lib/libstdc++.so*
 fi

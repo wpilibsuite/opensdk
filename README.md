@@ -33,7 +33,7 @@ Tier 2 is used for select targets on an as needed basis.
 
 ### Tier 3
 
-Tier 3 is not built in CI nor is tested, but bug/merge requests will be addressed.
+Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addressed.
 
 | OS | Arch | Known to work on |
 | - | - | - |

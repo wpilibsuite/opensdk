@@ -66,7 +66,7 @@ env_exists() {
 }
 
 is_simple_cross() {
-    if [ "${PREBUILD_CANADIAN}x" != "x" ]; then
+    if [ "${WPI_HOST_CANADIAN}x" != "x" ]; then
         return 1
     else
         return 0

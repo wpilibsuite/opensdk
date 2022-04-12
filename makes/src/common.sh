@@ -48,7 +48,7 @@ CONFIGURE_COMMON=(
 
 export PATH="/opt/frc/bin:${PATH}"
 export CONFIGURE_COMMON_LITE CONFIGURE_COMMON
-if [ "${PREBUILD_CANADIAN}" = "true" ]; then
+if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
     # Manually tell autoconf what tools to use as the build, host, and target
     # compilers may be intended for different systems even though they have
     # the same prefix due to the tuple matching.

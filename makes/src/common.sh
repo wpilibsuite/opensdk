@@ -43,19 +43,12 @@ CONFIGURE_COMMON=(
     "--with-sysroot=${SYSROOT_PATH}"
     "--libdir=${SYSROOT_PATH}/usr/lib"
     "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
+    "--with-build-sysroot=${SYSROOT_BUILD_PATH}"
 )
-
-if [ "${PREBUILD_CANADIAN}" != "true" ]; then
-    # Normally use our in-tree sysroot unless we are on the second stage build
-    CONFIGURE_COMMON+=("--with-build-sysroot=${SYSROOT_BUILD_PATH}")
-else
-    CONFIGURE_COMMON+=("--with-build-sysroot=/opt/frc/${TARGET_TUPLE}/sysroot")
-fi
 
 export PATH="/opt/frc/bin:${PATH}"
 export CONFIGURE_COMMON_LITE CONFIGURE_COMMON
 if [ "${PREBUILD_CANADIAN}" = "true" ]; then
-    check_if_canandian_stage_one_succeded
     # Manually tell autoconf what tools to use as the build, host, and target
     # compilers may be intended for different systems even though they have
     # the same prefix due to the tuple matching.

@@ -66,7 +66,7 @@ env_exists() {
 }
 
 is_simple_cross() {
-    if [ "${PREBUILD_CANADIAN}x" != "x" ] || [ "${CANADIAN_STAGE_ONE}x" != "x" ]; then
+    if [ "${PREBUILD_CANADIAN}x" != "x" ]; then
         return 1
     else
         return 0
@@ -124,38 +124,5 @@ configure_host_vars() {
 }
 
 configure_target_vars() {
-    env_exists TARGET_TUPLE
-
-    define_target_export() {
-        local var="${1}_FOR_TARGET"
-        local tool="${TARGET_TUPLE}-$2"
-        if [ "${!var}" ]; then
-            die "$var is already set with '${!var}'"
-        else
-            export "${var}"="/opt/frc/bin/${tool}"
-        fi
-    }
-
-    define_target_export AR ar
-    define_target_export AS as
-    define_target_export LD ld
-    define_target_export NM nm
-    define_target_export RANLIB ranlib
-    define_target_export STRIP strip
-    define_target_export OBJCOPY objcopy
-    define_target_export OBJDUMP objdump
-    define_target_export READELF readelf
-    define_target_export CC gcc
-    define_target_export CXX g++
-    define_target_export GCC gcc
-    define_target_export GFORTRAN gfortran
+    /bin/true
 }
-
-check_if_canandian_stage_one_succeded() {
-    env_exists TARGET_TUPLE
-    if ! [[ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]]; then
-        echo "[DEBUG]: Cannot find ${TARGET_TUPLE}-gcc in /opt/frc/bin"
-        die "Stage 1 Canadian toolchain not found in expected location"
-    fi
-}
-

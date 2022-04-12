@@ -3,6 +3,10 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
+if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
+    exit 0
+fi
+
 rm -rf "${BUILD_DIR}/gdb-build"
 mkdir "${BUILD_DIR}/gdb-build"
 

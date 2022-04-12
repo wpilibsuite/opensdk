@@ -17,16 +17,6 @@ xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     # Why is this here on the rio?
     rm -rf lib/cpp
-
-    if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
-        # Delete libstdc++ headers which will be replaced
-        rm -rf usr/include/c++/
-
-        # Delete GCC runtime artifacts
-        rm -rf usr/lib/gcc/
-        rm -rf usr/lib/libatomic.so*
-        rm -rf usr/lib/libstdc++.so*
-    fi
 else
     # lib
     rm -rf lib/ld-linux*.so*
@@ -50,4 +40,15 @@ else
 
     # Point the libc linker script to correct location
     sed -i "s/\/lib\/${TARGET_TUPLE}/\/lib/g" usr/lib/libc.so
+fi
+
+
+if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
+    # Delete libstdc++ headers which will be replaced
+    rm -rf usr/include/c++/
+
+    # Delete GCC runtime artifacts
+    rm -rf usr/lib/gcc/
+    rm -rf usr/lib/libatomic.so*
+    rm -rf usr/lib/libstdc++.so*
 fi

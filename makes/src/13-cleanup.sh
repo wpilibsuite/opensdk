@@ -12,7 +12,7 @@ xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 rm -rf lib/cpp
 
 if [ "${TARGET_LIB_REBUILD}" != "true" ]; then
-    return 0
+    exit 0
 fi
 
 # Delete libstdc++ headers which will be replaced

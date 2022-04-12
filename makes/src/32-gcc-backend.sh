@@ -27,7 +27,7 @@ fi
 
 if [ "${#TASKS[@]}" = 0 ]; then
     # No work needed
-    return 0
+    exit 0
 fi
 
 for task in "${TASKS[@]}"; do

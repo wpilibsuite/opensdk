@@ -16,10 +16,6 @@ function gcc_make_multi() {
 
 CONFIGURE_GCC=(
     "${CONFIGURE_COMMON[@]}"
-    "--with-cpu=${TARGET_CPU}"
-    "--with-fpu=${TARGET_FPU}"
-    "--with-arch=${TARGET_ARCH}"
-    "--with-float=${TARGET_FLOAT}"
     "--enable-poison-system-directories"
     "--enable-threads=posix"
     "--enable-shared"
@@ -28,6 +24,22 @@ CONFIGURE_GCC=(
     "--enable-__cxa_atexit" # Should be enabled on glibc devices
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
+
+if [ "$TARGET_ARCH" ]; then
+    CONFIGURE_GCC+=("--with-arch=${TARGET_ARCH}")
+fi
+
+if [ "$TARGET_CPU" ]; then
+    CONFIGURE_GCC+=("--with-cpu=${TARGET_CPU}")
+fi
+
+if [ "$TARGET_FLOAT" ]; then
+    CONFIGURE_GCC+=("--with-float=${TARGET_FLOAT}")
+fi
+
+if [ "$TARGET_FPU" ]; then
+    CONFIGURE_GCC+=("--with-fpu=${TARGET_FPU}")
+fi
 
 if [ "${WPI_HOST_NAME}" != "Windows" ]; then
     if [ "${WPI_HOST_NAME}" = "Linux" ]; then

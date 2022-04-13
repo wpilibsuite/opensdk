@@ -81,6 +81,14 @@ is_lib_rebuild_required() {
     return 1
 }
 
+is_step_backend() {
+    [ "$BUILD_BACKEND" = true ]
+}
+
+is_step_frontend() {
+    ! is_step_backend
+}
+
 configure_host_vars() {
     local xcode_arch_flag
     local xcode_sdk_flag

@@ -6,7 +6,7 @@ source "$(dirname "$0")/common.sh"
 rm -rf "${BUILD_DIR}/binutils-build"
 mkdir "${BUILD_DIR}/binutils-build"
 
-if ! is_lib_rebuild_required && [ "$BUILD_BACKEND" = true ]; then
+if is_step_backend && ! is_lib_rebuild_required; then
     exit 0
 fi
 
@@ -27,7 +27,7 @@ process_background "Building binutils" \
 process_background "Installing binutils" \
     make DESTDIR="${BUILD_DIR}/binutils-install" \
     install || die "binutils install failed"
-if [ "${BUILD_BACKEND}" = "true" ]; then
+if is_step_backend; then
     # GCC needs binutils in prefix path while building
     # the target libraries. Using sudo here is messy but
     # I do not want to spend the time to work around this.

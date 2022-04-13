@@ -23,7 +23,12 @@ if [ "$WPI_HOST_NAME" = "Mac" ]; then
     CFLAGS+=" -fvisibility=default"
     CXXFLAGS+=" -fvisibility=default"
 fi
-export CFLAGS CXXFLAGS
+if [ "$WPI_HOST_NAME" = "Windows" ]; then
+    CFLAGS="$CFLAGS -static-libgcc -static-libstdc++"
+    CXXFLAGS="$CXXFLAGS -static-libgcc -static-libstdc++"
+    LDFLAGS="$LDFLAGS -static-libgcc -static-libstdc++"
+fi
+export CFLAGS CXXFLAGS LDFLAGS
 
 # Make-server processes
 JOBS="$(nproc --ignore=1)"

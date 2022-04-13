@@ -10,7 +10,7 @@ function gcc_make_multi() {
 
     process_background "Building GCC '$1'" _make "all-$1" ||
         die "GCC build '$1'"
-    process_background "Installing GCC '$1'" _make_installer "install-$1" ||
+    process_background "Installing GCC '$1'" _make_installer "install-strip-$1" ||
         die "GCC install '$1'"
 }
 
@@ -39,17 +39,6 @@ fi
 
 if [ "$TARGET_FPU" ]; then
     CONFIGURE_GCC+=("--with-fpu=${TARGET_FPU}")
-fi
-
-if [ "${WPI_HOST_NAME}" != "Windows" ]; then
-    if [ "${WPI_HOST_NAME}" = "Linux" ]; then
-        # Use system zlib when building target code on Linux
-        CONFIGURE_GCC+=("--with-system-zlib")
-    fi
-    # Don't use zlib on MacOS as it is not ensured that zlib is avaliable
-    CONFIGURE_GCC+=(
-        "--enable-default-pie"
-    )
 fi
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then

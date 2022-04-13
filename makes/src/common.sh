@@ -1,6 +1,13 @@
 #! /usr/bin/env bash
 # shellcheck disable=SC2155
 
+export CFLAGS="$CFLAGS -g -O2"
+export CXXFLAGS="$CXXFLAGS -g -O2"
+
+export FFLAGS_FOR_TARGET="-g -O2"
+export CFLAGS_FOR_TARGET="-g -O2"
+export CXXFLAGS_FOR_TARGET="-g -O2"
+
 source "$(dirname "$0")/utils/funcs.sh"
 
 if [ "${FUNC_ONLY}" = "true" ]; then

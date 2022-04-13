@@ -23,5 +23,5 @@ process_background "Building FRCMake" \
     make -j"$JOBS" || die "frcmake build failed"
 process_background "Installing FRCMake" \
     make DESTDIR="${BUILD_DIR}/frcmake-install" \
-    install || die "frcmake install failed"
+    install-strip || die "frcmake install failed"
 xpopd

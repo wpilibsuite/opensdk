@@ -21,5 +21,5 @@ process_background "Building expat" \
     make -j"$JOBS" || die "expat build failed"
 process_background "Installing expat" \
     make DESTDIR="${BUILD_DIR}/expat-install" \
-    install || die "expat install failed"
+    install-strip || die "expat install failed"
 xpopd

@@ -24,5 +24,5 @@ process_background "Building GDB" \
     make -j"$JOBS" || die "gdb build failed"
 process_background "Installing GDB" \
     make DESTDIR="${BUILD_DIR}/gdb-install" \
-    install || die "gdb install failed"
+    install-strip || die "gdb install failed"
 xpopd

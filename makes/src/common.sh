@@ -22,11 +22,7 @@ env_exists WPI_HOST_PREFIX
 env_exists DOWNLOAD_DIR
 
 
-if [ "$WPI_BUILD_TUPLE" ]; then
-    BUILD_TUPLE="$WPI_BUILD_TUPLE"
-else
-    BUILD_TUPLE="$(gcc -dumpmachine)"
-fi
+BUILD_TUPLE="$(cc -dumpmachine)"
 HOST_TUPLE="${WPI_HOST_TUPLE}"
 SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
 SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"

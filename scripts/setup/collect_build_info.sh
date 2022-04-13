@@ -9,7 +9,7 @@ source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"
 
-if [ "${CANADIAN_STAGE_ONE:-false}" = "true" ]; then
+if [ "${CANADIAN_STAGE_ONE}" = "true" ]; then
     export TARGET_PREFIX="$TARGET_TUPLE-"
 fi
 
@@ -29,12 +29,7 @@ DOWNLOAD_DIR="${ROOT_DIR}/downloads/${TOOLCHAIN_NAME}-${TARGET_PORT}"
 OUTPUT_DIR="${ROOT_DIR}/output"
 SCRIPT_DIR="${ROOT_DIR}/scripts"
 PATCH_DIR="${ROOT_DIR}/patches"
-BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}"
-if [ "${WPI_HOST_NAME}" != Mac ]; then
-    BUILD_DIR+="/${WPI_HOST_TUPLE}-${WPI_HOST_NAME}"
-else
-    BUILD_DIR+="/${WPI_HOST_NAME}"
-fi
+BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}/${WPI_HOST_TUPLE}"
 
 PATH="$PATH:$BUILD_DIR/gcc-install/${WPI_HOST_PREFIX}/bin/"
 export DOWNLOAD_DIR OUTPUT_DIR SCRIPT_DIR PATCH_DIR PATH

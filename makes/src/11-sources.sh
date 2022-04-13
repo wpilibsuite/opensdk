@@ -20,12 +20,13 @@ function update_config_tools() {
     if ! [ -d "${1}" ]; then
         die "Input directory does not exist!"
     fi
-    # gcc/mpc fails without sudo (??)
     if [ -e "${1}/config.guess" ]; then
-        sudo cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
+        chmod +rwx "${1}/config.guess"
+        cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
     fi
     if [ -e "${1}/config.sub" ]; then
-        sudo cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
+        chmod +rwx "${1}/config.sub"
+        cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
     fi
 }
 
@@ -45,6 +46,9 @@ download_or_die "${SAVANNAH_MIRROR}/config.guess"
 download_or_die "${SAVANNAH_MIRROR}/config.sub"
 
 xpushd "gcc-${V_GCC}"
+# Use HTTPS from the GNU mirrors
+sed -i 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites 
+sed -i 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites 
 ./contrib/download_prerequisites || die "gcc prerequisite fetching failed"
 xpopd
 

@@ -1,10 +1,18 @@
 #! /usr/bin/env bash
 
-# shellcheck source=./common.sh
-source "$(dirname "$0")/common.sh"
+function gcc_make_multi() {
+    function _make() {
+        make -j"$JOBS" "${@}" || return
+    }
+    function _make_installer() {
+        make DESTDIR="${BUILD_DIR}/gcc-install" "${@}" || return
+    }
 
-rm -rf "${BUILD_DIR}/gcc-build"
-mkdir "${BUILD_DIR}/gcc-build"
+    process_background "Building GCC '$1'" _make "all-$1" ||
+        die "GCC build '$1'"
+    process_background "Installing GCC '$1'" _make_installer "install-$1" ||
+        die "GCC install '$1'"
+}
 
 CONFIGURE_GCC=(
     "${CONFIGURE_COMMON[@]}"
@@ -22,11 +30,7 @@ CONFIGURE_GCC=(
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
 
-if [ "${WPI_HOST_NAME}" = "Windows" ]; then
-    CONFIGURE_GCC+=(
-        "--disable-plugin"
-    )
-else
+if [ "${WPI_HOST_NAME}" != "Windows" ]; then
     if [ "${WPI_HOST_NAME}" = "Linux" ]; then
         # Use system zlib when building target code on Linux
         CONFIGURE_GCC+=("--with-system-zlib")
@@ -34,39 +38,26 @@ else
     # Don't use zlib on MacOS as it is not ensured that zlib is avaliable
     CONFIGURE_GCC+=(
         "--enable-default-pie"
-        "--enable-plugin"
     )
 fi
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
     # Pulled by running gcc -v on target device
     CONFIGURE_GCC+=(
-        "--libdir=${SYSROOT_PATH}/usr/lib"
-        "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
-        "--enable-languages=c,c++,fortran"
         "--disable-libmudflap"
         "--enable-c99"
         "--enable-symvers=gnu"
         "--enable-long-long"
         "--enable-libstdcxx-pch"
-        "--enable-lto"
         "--enable-libssp"
         "--enable-libitm"
         "--enable-initfini-array"
-        "--with-linker-hash-style=gnu"
-        "--with-gnu-ld"
-        "--with-ppl=no"
-        "--with-cloog=no"
-        "--with-isl=no"
         "--without-long-double-128"
     )
 else
     # Pulled by running gcc -v on target devices
     CONFIGURE_GCC+=(
         # Debian specific flags
-        "--libdir=${SYSROOT_PATH}/usr/lib/"
-        "--with-toolexeclibdir=${SYSROOT_PATH}/lib/${TARGET_TUPLE}"
-        "--enable-languages=c,c++"
         "--enable-clocal=gnu"
         "--without-included-gettext"
         "--enable-libstdcxx-debug"
@@ -93,50 +84,9 @@ else
     esac
 fi
 
-function _make_multi() {
-    function _make() {
-        make -j"$JOBS" "${@}" || return
-    }
-    function _make_installer() {
-        make DESTDIR="${BUILD_DIR}/gcc-install" "${@}" || return
-    }
+enabled_languages="--enabled-languages=c,c++"
 
-    process_background "Building GCC '$1'" _make "all-$1" ||
-        die "GCC build '$1'"
-    process_background "Installing GCC '$1'" _make_installer "install-$1" ||
-        die "GCC install '$1'"
-}
-
-xpushd "${BUILD_DIR}/gcc-build"
-process_background "Configuring GCC" \
-    "$DOWNLOAD_DIR/gcc-${V_GCC}/configure" \
-    "${CONFIGURE_GCC[@]}" ||
-    die "gcc configure failed"
-
-# Build the core compiler without libraries
-_make_multi gcc
-
-# libgcc is a complicated beast. Its easier to just build it ourselves
-TASKS=(target-libgcc)
-
-if [ "${CANADIAN_STAGE_ONE}" != "true" ]; then
-    case "${TARGET_DISTRO}" in
-    roborio)
-        TASKS+=(
-            target-libgfortran
-            target-libsanitizer
-        )
-        if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
-            TASKS+=(
-                target-libatomic
-                target-libstdc++-v3
-            )
-        fi
-        ;;
-    *) ;; # No current need to build support libraries for debian targets
-    esac
+if [ "${TARGET_DISTRO}" = "roborio" ]; then
+    enabled_languages+=",fortran"
 fi
-for task in "${TASKS[@]}"; do
-    _make_multi "$task"
-done
-xpopd
+CONFIGURE_GCC+=(enabled_languages)

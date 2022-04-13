@@ -20,7 +20,6 @@ CONFIGURE_GCC=(
     "--with-fpu=${TARGET_FPU}"
     "--with-arch=${TARGET_ARCH}"
     "--with-float=${TARGET_FLOAT}"
-    "--with-specs=${TARGET_SPECS}"
     "--enable-poison-system-directories"
     "--enable-threads=posix"
     "--enable-shared"

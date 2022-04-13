@@ -9,6 +9,10 @@ source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"
 
+if [ "${CANADIAN_STAGE_ONE}" = "true" ]; then
+    export TARGET_PREFIX="$TARGET_TUPLE-"
+fi
+
 cat <<EOF
 Host System Info
     OS: ${WPI_HOST_NAME}

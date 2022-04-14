@@ -13,10 +13,10 @@ echo "Processing Build Args"
 source "$SETUP_DIR/process_args.sh"
 echo "Applying Build Info"
 source "$SETUP_DIR/collect_build_info.sh"
-echo "Applying MacOS Specifc Flags"
-source "$SETUP_DIR/macos.sh"
-echo "Applying Linux/Windows Specifc Flags"
-source "$SETUP_DIR/linux.sh" # Includes windows
+if is-mac; then
+    echo "Applying MacOS Specifc Flags"
+    source "$SETUP_DIR/macos.sh"
+fi
 echo "Finalizing Compiler Flags"
 source "$SETUP_DIR/flags.sh"
 bash "$ROOT_DIR/scripts/confirm_gnu.sh" || exit

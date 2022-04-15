@@ -16,12 +16,14 @@ fi
 export CFLAGS CXXFLAGS LDFLAGS
 
 # Make-server processes
-if [ "$WPI_HOST_NAME" = "Mac" ]; then
-    JOBS="$(sysctl -n hw.ncpu)"
+if [ "$CI" = "true" ]; then
+    JOBS="8"
 else
-    JOBS="$(nproc)"
-fi
-if [ "$CI" != "true" ]; then
+    if [ "$WPI_HOST_NAME" = "Mac" ]; then
+        JOBS="$(sysctl -n hw.ncpu)"
+    else
+        JOBS="$(nproc)"
+    fi
     # Allow one empty thread so you can still
     # use the machine as you are compiling.
     JOBS="$(( "$JOBS" - 1 ))"

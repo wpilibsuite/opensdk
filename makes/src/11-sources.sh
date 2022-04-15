@@ -60,6 +60,6 @@ update_config_tools "gcc-${V_GCC}/isl"
 update_config_tools "gcc-${V_GCC}/mpc"
 update_config_tools "gcc-${V_GCC}/mpfr"
 update_config_tools "gdb-${V_GDB}"
-update_config_tools "make-${V_MAKE}/config"
+update_config_tools "make-${V_MAKE}/build-aux"
 
 xpopd

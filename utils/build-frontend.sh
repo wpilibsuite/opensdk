@@ -9,11 +9,6 @@ ROOT_DIR="${PWD}"
 source "$ROOT_DIR/scripts/setup.sh"
 set +a
 
-# Change ulimit to avoid issues with large files
-if [ "$WPI_HOST_NAME" = "Windows" ]; then
-    ulimit -n 97816
-fi
-
 die() {
     echo "[FATAL]: $1" >&2
     exit 1

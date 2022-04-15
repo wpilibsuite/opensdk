@@ -1,9 +1,9 @@
 --- a/src/main.c
 +++ b/src/main.c
 @@ -1126,8 +1126,11 @@
- 
+
  #endif
- 
+
 +/* setlocale interferes with line buffering if using parallel make on MinGW */
 +#ifndef __MINGW32__
    /* Set up gettext/internationalization support.  */

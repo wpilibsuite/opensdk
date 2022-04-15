@@ -47,8 +47,8 @@ download_or_die "${SAVANNAH_MIRROR}/config.sub"
 
 xpushd "gcc-${V_GCC}"
 # Use HTTPS from the GNU mirrors
-sed -i 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites 
-sed -i 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites 
+sed -i'' -e 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites 
+sed -i'' -e 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites 
 ./contrib/download_prerequisites || die "gcc prerequisite fetching failed"
 xpopd
 

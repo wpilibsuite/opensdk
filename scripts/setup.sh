@@ -19,6 +19,5 @@ if is-mac; then
 fi
 echo "Finalizing Compiler Flags"
 source "$SETUP_DIR/flags.sh"
-bash "$ROOT_DIR/scripts/confirm_gnu.sh" || exit
 
 unset SETUP_DIR

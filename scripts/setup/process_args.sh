@@ -4,8 +4,8 @@ if [ "$#" != "3" ]; then
     exit 1
 fi
 
-HOST_CFG="$(readlink -f "$1")"
-TARGET_CFG="$(readlink -f "$2")"
+HOST_CFG="$1"
+TARGET_CFG="$2"
 TARGET_PORT="$3"
 TOOLCHAIN_NAME="$(basename "$TARGET_CFG")"
 export HOST_CFG TARGET_CFG TARGET_PORT TOOLCHAIN_NAME

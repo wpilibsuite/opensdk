@@ -13,7 +13,7 @@ ROOT_DIR="${PWD}"
 source "${ROOT_DIR}/scripts/setup/tools.sh"
 source "${ROOT_DIR}/scripts/setup/gnutils.sh"
 
-TARGET_CFG="$(readlink -f "$1")"
+TARGET_CFG="$1"
 TARGET_PORT="$2"
 TOOLCHAIN_NAME="$(basename "$TARGET_CFG")"
 export ROOT_DIR TARGET_CFG TARGET_PORT TOOLCHAIN_NAME

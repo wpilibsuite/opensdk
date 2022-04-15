@@ -62,7 +62,7 @@ jobs:
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-10.15,
+              runner: macos-latest,
               container: "",
             }
           ]
@@ -87,25 +87,20 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Prep MacOS
-        if: matrix.host.runner == 'macos-10.15'
-        run: brew install coreutils dpkg gnu-tar gzip rsync xz
+        if: contains(matrix.host.runner, 'macos')
+        run: brew install gnu-tar rsync xz
       - uses: actions/download-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-sysroot
           path: output/
-      - name: Prep XCode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: ^12.4
-        if: matrix.host.runner == 'macos-10.15'
       - name: Build
         run: |
           make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} frontend
           rm output/*.tar
       - name: Test
         if:
-          matrix.host.os-cfg == 'macos_x86_64' ||
-          matrix.host.os-cfg == 'linux_x86_64'
+          contains(matrix.host.os-cfg, 'macos') ||
+          contains(matrix.host.os-cfg, 'linux')
         run:
           make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} test
       - uses: actions/upload-artifact@v2

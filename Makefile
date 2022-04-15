@@ -41,6 +41,6 @@ test:
 		${TARGET_PORT}
 
 clean:
-	$(runner) rm -r build downloads
+	$(runner) rm -rf build downloads || true
 
 

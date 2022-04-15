@@ -26,15 +26,14 @@ function process_background() {
     local spin=("-" "\\" "|" "/")
     local msg="$1"
     shift
-    local rand="$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 10 | head -n 1)"
-    mkdir -p "/tmp/toolchain_builder/"
+    local logfile="$(mktemp)"
     local prefix
     if [ "$msg" ]; then
         prefix="[RUNNING]: $msg"
     else
         prefix="[RUNNING]: Background task '${*}'"
     fi
-    ("${@}") >"/tmp/toolchain_builder/${rand}.log" 2>&1 &
+    ("${@}") >"${logfile}" 2>&1 &
     local pid="$!"
     if [ "$CI" != "true" ]; then
         while (ps a | awk '{print $1}' | grep -q "$pid"); do
@@ -50,9 +49,9 @@ function process_background() {
     wait "$pid"
     local retval="$?"
     if [ "$retval" -ne 0 ]; then
-        cat "/tmp/toolchain_builder/${rand}.log"
+        cat "${logfile}"
     fi
-    rm "/tmp/toolchain_builder/${rand}.log"
+    rm "${logfile}"
     return "$retval"
 }
 

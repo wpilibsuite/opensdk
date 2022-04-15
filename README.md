@@ -21,7 +21,7 @@ for macOS and Ubuntu.
 | - | - | - |
 | Windows | x86_64 | Windows XP |
 | Linux | x86_64 | Ubuntu 18.04 |
-| Mac | x86_64 | macOS 10.14 |
+| Mac | x86_64 | macOS 10.9 |
 
 ### Tier 2
 

@@ -65,6 +65,6 @@ update_config_tools "binutils-${V_BIN}"
 update_config_tools "expat-${V_EXPAT}/conftools"
 update_config_tools "gcc-${V_GCC}"
 update_config_tools "gdb-${V_GDB}"
-update_config_tools "make-${V_MAKE}/build-aux"
+update_config_tools "make-${V_MAKE}/config"
 
 xpopd

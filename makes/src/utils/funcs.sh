@@ -72,20 +72,16 @@ is_simple_cross() {
     fi
 }
 
-is_lib_rebuild_required() {
-    # Currently only the roborio requires a rebuild of the GCC runtime.
-    if [ "${TARGET_DISTRO}" = "roborio" ]; then
-        return 0
-    fi
-    return 1
-}
-
 is_step_backend() {
     [ "$BUILD_BACKEND" = true ]
 }
 
 is_step_frontend() {
-    ! is_step_backend
+    [ "$BUILD_BACKEND" != true ]
+}
+
+is_internal_toolchain() {
+    [ "$BUILD_BACKEND" = true ] || [ "$CANADIAN_STAGE_ONE" = true ]
 }
 
 configure_host_vars() {

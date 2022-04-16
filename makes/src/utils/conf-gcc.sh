@@ -93,7 +93,7 @@ if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
 fi
 CONFIGURE_GCC+=("$enabled_languages")
 
-if [ "$CANADIAN_STAGE_ONE" = true ]; then
+if is_internal_toolchain; then
     CONFIGURE_GCC+=(
         "--with-gmp"
         "--with-mpfr"

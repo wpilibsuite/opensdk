@@ -43,6 +43,7 @@ xcd "${TOOLCHAIN_NAME}"
 
 CC="./bin/${TARGET_PREFIX}gcc"
 CXX="./bin/${TARGET_PREFIX}g++"
+GFORTRAN="./bin/${TARGET_PREFIX}gfortran"
 STRIP="./bin/${TARGET_PREFIX}strip"
 
 C_CODE='
@@ -65,20 +66,41 @@ int main() {
 }
 '
 
-echo "[INFO] Printing compiler version"
-"${CC}" -dumpversion
+FORTRAN_CODE='
+program hello
+  ! This is a comment line; it is ignored by the compiler
+  print *, "Hello, World!"
+end program hello
+'
+
+VER="$("${CC}" -dumpversion)"
+
+echo "[INFO] Compiler Version: ${VER}"
 
 echo "[INFO]: Testing C Compiler"
 echo "$C_CODE" | "$CC" -x c -o a.out - || exit
+echo "[INFO]: Testing C Compiler with libasan"
+echo "$C_CODE" | "$CC" -x c -o /dev/null -fsanitize=address - || exit
+echo "[INFO]: Testing C Compiler with libubsan"
+echo "$C_CODE" | "$CC" -x c -o /dev/null -fsanitize=undefined - || exit
 
-echo "[INFO]: Testing C++ Compiler"
-echo "$CXX_CODE" | "$CXX" -x c++ -o a.out - || exit
+if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
+    echo "[INFO]: Testing C++ Compiler"
+    echo "$CXX_CODE" | "$CXX" -x c++ -o /dev/null - || exit
+    echo "[INFO]: Testing C++ Compiler with libasan"
+    echo "$CXX_CODE" | "$CXX" -x c++ -o /dev/null -fsanitize=address - || exit
+    echo "[INFO]: Testing C++ Compiler with libubsan"
+    echo "$CXX_CODE" | "$CXX" -x c++ -o /dev/null -fsanitize=undefined - || exit
+fi
 
-echo "[INFO]: Testing C sanitizer linkage"
-echo "$C_CODE" | "$CC" -x c -o a.out -fsanitize=undefined - || exit
-
-echo "[INFO]: Testing C++ sanitizer linkage"
-echo "$CXX_CODE" | "$CXX" -x c++ -o a.out -fsanitize=undefined - || exit
+if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
+    echo "[INFO]: Testing Fortran Compiler"
+    echo "$FORTRAN_CODE" | "$GFORTRAN" -x f95 -o /dev/null - || exit
+    echo "[INFO]: Testing Fortran Compiler with libasan"
+    echo "$FORTRAN_CODE" | "$GFORTRAN" -x f95 -o /dev/null -fsanitize=address - || exit
+    echo "[INFO]: Testing Fortran Compiler with libubsan"
+    echo "$FORTRAN_CODE" | "$GFORTRAN" -x f95 -o /dev/null -fsanitize=undefined - || exit
+fi
 
 echo "[INFO]: Testing ELF strip"
 "${STRIP}" a.out || exit

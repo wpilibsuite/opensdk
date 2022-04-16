@@ -162,3 +162,49 @@ check_if_canandian_stage_one_succeded() {
     fi
 }
 
+gcc_update_target_list() {
+    gcc_need_lib_build() {
+        local lib="${SYSROOT_BUILD_PATH}/usr/lib/$1"
+        if [ "$TARGET_LIB_REBUILD" = "true" ]; then
+            return 0
+        fi
+        if compgen -G "${lib}.*" >/dev/null; then
+            return 1
+        fi
+        return 0
+    }
+    if gcc_need_lib_build libgcc; then
+        GCC_TASKS+=(
+            target-libgcc
+        )
+    fi
+    if gcc_need_lib_build libatomic; then
+        GCC_TASKS+=(
+            target-libatomic
+        )
+    fi
+    if gcc_need_lib_build asan || gcc_need_lib_build ubsan; then
+        GCC_TASKS+=(
+            target-libsanitizer
+        )
+    fi
+    if gcc_need_lib_build libstdc++ && [ "${TARGET_ENABLE_CXX}" = true ]; then
+        GCC_TASKS+=(
+            target-libstdc++-v3
+        )
+    fi
+    if gcc_need_lib_build libgfortran && [ "${TARGET_ENABLE_FORTRAN}" = true ]; then
+        GCC_TASKS+=(
+            target-libgfortran
+        )
+    fi
+}
+
+is_lib_rebuild_required() {
+    local -a GCC_TASKS
+    gcc_update_target_list
+    if [ "${#GCC_TASKS[@]}" -gt 0 ]; then
+        return 0
+    fi
+    return 1
+}

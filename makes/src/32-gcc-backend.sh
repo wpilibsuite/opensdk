@@ -4,19 +4,25 @@
 source "$(dirname "$0")/common.sh"
 source "$(dirname "$0")/utils/conf-gcc.sh"
 
-if is_step_backend && ! is_lib_rebuild_required; then
+if is_step_backend; then
     exit 0
 fi
 
 xcd "${BUILD_DIR}/gcc-build"
 
 TASKS=()
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    # libgcc is complicated to work with preexisting artifacts
-    # so we just rebuild the runtime for all platforms.
+if gcc_need_lib_build libgcc; then
     TASKS+=(
         target-libgcc
-        target-libgfortran
+    )
+fi
+if gcc_need_lib_build libatomic; then
+    TASKS+=(
+        target-libatomic
+    )
+fi
+if gcc_need_lib_build asan || gcc_need_lib_build ubsan; then
+    TASKS+=(
         target-libsanitizer
     )
     if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
@@ -24,9 +30,13 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
         # then just rebuild all the libraries.
         TASKS+=(
             target-libatomic
-            target-libstdc++-v3
-        )
-    fi
+        target-libstdc++-v3
+    )
+fi
+if gcc_need_lib_build libgfortran && [ "${TARGET_ENABLE_FORTRAN}" = true ]; then
+    TASKS+=(
+        target-libgfortran
+    )
 fi
 
 for task in "${TASKS[@]}"; do

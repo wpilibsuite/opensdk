@@ -84,8 +84,11 @@ else
     esac
 fi
 
-enabled_languages="--enable-languages=c,c++"
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
+enabled_languages="--enable-languages=c"
+if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
+    enabled_languages+=",c++"
+fi
+if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
     enabled_languages+=",fortran"
 fi
 CONFIGURE_GCC+=("$enabled_languages")

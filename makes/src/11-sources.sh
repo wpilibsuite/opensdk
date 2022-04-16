@@ -48,7 +48,7 @@ download_or_die "${SAVANNAH_MIRROR}/config.sub"
 # We want to use the system libraries for the first stage
 # to speed up the build process as this toolchain is used
 # only internally.
-if ! is_internal_toolchain; then
+if is_final_toolchain; then
     xpushd "gcc-${V_GCC}"
     # Use HTTPS from the GNU mirrors
     sed -i'' -e 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites 

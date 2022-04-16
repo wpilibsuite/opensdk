@@ -208,3 +208,7 @@ is_step_frontend() {
 is_internal_toolchain() {
     [ "$BUILD_BACKEND" = true ] || [ "$CANADIAN_STAGE_ONE" = true ]
 }
+
+is_final_toolchain() {
+    ! is_internal_toolchain
+}

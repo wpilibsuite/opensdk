@@ -73,9 +73,11 @@ program hello
 end program hello
 '
 
-VER="$("${CC}" -dumpversion)"
+MACHINE="$("${CC}" -dumpmachine)"
+VERSION="$("${CC}" -dumpversion)"
 
-echo "[INFO] Compiler Version: ${VER}"
+echo "[INFO] Compiler Target: ${MACHINE}"
+echo "[INFO] Compiler Version: ${VERSION}"
 
 echo "[INFO]: Testing C Compiler"
 echo "$C_CODE" | "$CC" -x c -o a.out - || exit

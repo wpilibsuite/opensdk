@@ -14,14 +14,12 @@ die() {
     exit 1
 }
 
-# Check if system is a x86_64 system
-if [ "$(uname -m)" != "x86_64" ]; then
-    die "Toolchain builds require x86 build machines"
-fi
-
-# TODO: Now that the libraries are built in linux,
-# could the build work in windows?
 if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
+    # Check if system is a x86_64 system
+    if [ "$(uname -m)" != "x86_64" ]; then
+        die "Currently canadian builds require a x86_64 build system"
+    fi
+
     case "$(uname)" in
     Linux) _os="linux" ;;
     Darwin) _os="macos" ;;
@@ -31,7 +29,8 @@ if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
     esac
     # Recursivly build to setup host to help the canadian build
     CANADIAN_STAGE_ONE=true WPI_HOST_CANADIAN=false bash \
-        "$0" "hosts/${_os}_x86_64.env" "$2" "$3" || exit
+        "utils/build-frontend-tiny.sh" \
+        "hosts/${_os}_x86_64.env" "$2" "$3" || exit
     unset _os
     if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
         echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
@@ -63,15 +62,5 @@ ${MAKE} \
     task/41-gdb \
     task/50-frcmake \
     task/99-tree
-
-if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
-    sudo mkdir -p /opt/frc
-    rsync -aEL \
-        "${BUILD_DIR}/sysroot-install/" \
-        "${BUILD_DIR}/binutils-install/opt/frc/" \
-        "${BUILD_DIR}/gcc-install/opt/frc/" \
-        /opt/frc/
-    exit 0
-fi
 
 ${MAKE} pkg

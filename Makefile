@@ -1,5 +1,5 @@
 HOST := linux_x86_64
-TARGET := roborio-sumo
+TARGET := roborio
 TARGET_PORT := cortexa9_vfpv3
 DOCKER := false
 

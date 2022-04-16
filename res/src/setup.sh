@@ -41,6 +41,10 @@ apt-get install -y \
     gcc-i686-linux-gnu \
     g++-i686-linux-gnu \
     git \
+    libgmp-dev \
+    libmpfr-dev \
+    libmpc-dev \
+    libisl-dev \
     mingw-w64 \
     m4 \
     python3 \

@@ -29,10 +29,11 @@ process_background "Installing binutils" \
     install-strip || die "binutils install failed"
 if is_step_backend; then
     # GCC needs binutils in prefix path while building
-    # the target libraries. Using sudo here is messy but
-    # I do not want to spend the time to work around this.
-    process_background "Installing binutils as root" \
-        sudo make install-strip ||
+    # the target libraries. Previously this required
+    # the build user to have root access, but now
+    # the unix prefix is globally accessible.
+    process_background "Installing binutils to system" \
+        make install-strip ||
         die "binutils root install failed"
 fi
 xpopd

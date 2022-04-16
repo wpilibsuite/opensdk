@@ -32,12 +32,12 @@ if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
         "utils/build-frontend-tiny.sh" \
         "hosts/${_os}_x86_64.env" "$2" "$3" || exit
     unset _os
-    if ! [ -x "/opt/frc/bin/${TARGET_TUPLE}-gcc" ]; then
-        echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} missing"
+    if ! [ -x "/tmp/frc/bin/${TARGET_TUPLE}-gcc" ]; then
+        echo "[ERROR]: /tmp/frc/bin/${TARGET_TUPLE} missing"
         bash
         exit 1
-    elif ! [[ "$(file "/opt/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86[-_]64 ]]; then
-        echo "[ERROR]: /opt/frc/bin/${TARGET_TUPLE} is built incorrectly"
+    elif ! [[ "$(file "/tmp/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86[-_]64 ]]; then
+        echo "[ERROR]: /tmp/frc/bin/${TARGET_TUPLE} is built incorrectly"
         exit 1
     fi
 fi

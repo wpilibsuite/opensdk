@@ -6,9 +6,13 @@ CONTAINER_VERSION="bionic"
 DOCKER_ARGS=(
     --rm
     -v "${PWD}:/work"
+    -v "/etc/group:/etc/group:ro"
+    -v "/etc/passwd:/etc/passwd:ro"
     -w "/work"
     -e CI="$CI"
-    --platform "linux/amd64")
+    --platform "linux/amd64"
+    --user "$(id -u):$(id -g)"
+)
 
 die() {
     echo "ERROR:" "$@" >&2

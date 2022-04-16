@@ -24,6 +24,6 @@ ${MAKE} \
     task/31-gcc-frontend 
 
 rsync -aEL \
-    "${BUILD_DIR}/gcc-install/" \
-    "/"
+    "${BUILD_DIR}/gcc-install/tmp/frc/" \
+    "/tmp/frc/"
 exit

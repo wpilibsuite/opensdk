@@ -49,7 +49,7 @@ CONFIGURE_COMMON=(
     "--with-build-sysroot=${SYSROOT_BUILD_PATH}"
 )
 
-export PATH="/opt/frc/bin:${PATH}"
+export PATH="/tmp/frc/bin:${PATH}"
 export CONFIGURE_COMMON_LITE CONFIGURE_COMMON
 if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
     # Manually tell autoconf what tools to use as the build, host, and target

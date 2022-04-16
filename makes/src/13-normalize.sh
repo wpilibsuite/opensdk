@@ -38,6 +38,7 @@ else
     rm -rf usr/lib/"${TARGET_TUPLE}"
 
     cp usr/lib/gcc/"${TARGET_TUPLE}/${V_GCC/.*/}"/*.so* \
+        usr/lib/gcc/"${TARGET_TUPLE}/${V_GCC/.*/}"/lib*_preinit.o \
         usr/lib/gcc/"${TARGET_TUPLE}/${V_GCC/.*/}"/libsanitizer.spec \
         usr/lib/
 

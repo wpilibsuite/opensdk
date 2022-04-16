@@ -64,26 +64,6 @@ env_exists() {
     fi
 }
 
-is_simple_cross() {
-    if [ "${WPI_HOST_CANADIAN}x" != "x" ]; then
-        return 1
-    else
-        return 0
-    fi
-}
-
-is_step_backend() {
-    [ "$BUILD_BACKEND" = true ]
-}
-
-is_step_frontend() {
-    [ "$BUILD_BACKEND" != true ]
-}
-
-is_internal_toolchain() {
-    [ "$BUILD_BACKEND" = true ] || [ "$CANADIAN_STAGE_ONE" = true ]
-}
-
 configure_host_vars() {
     local xcode_arch_flag
     local xcode_sdk_flag
@@ -207,4 +187,24 @@ is_lib_rebuild_required() {
         return 0
     fi
     return 1
+}
+
+is_simple_cross() {
+    if [ "${WPI_HOST_CANADIAN}x" != "x" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+is_step_backend() {
+    [ "$BUILD_BACKEND" = true ]
+}
+
+is_step_frontend() {
+    [ "$BUILD_BACKEND" != true ]
+}
+
+is_internal_toolchain() {
+    [ "$BUILD_BACKEND" = true ] || [ "$CANADIAN_STAGE_ONE" = true ]
 }

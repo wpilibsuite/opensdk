@@ -48,8 +48,8 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 
 | Architecture | Operating System | Version |
 | - | - | - |
+| ARMv7 (softfp) | N.I. Linux (roboRIO) | GCC 11.2
 | ARMv7 (softfp) | N.I. Linux (roboRIO) Sumo | GCC 7.3
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Staging | GCC 11.2
 | ARMv6 | Raspberry Pi OS 10 | GCC 8.3
 | ARMv6 | Raspberry Pi OS 11 | GCC 10.2
 | ARMv7 | Debian/Raspberry Pi OS 10 | GCC 8.3

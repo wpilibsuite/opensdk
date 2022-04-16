@@ -37,17 +37,38 @@ else
     rsync -aEL usr/lib/"${TARGET_TUPLE}"/ usr/lib/
     rm -rf usr/lib/"${TARGET_TUPLE}"
 
+    cp usr/lib/gcc/"${TARGET_TUPLE}/${V_GCC/.*/}"/*.so* \
+        usr/lib/gcc/"${TARGET_TUPLE}/${V_GCC/.*/}"/libsanitizer.spec \
+        usr/lib/
+
     rm -rf usr/lib/audit
     rm -rf usr/lib/bfd-plugins
     rm -rf usr/lib/compat-ld
     rm -rf usr/lib/gold-ld
     rm -rf usr/lib/ldscripts
     rm -rf usr/lib/mime
+    rm -rf usr/lib/tar
 
     # Point the libc linker script to correct location
     sed -i "s/\/lib\/${TARGET_TUPLE}/\/lib/g" usr/lib/libc.so
 fi
 
+# Clear GCC unneeded files from sysroot
+for item in cc1 \
+    cc1plus \
+    collect2 \
+    f951 \
+    lto1 \
+    lto-wrapper \
+    plugin \
+    libasan \
+    libubsan \
+    libatomic \
+    libcc1.so \
+    libgcc_s.so \
+    liblto_plugin.so; do
+    rm -rf usr/lib/gcc/"${TARGET_TUPLE}/${V_GCC/.*/}/${item}"*
+done
 
 if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
     # Delete libstdc++ headers which will be replaced

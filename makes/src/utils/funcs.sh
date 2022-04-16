@@ -148,12 +148,12 @@ gcc_update_target_list() {
         if [ "$TARGET_LIB_REBUILD" = "true" ]; then
             return 0
         fi
-        if compgen -G "${lib}.*" >/dev/null; then
+        if compgen -G "${lib}.so*" >/dev/null; then
             return 1
         fi
         return 0
     }
-    if gcc_need_lib_build libgcc; then
+    if gcc_need_lib_build libgcc_s; then
         GCC_TASKS+=(
             target-libgcc
         )
@@ -163,7 +163,7 @@ gcc_update_target_list() {
             target-libatomic
         )
     fi
-    if gcc_need_lib_build asan || gcc_need_lib_build ubsan; then
+    if gcc_need_lib_build libasan || gcc_need_lib_build libubsan; then
         GCC_TASKS+=(
             target-libsanitizer
         )
@@ -181,7 +181,8 @@ gcc_update_target_list() {
 }
 
 is_lib_rebuild_required() {
-    local -a GCC_TASKS
+    local GCC_TASKS
+    GCC_TASKS=()
     gcc_update_target_list
     if [ "${#GCC_TASKS[@]}" -gt 0 ]; then
         return 0

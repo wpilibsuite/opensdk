@@ -1,11 +1,11 @@
 {
     "tasks": [
         {
-            "os": "roborio-sumo",
+            "os": "roborio",
             "port": "cortexa9_vfpv3"
         },
         {
-            "os": "roborio-staging",
+            "os": "roborio-sumo",
             "port": "cortexa9_vfpv3"
         },
         {

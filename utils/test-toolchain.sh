@@ -22,6 +22,7 @@ xpopd() {
 
 ROOT_DIR="${PWD}" && export ROOT_DIR
 TEST_SYS_GCC=false && export TEST_SYS_GCC
+TEST_DIR="${ROOT_DIR}/utils/test"
 # shellcheck source=./../scripts/setup.sh
 source "$ROOT_DIR/scripts/setup.sh"
 
@@ -46,33 +47,6 @@ CXX="./bin/${TARGET_PREFIX}g++"
 GFORTRAN="./bin/${TARGET_PREFIX}gfortran"
 STRIP="./bin/${TARGET_PREFIX}strip"
 
-C_CODE='
-#include <stdio.h>
-int main() {
-    puts("Hello World");
-    return 0;
-}
-'
-
-CXX_CODE='
-#include <iostream>
-int main() {
-    struct exception {};
-    std::cout << "Hello World" << std::endl;
-    try { throw exception{}; }
-    catch (exception) {}
-    catch (...) {}
-    return 0;
-}
-'
-
-FORTRAN_CODE='
-program hello
-  ! This is a comment line; it is ignored by the compiler
-  print *, "Hello, World!"
-end program hello
-'
-
 MACHINE="$("${CC}" -dumpmachine)"
 VERSION="$("${CC}" -dumpversion)"
 
@@ -80,28 +54,28 @@ echo "[INFO] Compiler Target: ${MACHINE}"
 echo "[INFO] Compiler Version: ${VERSION}"
 
 echo "[INFO]: Testing C Compiler"
-echo "$C_CODE" | "$CC" -x c -o a.out - || exit
+"$CC" "${TEST_DIR}/hello.c" -o a.out || exit
 echo "[INFO]: Testing C Compiler with libasan"
-echo "$C_CODE" | "$CC" -x c -o /dev/null -fsanitize=address - || exit
+"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=address || exit
 echo "[INFO]: Testing C Compiler with libubsan"
-echo "$C_CODE" | "$CC" -x c -o /dev/null -fsanitize=undefined - || exit
+"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=undefined || exit
 
 if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
     echo "[INFO]: Testing C++ Compiler"
-    echo "$CXX_CODE" | "$CXX" -x c++ -o /dev/null - || exit
+    "$CXX" "${TEST_DIR}/hello.cpp"  -o /dev/null || exit
     echo "[INFO]: Testing C++ Compiler with libasan"
-    echo "$CXX_CODE" | "$CXX" -x c++ -o /dev/null -fsanitize=address - || exit
+    "$CXX" "${TEST_DIR}/hello.cpp"  -o /dev/null -fsanitize=address || exit
     echo "[INFO]: Testing C++ Compiler with libubsan"
-    echo "$CXX_CODE" | "$CXX" -x c++ -o /dev/null -fsanitize=undefined - || exit
+    "$CXX" "${TEST_DIR}/hello.cpp"  -o /dev/null -fsanitize=undefined || exit
 fi
 
 if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
     echo "[INFO]: Testing Fortran Compiler"
-    echo "$FORTRAN_CODE" | "$GFORTRAN" -x f95 -o /dev/null - || exit
+    "$GFORTRAN" "${TEST_DIR}/hello.f95" -o /dev/null || exit
     echo "[INFO]: Testing Fortran Compiler with libasan"
-    echo "$FORTRAN_CODE" | "$GFORTRAN" -x f95 -o /dev/null -fsanitize=address - || exit
+    "$GFORTRAN" "${TEST_DIR}/hello.f95" -o /dev/null -fsanitize=address || exit
     echo "[INFO]: Testing Fortran Compiler with libubsan"
-    echo "$FORTRAN_CODE" | "$GFORTRAN" -x f95 -o /dev/null -fsanitize=undefined - || exit
+    "$GFORTRAN" "${TEST_DIR}/hello.f95" -o /dev/null -fsanitize=undefined || exit
 fi
 
 echo "[INFO]: Testing ELF strip"

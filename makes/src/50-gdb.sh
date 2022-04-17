@@ -16,6 +16,7 @@ process_background "Configuring GDB" \
     "${CONFIGURE_COMMON[@]}" \
     --with-expat \
     --with-libexpat-prefix="${BUILD_DIR}/expat-install/${WPI_HOST_PREFIX}" \
+    --with-gmp="${BUILD_DIR}/gmp-install/${WPI_HOST_PREFIX}" \
     --disable-debug \
     --disable-python \
     --disable-sim ||

@@ -213,3 +213,7 @@ is_internal_toolchain() {
 is_final_toolchain() {
     ! is_internal_toolchain
 }
+
+is_zstd_needed() {
+    [ "${V_GCC/.*/}" -ge 10 ]
+}

@@ -22,6 +22,7 @@ CONFIGURE_GCC=(
     "--with-gcc-major-version-only"
     "--enable-linker-build-id"
     "--enable-__cxa_atexit" # Should be enabled on glibc devices
+    "--without-zstd" # We cannot handle zstd detection with M1 canadian builds
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
 

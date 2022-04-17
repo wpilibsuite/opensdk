@@ -55,9 +55,9 @@ ${MAKE} \
     task/10-sysroot-from-backend \
     task/11-sources \
     task/12-patches \
-    task/20-binutils \
-    task/30-zstd \
-    task/31-expat \
+    task/30-binutils \
+    task/20-zstd \
+    task/21-expat \
     task/40-gcc-configure \
     task/41-gcc-frontend \
     task/50-gdb \

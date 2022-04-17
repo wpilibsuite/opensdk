@@ -38,7 +38,7 @@ ${MAKE} \
     task/11-sources \
     task/12-patches \
     task/13-normalize \
-    task/20-binutils \
+    task/30-binutils \
     task/40-gcc-configure \
     task/41-gcc-frontend \
     task/42-gcc-backend \

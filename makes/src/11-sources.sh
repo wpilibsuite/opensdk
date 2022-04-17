@@ -57,7 +57,8 @@ if is_final_toolchain; then
     sed -i'' -e 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites 
     ./contrib/download_prerequisites || die "gcc prerequisite fetching failed"
     xpopd
-    update_config_tools "gcc-${V_GCC}/gmp"
+    # We build GMP inhouse
+    rm -rf "gcc-${V_GCC}/gmp"
     update_config_tools "gcc-${V_GCC}/isl"
     update_config_tools "gcc-${V_GCC}/mpc"
     update_config_tools "gcc-${V_GCC}/mpfr"
@@ -65,6 +66,7 @@ fi
 
 update_config_tools "binutils-${V_BIN}"
 update_config_tools "expat-${V_EXPAT}/conftools"
+update_config_tools "gmp-${V_GMP}"
 update_config_tools "gcc-${V_GCC}"
 update_config_tools "gdb-${V_GDB}"
 update_config_tools "make-${V_MAKE}/config"

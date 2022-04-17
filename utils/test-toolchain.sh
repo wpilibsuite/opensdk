@@ -50,8 +50,8 @@ STRIP="./bin/${TARGET_PREFIX}strip"
 MACHINE="$("${CC}" -dumpmachine)"
 VERSION="$("${CC}" -dumpversion)"
 
-echo "[INFO] Compiler Target: ${MACHINE}"
-echo "[INFO] Compiler Version: ${VERSION}"
+echo "[INFO]: Compiler Target: ${MACHINE}"
+echo "[INFO]: Compiler Version: ${VERSION}"
 
 echo "[INFO]: Testing C Compiler"
 "$CC" "${TEST_DIR}/hello.c" -o a.out || exit

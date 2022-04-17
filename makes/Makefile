@@ -10,33 +10,15 @@ ARCHIVE_SUFFIX=tgz
 endif
 
 SHELL := /bin/bash
-TASKS := clean \
-		task/10-import-sysroot \
-		task/11-sources \
-		task/12-patches \
-		task/20-binutils \
-		task/30-gcc \
-		task/40-expat \
-		task/41-gdb \
-		task/50-frcmake \
-		task/99-tree
 
-.PHONY: all
 .SILENT:
 .NOTPARALLEL:
-
-all: $(TASKS)
-	/bin/true
 
 $(BUILD_DIR) $(OUTPUT_DIR):
 	mkdir -p $@
 
 task/%: $(BUILD_DIR)
 	cd ${BUILD_DIR} && $(SHELL) $(ROOT_DIR)/makes/src/$*.sh
-
-clean:
-	rm -rf ${BUILD_DIR}
-	mkdir -p ${BUILD_DIR}
 
 TREEIN_DIR=${BUILD_DIR}/tree-install/frc$(V_YEAR)/
 TREEOUT_TEMPLATE=$(TARGET_PORT)-${TOOLCHAIN_NAME}-$(V_YEAR)-$(WPI_HOST_TUPLE)-Toolchain-$(V_GCC)

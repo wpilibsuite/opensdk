@@ -65,17 +65,16 @@ env_exists() {
 }
 
 configure_host_vars() {
-    local xcode_arch_flag
-    local xcode_sdk_flag
-    local xcrun_find
-    # xcode_sdk_flag="-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
-    xcrun_find="xcrun --sdk macosx -f"
-
     env_exists WPI_HOST_NAME
     env_exists WPI_HOST_TUPLE
     env_exists HOST_TUPLE
 
     if [ "$WPI_HOST_NAME" = "Mac" ]; then
+        local xcode_arch_flag
+        local xcode_sdk_flag
+        local xcrun_find
+        xcode_sdk_flag="-isysroot $(xcrun --show-sdk-path)"
+        xcrun_find="xcrun --sdk macosx -f"
         case "${WPI_HOST_TUPLE}" in
         arm64* | aarch64*) xcode_arch_flag="-arch arm64" ;;
         x86_64*) xcode_arch_flag="-arch x86_64" ;;

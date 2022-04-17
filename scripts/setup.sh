@@ -12,7 +12,7 @@ source "$SETUP_DIR/process_args.sh"
 echo "Applying Build Info"
 source "$SETUP_DIR/collect_build_info.sh"
 if is-mac; then
-    echo "Applying MacOS Specifc Flags"
+    echo "Applying MacOS Specifc Options"
     source "$SETUP_DIR/macos.sh"
 fi
 echo "Finalizing Compiler Flags"

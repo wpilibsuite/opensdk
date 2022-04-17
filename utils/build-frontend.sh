@@ -56,7 +56,7 @@ ${MAKE} \
     task/11-sources \
     task/12-patches \
     task/30-binutils \
-    task/21-expat \
+    task/20-expat \
     task/40-gcc-configure \
     task/41-gcc-frontend \
     task/50-gdb \

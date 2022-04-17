@@ -56,11 +56,12 @@ ${MAKE} \
     task/11-sources \
     task/12-patches \
     task/20-binutils \
-    task/30-gcc-configure \
-    task/31-gcc-frontend \
-    task/40-expat \
-    task/41-gdb \
-    task/50-frcmake \
+    task/30-zstd \
+    task/31-expat \
+    task/40-gcc-configure \
+    task/42-gcc-frontend \
+    task/50-gdb \
+    task/51-frcmake \
     task/99-tree
 
 ${MAKE} pkg

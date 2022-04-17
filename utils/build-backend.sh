@@ -39,9 +39,9 @@ ${MAKE} \
     task/12-patches \
     task/13-normalize \
     task/20-binutils \
-    task/30-gcc-configure \
-    task/31-gcc-frontend \
-    task/32-gcc-backend \
+    task/40-gcc-configure \
+    task/41-gcc-frontend \
+    task/42-gcc-backend \
     task/98-package-backend
 
 mkdir -p "${OUTPUT_DIR}"

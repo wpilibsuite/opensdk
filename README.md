@@ -22,6 +22,7 @@ for macOS and Ubuntu.
 | Windows | x86_64 | Windows XP |
 | Linux | x86_64 | Ubuntu 18.04 |
 | Mac | x86_64 | macOS 10.9 |
+| Mac | ARMv8 | macOS 11.0 |
 
 ### Tier 2
 
@@ -41,7 +42,6 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 | Linux | i686 | Ubuntu 18.04 |
 | Linux | ARMv7 | Ubuntu 18.04 |
 | Linux | ARMv8 | Ubuntu 18.04 |
-| Mac | ARMv8 | macOS 11.0 |
 | Mac | Universal | - |
 
 ## Supported Targets

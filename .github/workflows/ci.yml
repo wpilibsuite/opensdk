@@ -54,16 +54,25 @@ jobs:
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
               container: "ghcr.io/ryanhir/toolchain-builder:bionic",
+              testable: true,
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
               container: "ghcr.io/ryanhir/toolchain-builder:bionic",
+              testable: false,
             },
             {
               os-cfg: macos_x86_64,
               runner: macos-latest,
               container: "",
+              testable: true,
+            },
+            {
+              os-cfg: macos_arm64,
+              runner: macos-latest,
+              container: "",
+              testable: false,
             }
           ]
         include:
@@ -71,6 +80,7 @@ jobs:
               os-cfg: linux_i686
               runner: ubuntu-latest
               container: ghcr.io/ryanhir/toolchain-builder:bionic
+              testable: true
             target:
               os: raspi-buster
               port: armhf
@@ -78,6 +88,7 @@ jobs:
               os-cfg: linux_i686
               runner: ubuntu-latest
               container: ghcr.io/ryanhir/toolchain-builder:bionic
+              testable: true
             target:
               os: raspi-bullseye
               port: armhf
@@ -98,9 +109,7 @@ jobs:
           make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} frontend
           rm output/*.tar
       - name: Test
-        if:
-          contains(matrix.host.os-cfg, 'macos') ||
-          contains(matrix.host.os-cfg, 'linux')
+        if: matrix.host.testable
         run:
           make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} test
       - name: Import Apple Developer ID Certificate

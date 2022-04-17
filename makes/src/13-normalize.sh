@@ -6,7 +6,10 @@
 # layout similar to NI Linux as it is easier to navigate.
 
 # We do however modify the NI Linux layout to have libgcc_s
-# in /usr/lib instead of /lib out of convenience.
+# in /usr/lib instead of /lib out of convenience. While we
+# could move individual files to the correct location, it
+# would be easier to cleanup and rebuild as the libgcc
+# startup files (crt*.o) are in the wrong location.
 
 # The Debian filesystem is better for multilib environments
 # but this causes issues with a more vanilla version of
@@ -18,8 +21,12 @@ source "$(dirname "$0")/common.sh"
 xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
 if [ "${TARGET_DISTRO}" = "roborio" ]; then
-    mv lib/libgcc_s.* usr/lib/
-    cp usr/lib/libgcc_s.so.1 usr/lib/libgcc_s.so
+    # Force rebuild of libgcc and its startup files
+    rm -rf lib/libgcc*
+    rm -rf usr/lib/crtbegin*.o
+    rm -rf usr/lib/crtend*.o
+    rm -rf usr/lib/crtfastmath*.o
+    rm -rf usr/lib/gcc
 
     # Why is this here on the rio?
     rm -rf lib/cpp

@@ -13,7 +13,7 @@ function download_or_die() {
 
 function download_extract() {
     download_or_die "$1"
-    tar xf "${1/*\//}" || die "${1/*\//} extract failed"
+    tar -xf "${1/*\//}" || die "${1/*\//} extract failed"
 }
 
 function update_config_tools() {

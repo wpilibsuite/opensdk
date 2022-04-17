@@ -39,7 +39,7 @@ xpushd "${tmp}"
 
 mkdir -p toolchain
 xpushd toolchain
-tar xf "$ROOT_DIR/output/$ARCHIVE_NAME"
+tar -xf "$ROOT_DIR/output/$ARCHIVE_NAME"
 xcd "${TOOLCHAIN_NAME}"
 
 CC="./bin/${TARGET_PREFIX}gcc"

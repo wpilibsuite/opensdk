@@ -56,8 +56,8 @@ mkdir "/tmp/toolchain-builder"
 cd "/tmp/toolchain-builder" || die "cd"
 mkdir arm x86 universal
 
-(cd "arm" && tar xf "$ARM_ARCHIVE") || die "arm extract failed"
-(cd "x86" && tar xf "$X86_ARCHIVE") || die "x86 extract failed"
+(cd "arm" && tar -xf "$ARM_ARCHIVE") || die "arm extract failed"
+(cd "x86" && tar -xf "$X86_ARCHIVE") || die "x86 extract failed"
 
 pushd "${ROOT_DIR}/output" || die "pushd"
 rm -r ./*

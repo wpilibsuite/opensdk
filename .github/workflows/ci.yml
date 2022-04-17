@@ -106,7 +106,8 @@ jobs:
       - name: Import Apple Developer ID Certificate
         if: 
           contains(matrix.host.os-cfg, 'macos') &&
-          github.repository_owner == 'wpilibsuite'
+          github.repository_owner == 'wpilibsuite' &&
+          startsWith(github.ref, 'refs/tags/v')
         uses: wpilibsuite/import-signing-certificate@v1
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
@@ -115,7 +116,8 @@ jobs:
       - name: Sign toolchain with Apple Developer ID Certificate
         if: 
           contains(matrix.host.os-cfg, 'macos') &&
-          github.repository_owner == 'wpilibsuite'
+          github.repository_owner == 'wpilibsuite' &&
+          startsWith(github.ref, 'refs/tags/v')
         run:
           make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} sign
       - uses: actions/upload-artifact@v2

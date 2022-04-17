@@ -22,9 +22,14 @@ CONFIGURE_GCC=(
     "--with-gcc-major-version-only"
     "--enable-linker-build-id"
     "--enable-__cxa_atexit" # Should be enabled on glibc devices
-    "--without-zstd" # We cannot handle zstd detection with M1 canadian builds
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
+
+if is_final_toolchain && is_zstd_needed; then
+    CONFIGURE_GCC+=(
+        "--with-zstd=${BUILD_DIR}/zstd-install/${WPI_HOST_PREFIX}"
+    )
+fi
 
 if [ "$TARGET_ARCH" ]; then
     CONFIGURE_GCC+=("--with-arch=${TARGET_ARCH}")

@@ -59,7 +59,7 @@ ${MAKE} \
     task/30-zstd \
     task/31-expat \
     task/40-gcc-configure \
-    task/42-gcc-frontend \
+    task/41-gcc-frontend \
     task/50-gdb \
     task/51-frcmake \
     task/99-tree

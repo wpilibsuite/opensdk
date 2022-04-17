@@ -20,8 +20,8 @@ ${MAKE} \
     task/10-sysroot-from-backend \
     task/11-sources \
     task/12-patches \
-    task/30-gcc-configure \
-    task/31-gcc-frontend 
+    task/40-gcc-configure \
+    task/41-gcc-frontend 
 
 rsync -aEL \
     "${BUILD_DIR}/gcc-install/tmp/frc/" \

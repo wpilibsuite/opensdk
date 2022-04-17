@@ -9,7 +9,7 @@ mkdir -p backend-install/tmp/frc
 if [ "$TARGET_LIB_REBUILD" = "true" ]; then
     # Hack to make the linker behave nicely with a out of tree libgcc.
     # This will take double the space on disk but is compressed
-    # within the zip/txz file.
+    # within the zip/tgz file.
     # TODO: Remove artifact from the old GCC build to cut down on space.
     rsync -aEL \
         "gcc-install/tmp/frc/${TARGET_TUPLE}/gcclib/" \

@@ -5,8 +5,8 @@ ifeq ($(WPI_HOST_NAME), Windows)
 ARCHIVE_TOOL=zip -r -9
 ARCHIVE_SUFFIX=zip
 else
-ARCHIVE_TOOL=tar -c --xz -f
-ARCHIVE_SUFFIX=txz
+ARCHIVE_TOOL=tar -czf
+ARCHIVE_SUFFIX=tgz
 endif
 
 SHELL := /bin/bash

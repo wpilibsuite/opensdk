@@ -93,4 +93,4 @@ OUTPUT_DIR="${ROOT_DIR}/output"
 ARCHIVE_PATH="${OUTPUT_DIR}/${ARCHIVE}"
 
 cd universal || die "cd"
-tar -c --xz -f "${ARCHIVE_PATH}" . || die "tar"
+tar -czf "${ARCHIVE_PATH}" . || die "tar"

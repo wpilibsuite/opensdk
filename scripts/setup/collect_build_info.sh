@@ -13,11 +13,13 @@ if [ "${CANADIAN_STAGE_ONE}" = "true" ]; then
     export TARGET_PREFIX="$TARGET_TUPLE-"
 fi
 
+WPI_BUILD_TUPLE="$(cc -dumpmachine | sed 's/darwin.*/darwin/g')"
+
 cat <<EOF
-Host System Info
-    OS: ${WPI_HOST_NAME}
+Build System Info:
+    Tuple: ${WPI_BUILD_TUPLE}
+Host System Info:
     Tuple: ${WPI_HOST_TUPLE}
-    Prefix: ${WPI_HOST_PREFIX}
 Toolchain Info:
     Name: ${TOOLCHAIN_NAME}
     CPU: ${TARGET_CPU}
@@ -32,4 +34,4 @@ PATCH_DIR="${ROOT_DIR}/patches"
 BUILD_DIR="${ROOT_DIR}/build/${TOOLCHAIN_NAME}-${TARGET_PORT}/${WPI_HOST_TUPLE}"
 
 PATH="$PATH:$BUILD_DIR/gcc-install/${WPI_HOST_PREFIX}/bin/"
-export DOWNLOAD_DIR OUTPUT_DIR SCRIPT_DIR PATCH_DIR PATH
+export WPI_BUILD_TUPLE DOWNLOAD_DIR OUTPUT_DIR SCRIPT_DIR PATCH_DIR PATH

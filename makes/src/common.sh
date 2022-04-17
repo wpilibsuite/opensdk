@@ -22,7 +22,7 @@ env_exists WPI_HOST_PREFIX
 env_exists DOWNLOAD_DIR
 
 
-BUILD_TUPLE="$(cc -dumpmachine | sed 's/darwin.*/darwin/')"
+BUILD_TUPLE="${WPI_BUILD_TUPLE}"
 HOST_TUPLE="${WPI_HOST_TUPLE}"
 SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
 SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"

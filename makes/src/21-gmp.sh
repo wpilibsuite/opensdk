@@ -1,5 +1,10 @@
 #! /usr/bin/env bash
 
+# We are building GMP so we can use GDB 11+. While
+# GCC also needs GMP, we don't use this build because
+# autoconf will complain about GMP not being installed
+# in some cases (such as Intel -> M1 canadian builds).
+
 source "$(dirname "$0")/common.sh"
 
 if ! is_final_toolchain; then

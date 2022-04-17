@@ -108,8 +108,4 @@ if is_internal_toolchain; then
         "--with-mpc"
         "--with-isl"
     )
-else
-    CONFIGURE_GCC+=(
-        "--with-gmp=${BUILD_DIR}/gmp-install/${WPI_HOST_PREFIX}"
-    )
 fi

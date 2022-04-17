@@ -25,9 +25,11 @@ CONFIGURE_GCC=(
     "--with-gxx-include-dir=${SYSROOT_PATH}/usr/include/c++/${V_GCC/.*/}"
 )
 
-if is_final_toolchain && is_zstd_needed; then
+if [ "${V_GCC/.*/}" -ge 10 ]; then
+    # ZSTD is a new dependency for GCC 10+ but is for LTO which
+    # we do not use.
     CONFIGURE_GCC+=(
-        "--with-zstd=${BUILD_DIR}/zstd-install/${WPI_HOST_PREFIX}"
+        "--without-zstd"
     )
 fi
 

@@ -42,7 +42,6 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 | Linux | i686 | Ubuntu 18.04 |
 | Linux | ARMv7 | Ubuntu 18.04 |
 | Linux | ARMv8 | Ubuntu 18.04 |
-| Mac | Universal | - |
 
 ## Supported Targets
 

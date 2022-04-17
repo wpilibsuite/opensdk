@@ -189,14 +189,6 @@ is_lib_rebuild_required() {
     return 1
 }
 
-is_simple_cross() {
-    if [ "${WPI_HOST_CANADIAN}x" != "x" ]; then
-        return 1
-    else
-        return 0
-    fi
-}
-
 is_step_backend() {
     [ "$BUILD_BACKEND" = true ]
 }

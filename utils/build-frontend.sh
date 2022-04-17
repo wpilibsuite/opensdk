@@ -14,7 +14,7 @@ die() {
     exit 1
 }
 
-if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
+if [ "$WPI_BUILD_TUPLE" != "$WPI_HOST_TUPLE" ]; then
     # Check if system is a x86_64 system
     if [ "$(uname -m)" != "x86_64" ]; then
         die "Currently canadian builds require a x86_64 build system"
@@ -28,7 +28,7 @@ if [ "${WPI_HOST_CANADIAN}" = "true" ]; then
         ;;
     esac
     # Recursivly build to setup host to help the canadian build
-    CANADIAN_STAGE_ONE=true WPI_HOST_CANADIAN=false bash \
+    CANADIAN_STAGE_ONE=true bash \
         "utils/build-frontend-tiny.sh" \
         "hosts/${_os}_x86_64.env" "$2" "$3" || exit
     unset _os

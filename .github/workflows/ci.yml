@@ -103,26 +103,22 @@ jobs:
           contains(matrix.host.os-cfg, 'linux')
         run:
           make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} test
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
-          path: output/*
-  xcode-sign:
-    needs: [targets, build-platform-utils]
-    if: github.repository_owner == 'wpilibsuite'
-    strategy:
-      matrix:
-        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
-    name: Sign macOS binaries for ${{matrix.target.os}}_${{matrix.target.port}}
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Import Developer ID Certificate
+      - name: Import Apple Developer ID Certificate
+        if: 
+          contains(matrix.host.os-cfg, 'macos') &&
+          github.repository_owner == 'wpilibsuite'
         uses: wpilibsuite/import-signing-certificate@v1
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
           certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
-      - uses: actions/download-artifact@v2
+      - name: Sign toolchain with Apple Developer ID Certificate
+        if: 
+          contains(matrix.host.os-cfg, 'macos') &&
+          github.repository_owner == 'wpilibsuite'
+        run:
+          make HOST=${{matrix.host.os-cfg}} TARGET=${{matrix.target.os}} TARGET_PORT=${{matrix.target.port}} sign
+      - uses: actions/upload-artifact@v2
         with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-macos_x86_64
+          name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
+          path: output/*

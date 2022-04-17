@@ -24,7 +24,8 @@ process_background "Configuring GDB" \
     die "gdb configure failed"
 process_background "Building GDB" \
     make -j"$JOBS" || die "gdb build failed"
+# make is having issues with strip for GDB install
 process_background "Installing GDB" \
     make DESTDIR="${BUILD_DIR}/gdb-install" \
-    install-strip || die "gdb install failed"
+    install || die "gdb install failed"
 xpopd

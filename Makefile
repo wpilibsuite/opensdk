@@ -16,7 +16,7 @@ endif
 .PHONY: any frontend backend test clean
 
 any:
-	@echo "Please manually select a command such as frontend, backend, test, or clean."
+	@echo "Please manually select a command such as frontend, backend, sign, test, or clean."
 	@/bin/false
 
 # Do note that the current implementations of frontend and backend could have
@@ -30,6 +30,12 @@ frontend:
 
 backend:
 	$(runner) bash ./utils/build-backend.sh \
+		${workdir}/hosts/${HOST}.env \
+		${workdir}/targets/${TARGET} \
+		${TARGET_PORT}
+
+sign:
+	$(runner) bash ./utils/sign-toolchain.sh \
 		${workdir}/hosts/${HOST}.env \
 		${workdir}/targets/${TARGET} \
 		${TARGET_PORT}

@@ -37,26 +37,13 @@ function patch_project() {
     esac
 
     function patch_loop() {
-        local _skip
         xpushd "${1}"
         for _patch in *; do
-            _skip=false
-            case "$_patch" in
-            *darwin*)
-                if [ "$WPI_HOST_NAME" != "Mac" ]; then
-                    _skip=true
-                fi
-                ;;
-            *debian*)
-                if [ "$TARGET_DISTRO" = "roborio" ]; then
-                    _skip=true
-                fi
-                ;;
-            *) ;;
-            esac
-            if $_skip; then
+            if [[ "$_patch" =~ darwin ]] && [ "$WPI_HOST_NAME" != "Mac" ]; then
+                # Do not apply macOS specific patches for Windows and Linux
+                # builds
                 continue
-            fi
+            fi 
             _patch="${PWD}/$_patch"
             xpushd "${DOWNLOAD_DIR}/${src}"
             patch_or_die "$_patch"

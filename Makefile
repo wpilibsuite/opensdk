@@ -1,11 +1,11 @@
-HOST := linux_x86_64
-TARGET := roborio
-TARGET_PORT := cortexa9_vfpv3
-DOCKER := false
+WPI_HOST ?= linux_x86_64
+WPI_TARGET ?= roborio
+WPI_TARGET_PORT ?= cortexa9_vfpv3
+USE_DOCKER ?= false
 
 mk_file_dir := $(abspath $(shell dirname $(MAKE)))
 
-ifeq ($(DOCKER), true)
+ifeq ($(USE_DOCKER), true)
 	runner := $(mk_file_dir)/docker.sh
 	workdir := /work
 else
@@ -24,29 +24,27 @@ any:
 
 frontend:
 	$(runner) bash ./utils/build-frontend.sh \
-		${workdir}/hosts/${HOST}.env \
-		${workdir}/targets/${TARGET} \
-		${TARGET_PORT}
+		${workdir}/hosts/${WPI_HOST}.env \
+		${workdir}/targets/${WPI_TARGET} \
+		${WPI_TARGET_PORT}
 
 backend:
 	$(runner) bash ./utils/build-backend.sh \
-		${workdir}/hosts/${HOST}.env \
-		${workdir}/targets/${TARGET} \
-		${TARGET_PORT}
+		${workdir}/hosts/${WPI_HOST}.env \
+		${workdir}/targets/${WPI_TARGET} \
+		${WPI_TARGET_PORT}
 
 sign:
 	$(runner) bash ./utils/sign-toolchain.sh \
-		${workdir}/hosts/${HOST}.env \
-		${workdir}/targets/${TARGET} \
-		${TARGET_PORT}
+		${workdir}/hosts/${WPI_HOST}.env \
+		${workdir}/targets/${WPI_TARGET} \
+		${WPI_TARGET_PORT}
 
 test:
 	$(runner) bash ./utils/test-toolchain.sh \
-		${workdir}/hosts/${HOST}.env \
-		${workdir}/targets/${TARGET} \
-		${TARGET_PORT}
+		${workdir}/hosts/${WPI_HOST}.env \
+		${workdir}/targets/${WPI_TARGET} \
+		${WPI_TARGET_PORT}
 
 clean:
 	$(runner) rm -rf build downloads || true
-
-

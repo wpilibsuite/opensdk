@@ -13,7 +13,23 @@ if [ "${CANADIAN_STAGE_ONE}" = "true" ]; then
     export TARGET_PREFIX="$TARGET_TUPLE-"
 fi
 
+triple_simplify() {
+    local triple="$1"
+    IFS="-" read -r a b c d bad < <(echo "$triple")
+    if [ "$bad" ]; then
+        echo "$triple is not a triple" >&2
+        return 1
+    elif [ "$d" ]; then
+        # Shorten triple
+        echo "$a-$c-$d"
+    else
+        # essentially passthrough triple
+        echo "$a-$b-$c"
+    fi
+}
+
 WPI_BUILD_TUPLE="$(cc -dumpmachine | sed 's/darwin.*/darwin/g')"
+WPI_BUILD_TUPLE="$(triple_simplify "$WPI_BUILD_TUPLE")"
 
 cat <<EOF
 Build System Info:

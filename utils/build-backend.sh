@@ -3,6 +3,8 @@
 # Change directory to project base
 cd "$(dirname "$0")/.." || exit
 
+export BUILD_BACKEND=true
+
 set -a
 ROOT_DIR="${PWD}"
 # shellcheck source=../scripts/setup.sh
@@ -28,8 +30,6 @@ trap onexit "err"
 
 mkdir -p "${BUILD_DIR}"
 MAKE="make -C ${ROOT_DIR}/makes/ --no-print-directory"
-
-export BUILD_BACKEND=true
 
 ${MAKE} \
     task/10-sysroot \

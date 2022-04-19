@@ -1,23 +1,21 @@
 #! /bin/sh
 
-no() {
-    echo "false"
-    exit
-}
-
 _MACHINE="$(uname)"
 
 if [ "$_MACHINE" != "Linux" ]; then
-    no
+    echo "false"
+elif [ "$CI" = "true" ]; then
+    # Github Actions already runs in a Docker container
+    echo "false"
 elif ! command -v docker >/dev/null 2>&1; then
     # Check if docker is installed
-    no    
+    echo "false"
 elif ! groups | grep -q docker; then
     # Check if the user is in the docker group
-    no    
+    echo "false"
 elif ! docker info >/dev/null 2>&1; then
     # Check if docker daemon is running
-    no
+    echo "false"
+else
+    echo "true"
 fi
-
-echo "true"

@@ -18,11 +18,6 @@ function patch_project() {
     local src
     local ver
     case "$1" in
-    bin)
-        proj="binutils"
-        src="binutils-${V_BIN}"
-        ver="${V_BIN}"
-        ;;
     gcc)
         proj="gcc"
         src="gcc-${V_GCC}"
@@ -64,7 +59,6 @@ function patch_project() {
     fi
 }
 
-patch_project bin
 patch_project gcc
 patch_project make
 

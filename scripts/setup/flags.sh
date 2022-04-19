@@ -8,8 +8,8 @@ fi
 export CFLAGS CXXFLAGS LDFLAGS
 
 # Make-server processes
-if [ "$CI" = "true" ]; then
-    JOBS="8"
+if [ "$WPI_USE_THREADS" ]; then
+    JOBS="$WPI_USE_THREADS"
 else
     if [ "$WPI_HOST_NAME" = "Mac" ]; then
         JOBS="$(sysctl -n hw.ncpu)"

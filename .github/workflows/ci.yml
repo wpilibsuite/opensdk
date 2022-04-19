@@ -37,6 +37,7 @@ jobs:
     env:
       WPI_TARGET: ${{matrix.target.os}}
       WPI_TARGET_PORT: ${{matrix.target.port}}
+      WPI_USE_THREADS: 8
     steps:
       - uses: actions/checkout@v1
       - name: Build sysroot
@@ -102,6 +103,7 @@ jobs:
       WPI_HOST: ${{matrix.host.os-cfg}}
       WPI_TARGET: ${{matrix.target.os}}
       WPI_TARGET_PORT: ${{matrix.target.port}}
+      WPI_USE_THREADS: 8
     steps:
       - uses: actions/checkout@v1
       - name: Prep MacOS

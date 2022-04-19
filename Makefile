@@ -1,6 +1,6 @@
 mk_file_dir := $(abspath $(shell dirname $(MAKE)))
 
-WPI_HOST ?= $(shell sh $(mk_file_dir)/utils/guess-host.sh)
+WPI_HOST ?= $(shell sh $(mk_file_dir)/utils/extra/guess-host.sh)
 WPI_TARGET ?= roborio
 WPI_TARGET_PORT ?= cortexa9_vfpv3
 USE_DOCKER ?= false

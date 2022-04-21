@@ -1,69 +1,6 @@
 #! /usr/bin/env bash
 # shellcheck disable=SC2155
 
-function die() {
-    echo "[FATAL]: $1" >&2
-    exit 1
-}
-
-function warn() {
-    echo "[WARN]: $1" >&2
-}
-
-function xpushd() {
-    pushd "$1" >/dev/null || die "pushd failed: $1"
-}
-
-function xpopd() {
-    popd >/dev/null || die "popd failed"
-}
-
-function xcd() {
-    cd "$1" >/dev/null || die "cd failed"
-}
-
-function process_background() {
-    local spin=("-" "\\" "|" "/")
-    local msg="$1"
-    shift
-    local logfile="$(mktemp)"
-    local prefix
-    if [ "$msg" ]; then
-        prefix="[RUNNING]: $msg"
-    else
-        prefix="[RUNNING]: Background task '${*}'"
-    fi
-    ("${@}") >"${logfile}" 2>&1 &
-    local pid="$!"
-    if [ "$CI" != "true" ]; then
-        while (ps a | awk '{print $1}' | grep -q "$pid"); do
-            for i in "${spin[@]}"; do
-                echo -ne "\r$prefix $i"
-                sleep 0.1
-            done
-        done
-        echo -e "\r$prefix  "
-    else
-        echo "$prefix"
-    fi
-    wait "$pid"
-    local retval="$?"
-    if [ "$retval" -ne 0 ]; then
-        cat "${logfile}"
-    fi
-    rm "${logfile}"
-    return "$retval"
-}
-
-env_exists() {
-    local env_var="$1"
-    if [ -z "${!env_var}" ]; then
-        die "$env_var is not set"
-    else
-        return 0
-    fi
-}
-
 configure_host_vars() {
     env_exists WPI_HOST_NAME
     env_exists WPI_HOST_TUPLE
@@ -133,15 +70,8 @@ configure_target_vars() {
     define_target_export GFORTRAN gfortran
 }
 
-check_if_canandian_stage_one_succeded() {
-    env_exists TARGET_TUPLE
-    if ! [[ -x "/tmp/frc/bin/${TARGET_TUPLE}-gcc" ]]; then
-        echo "[DEBUG]: Cannot find ${TARGET_TUPLE}-gcc in /tmp/frc/bin"
-        die "Stage 1 Canadian toolchain not found in expected location"
-    fi
-}
-
 gcc_update_target_list() {
+    env_exists SYSROOT_BUILD_PATH
     gcc_need_lib_build() {
         local lib="${SYSROOT_BUILD_PATH}/usr/lib/$1"
         if [ "$TARGET_LIB_REBUILD" = "true" ]; then
@@ -187,20 +117,4 @@ is_lib_rebuild_required() {
         return 0
     fi
     return 1
-}
-
-is_step_backend() {
-    [ "$BUILD_BACKEND" = true ]
-}
-
-is_step_frontend() {
-    [ "$BUILD_BACKEND" != true ]
-}
-
-is_internal_toolchain() {
-    [ "$BUILD_BACKEND" = true ] || [ "$CANADIAN_STAGE_ONE" = true ]
-}
-
-is_final_toolchain() {
-    ! is_internal_toolchain
 }

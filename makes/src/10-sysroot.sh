@@ -11,18 +11,27 @@ rm -rf "${BUILD_DIR}/sysroot-install"
 mkdir "${BUILD_DIR}/sysroot-build"
 mkdir -p "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
+ARGS=(
+    "${TARGET_DISTRO}"
+    "${TARGET_PORT}"
+    "${TARGET_DISTRO_RELEASE}"
+)
+if [ "$TARGET_LIB_REBUILD" ]; then
+    ARGS+=("--minimal-toolchain")
+fi
+
 xpushd "${BUILD_DIR}/sysroot-build"
 python3 -m opensysroot \
-    "${TARGET_DISTRO}" \
-    "${TARGET_PORT}" \
-    "${TARGET_DISTRO_RELEASE}" \
+    "${ARGS[@]}" \
     . || die "opensysroot failed"
 SYSROOT_DIR="${PWD}/${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}"
-xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
-find . -type f -or -type l \
-    -exec /usr/bin/test -x {} \; \
-    -exec /bin/rm {} \;
-xpopd
+if ! [ "$TARGET_LIB_REBUILD" ]; then
+    xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
+    find . -type f -or -type l \
+        -exec /usr/bin/test -x {} \; \
+        -exec /bin/rm {} \;
+    xpopd
+fi
 rsync -a \
     "${SYSROOT_DIR}/sysroot/" \
     "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot" ||

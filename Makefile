@@ -1,4 +1,4 @@
-mk_file_dir := $(lastword $(MAKEFILE_LIST))
+mk_file_dir := $(abspath $(shell dirname $(MAKE)))
 
 WPI_TARGET ?= roborio
 WPI_TARGET_PORT ?= cortexa9_vfpv3

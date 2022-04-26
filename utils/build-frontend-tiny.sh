@@ -20,10 +20,12 @@ ${MAKE} \
     task/10-sysroot-from-backend \
     task/11-sources \
     task/12-patches \
+    task/30-binutils \
     task/40-gcc-configure \
     task/41-gcc-frontend 
 
 rsync -aEL \
+    "${BUILD_DIR}/binutils-install/tmp/frc/" \
     "${BUILD_DIR}/gcc-install/tmp/frc/" \
     "/tmp/frc/"
 exit

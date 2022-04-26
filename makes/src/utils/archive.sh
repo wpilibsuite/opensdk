@@ -3,6 +3,9 @@
 # January 1, 2000. Midnight.
 EPOCH="946684800"
 
+source "${ROOT_DIR}/consts.env"
+source "${ROOT_DIR}/targets/${TOOLCHAIN_NAME}/version.env"
+
 TREEIN_DIR="${BUILD_DIR}/tree-install/frc${V_YEAR}/"
 TREEOUT_TEMPLATE="${TARGET_PORT}-${TOOLCHAIN_NAME}-${V_YEAR}-${WPI_HOST_TUPLE}-Toolchain-${V_GCC}"
 

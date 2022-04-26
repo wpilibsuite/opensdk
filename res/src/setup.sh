@@ -24,9 +24,6 @@ dpkg --add-architecture armhf
 ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime
 echo "$TZ" >/etc/timezone
 
-# Add Python backport ppa
-apt-get update
-
 # Install tools
 apt-get update
 apt-get install -y \

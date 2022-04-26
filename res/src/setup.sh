@@ -53,11 +53,7 @@ apt-get install -y \
     sudo \
     texinfo \
     wget \
-    zip \
-    zlib1g-dev:i386 \
-    zlib1g-dev:amd64 \
-    zlib1g-dev:armhf \
-    zlib1g-dev:arm64
+    zip
 
 apt-get autoclean
 rm -rf /var/lib/apt/lists/*

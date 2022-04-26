@@ -51,6 +51,7 @@ apt-get install -y \
     python3-pip \
     rsync \
     sudo \
+    strip-nondeterminism \
     texinfo \
     wget \
     zip

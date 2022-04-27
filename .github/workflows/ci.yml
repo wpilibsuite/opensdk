@@ -84,7 +84,7 @@ jobs:
               os-cfg: linux_i686
               runner: ubuntu-latest
               container: ghcr.io/ryanhir/toolchain-builder:bionic
-              testable: true
+              testable: false
             target:
               os: raspi-buster
               port: armhf
@@ -92,7 +92,7 @@ jobs:
               os-cfg: linux_i686
               runner: ubuntu-latest
               container: ghcr.io/ryanhir/toolchain-builder:bionic
-              testable: true
+              testable: false
             target:
               os: raspi-bullseye
               port: armhf

@@ -68,6 +68,5 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
   * [GCC Build instructions and configs](https://gcc.gnu.org/install/)
 
 ## Credits
-  * (majenko) [Using lipo to combine toolchains](https://majenko.co.uk/blog/how-i-cross-compile-fat-binary-cross-compiler-os-x-big-sur)
   * (crosstool-ng) [GCC patches for M1 hosting](https://github.com/crosstool-ng/crosstool-ng/)
     * Copyright is owned by original authors of the patches and the Free Software Foundation where applicable

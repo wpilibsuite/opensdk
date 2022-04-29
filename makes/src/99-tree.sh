@@ -56,7 +56,8 @@ rsync -aE "./${WPI_HOST_PREFIX}/" "${TREE_OUT}"
 rm -rf "./${WPI_HOST_PREFIX}" "./${TARGET_TUPLE}"
 
 xpushd "${TREE_OUT}"
-rm -rf include share
+rm -rf include
+find share -type d -not -name 'licenses' -print0 | xargs -0 rm --
 
 xpushd bin
 

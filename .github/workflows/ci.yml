@@ -33,7 +33,7 @@ jobs:
         target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
     name: Build sysroot for ${{ matrix.target.os }}-${{ matrix.target.port }}
     runs-on: ubuntu-latest
-    container: ghcr.io/ryanhir/toolchain-builder:bionic
+    container: ghcr.io/ryanhir/opensdk:bionic
     env:
       WPI_TARGET: ${{matrix.target.os}}
       WPI_TARGET_PORT: ${{matrix.target.port}}
@@ -57,13 +57,13 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:bionic",
+              container: "ghcr.io/ryanhir/opensdk:bionic",
               testable: true,
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/toolchain-builder:bionic",
+              container: "ghcr.io/ryanhir/opensdk:bionic",
               testable: false,
             },
             {
@@ -83,7 +83,7 @@ jobs:
           - host:
               os-cfg: linux_i686
               runner: ubuntu-latest
-              container: ghcr.io/ryanhir/toolchain-builder:bionic
+              container: ghcr.io/ryanhir/opensdk:bionic
               testable: false
             target:
               os: raspi-buster
@@ -91,7 +91,7 @@ jobs:
           - host:
               os-cfg: linux_i686
               runner: ubuntu-latest
-              container: ghcr.io/ryanhir/toolchain-builder:bionic
+              container: ghcr.io/ryanhir/opensdk:bionic
               testable: false
             target:
               os: raspi-bullseye

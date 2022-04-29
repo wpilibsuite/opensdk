@@ -1,6 +1,6 @@
 export DOCKER_BUILDKIT=0
 export DOCKER_SCAN_SUGGEST=false
-TAG=ghcr.io/ryanhir/toolchain-builder
+TAG=ghcr.io/ryanhir/opensdk
 
 .PHONY: all
 all:

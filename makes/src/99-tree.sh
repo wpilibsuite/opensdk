@@ -45,7 +45,6 @@ for project in "${PROJECT_EXPORT[@]}"; do
         die "rsync tree build failed - $project"
 done
 xpushd tree-build
-du -hs .
 
 TREE_OUT="frc${V_YEAR}/${TOOLCHAIN_NAME}/"
 
@@ -85,7 +84,6 @@ for exec in *; do
 done
 
 xpopd # bin
-du -hs .
 xpopd # TREE_OUT
 xpopd # tree-build
 

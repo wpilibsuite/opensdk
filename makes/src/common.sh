@@ -60,7 +60,6 @@ CONFIGURE_COMMON_LITE=(
 CONFIGURE_COMMON=(
     "${CONFIGURE_COMMON_LITE[@]}"
     "--target=${TARGET_TUPLE}"
-    "--libexecdir=${WPI_HOST_PREFIX}/${TARGET_TUPLE}/libexec"
     "--with-sysroot=${SYSROOT_PATH}"
     "--libdir=${SYSROOT_PATH}/usr/lib"
     "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"

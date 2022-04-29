@@ -69,4 +69,22 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 
 ## Credits
   * (crosstool-ng) [GCC patches for M1 hosting](https://github.com/crosstool-ng/crosstool-ng/)
-    * Copyright is owned by original authors of the patches and the Free Software Foundation where applicable
+
+## Licensing Notice
+
+**NOTE:** Refer to the text in `COPYING` for the full legal statement. The text written
+below is made from a very basic understanding of GPLv3 (and its exceptions).
+
+As per GPLv3 (snippet below) all scripts to build the GNU toolchain must be provided
+under the same license. So, the scripts in the repository are released under GPLv3.
+
+> For an executable work, complete source code means [...], plus the
+> scripts used to control compilation and installation of the executable.
+
+The GCC exception still applies so the toolchain built with these scripts can still
+be used for any project as per the exception. A copy of this exception can be found
+[here](https://github.com/gcc-mirror/gcc/blob/master/COPYING.RUNTIME).
+
+The files under `patches/` are released under the same license as the project in which
+it targets. As of April 2022, all projects are currently GPLv3 so the patches are also
+released under GPLv3. 

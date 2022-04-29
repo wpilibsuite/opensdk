@@ -79,6 +79,7 @@ ${MAKE} \
     task/41-gcc-frontend \
     task/50-gdb \
     task/51-frcmake \
+    task/90-license \
     task/99-tree
 
 ${MAKE} pkg

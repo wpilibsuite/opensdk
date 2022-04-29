@@ -30,6 +30,7 @@ PROJECT_EXPORT=(
     gcc
     gdb
     frcmake
+    license
 )
 
 rm -rf tree-{build,install}

@@ -50,7 +50,7 @@ CONFIGURE_COMMON_LITE=(
     "--host=${HOST_TUPLE}"
     "--prefix=${WPI_HOST_PREFIX}"
     "--program-prefix=${TARGET_PREFIX}"
-    "--disable-lto"
+    "--enable-lto"
     "--disable-nls"
     "--disable-plugin"
     "--disable-werror"

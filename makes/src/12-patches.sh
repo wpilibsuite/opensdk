@@ -53,11 +53,16 @@ function patch_project() {
     function patch_loop() {
         xpushd "${1}"
         for _patch in *; do
-            if [[ "$_patch" =~ darwin ]] && [ "$WPI_HOST_NAME" != "Mac" ]; then
-                # Do not apply macOS specific patches for Windows and Linux
-                # builds
-                continue
-            fi 
+            if [[ "$_patch" =~ darwin ]]; then
+                if [ "$WPI_HOST_NAME" != "Mac" ]; then
+                    # Do not apply macOS specific patches for Windows and Linux
+                    # builds
+                    continue
+                elif [[ "${1}" =~ gcc ]] && [ "${V_GCC/.*/}" -ge 12 ]; then
+                    # Do not apply macOS specific patches for GCC >= 12
+                    continue
+                fi
+            fi
             _patch="${PWD}/$_patch"
             xpushd "${DOWNLOAD_DIR}/${src}"
             patch_or_die "$_patch"

@@ -57,7 +57,7 @@ rm -rf "./${WPI_HOST_PREFIX}" "./${TARGET_TUPLE}"
 
 xpushd "${TREE_OUT}"
 rm -rf include
-find share -type d -not -name 'licenses' -print0 | xargs -0 rm --
+find share -type d -not -name '*licenses*' -print0 | xargs -0 rm -r --
 
 xpushd bin
 

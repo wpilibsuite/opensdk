@@ -111,7 +111,8 @@ class Database:
         self.cur = self.con.cursor()
         self.cur.executescript(_DB_INIT)
         data = requests.get(package_url)
-        assert data.status_code == 200, package_url
+        if data.status_code != 200:
+            raise IOError("Could not download package lists")
         data = gzip.decompress(data.content)
         _parse_lists(data.strip().decode('utf8'), self.cur)
         self.con.commit()

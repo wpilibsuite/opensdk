@@ -1,6 +1,6 @@
 export DOCKER_BUILDKIT=0
 export DOCKER_SCAN_SUGGEST=false
-TAG=ghcr.io/ryanhir/opensdk
+TAG=ghcr.io/wpilibsuite/opensdk
 
 .PHONY: all
 all:

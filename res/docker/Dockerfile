@@ -1,5 +1,5 @@
 FROM docker.io/ubuntu:bionic
-LABEL org.opencontainers.image.source "https://github.com/RyanHir/opensdk"
+LABEL org.opencontainers.image.source "https://github.com/wpilibsuite/opensdk"
 ENV TZ=UTC
 
 COPY src/setup.sh src/setup_opensysroot.sh /

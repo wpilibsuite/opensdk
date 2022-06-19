@@ -17,7 +17,7 @@
 # along with OpenSDK; see the file COPYING. If not see
 # <http://www.gnu.org/licenses/>.
 
-CONTAINER_IMAGE="ghcr.io/ryanhir/opensdk"
+CONTAINER_IMAGE="ghcr.io/wpilibsuite/opensdk"
 CONTAINER_VERSION="bionic"
 
 DOCKER_ARGS=(

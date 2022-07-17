@@ -3,12 +3,12 @@ name: Build
 on:
   push:
     paths-ignore:
-      - '.vscode'
-      - '**.md'
+      - ".vscode"
+      - "**.md"
   pull_request:
     paths-ignore:
-      - '.vscode'
-      - '**.md'
+      - ".vscode"
+      - "**.md"
 
 jobs:
   targets:
@@ -33,13 +33,17 @@ jobs:
         target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
     name: Build sysroot for ${{ matrix.target.os }}-${{ matrix.target.port }}
     runs-on: ubuntu-latest
-    container: ghcr.io/ryanhir/opensdk:bionic
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_TARGET: ${{matrix.target.os}}
       WPI_TARGET_PORT: ${{matrix.target.port}}
       WPI_USE_THREADS: 8
     steps:
       - uses: actions/checkout@v1
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
       - name: Build sysroot
         run: |
           make backend
@@ -57,13 +61,13 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/opensdk:bionic",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: true,
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "ghcr.io/ryanhir/opensdk:bionic",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: false,
             },
             {
@@ -77,13 +81,13 @@ jobs:
               runner: macos-latest,
               container: "",
               testable: false,
-            }
+            },
           ]
         include:
           - host:
               os-cfg: linux_i686
               runner: ubuntu-latest
-              container: ghcr.io/ryanhir/opensdk:bionic
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04"
               testable: false
             target:
               os: raspi-buster
@@ -91,7 +95,7 @@ jobs:
           - host:
               os-cfg: linux_i686
               runner: ubuntu-latest
-              container: ghcr.io/ryanhir/opensdk:bionic
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04"
               testable: false
             target:
               os: raspi-bullseye
@@ -119,11 +123,9 @@ jobs:
           rm output/*.tar
       - name: Test
         if: matrix.host.testable
-        run:
-          make test
+        run: make test
       - name: Import Apple Developer ID Certificate
-        if: 
-          contains(matrix.host.os-cfg, 'macos') &&
+        if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
           startsWith(github.ref, 'refs/tags/v')
         uses: wpilibsuite/import-signing-certificate@v1
@@ -132,14 +134,12 @@ jobs:
           certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
       - name: Sign toolchain with Apple Developer ID Certificate
-        if: 
-          contains(matrix.host.os-cfg, 'macos') &&
+        if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
           startsWith(github.ref, 'refs/tags/v')
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
-        run:
-          make sign
+        run: make sign
       - uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}

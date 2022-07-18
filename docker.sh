@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -17,8 +17,8 @@
 # along with OpenSDK; see the file COPYING. If not see
 # <http://www.gnu.org/licenses/>.
 
-CONTAINER_IMAGE="ghcr.io/ryanhir/opensdk"
-CONTAINER_VERSION="bionic"
+CONTAINER_IMAGE="docker.io/wpilib/opensdk-ubuntu"
+CONTAINER_VERSION="20.04"
 
 DOCKER_ARGS=(
     --rm

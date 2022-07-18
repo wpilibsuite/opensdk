@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -117,12 +117,3 @@ if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
     enabled_languages+=",fortran"
 fi
 CONFIGURE_GCC+=("$enabled_languages")
-
-if is_internal_toolchain; then
-    CONFIGURE_GCC+=(
-        "--with-gmp"
-        "--with-mpfr"
-        "--with-mpc"
-        "--with-isl"
-    )
-fi

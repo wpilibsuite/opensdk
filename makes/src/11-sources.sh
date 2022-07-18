@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -66,21 +66,16 @@ download_extract "${GCC_INFRA_MIRROR}/gmp-${V_GMP}.tar.bz2"
 download_or_die "${SAVANNAH_MIRROR}/config.guess"
 download_or_die "${SAVANNAH_MIRROR}/config.sub"
 
-# We want to use the system libraries for the first stage
-# to speed up the build process as this toolchain is used
-# only internally.
-if is_final_toolchain; then
-    xpushd "gcc-${V_GCC}"
-    # Use HTTPS from the GNU mirrors
-    sed -i'' -e 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites 
-    sed -i'' -e 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites 
-    ./contrib/download_prerequisites || die "gcc prerequisite fetching failed"
-    xpopd
-    update_config_tools "gcc-${V_GCC}/gmp"
-    update_config_tools "gcc-${V_GCC}/isl"
-    update_config_tools "gcc-${V_GCC}/mpc"
-    update_config_tools "gcc-${V_GCC}/mpfr"
-fi
+xpushd "gcc-${V_GCC}"
+# Use HTTPS from the GNU mirrors
+sed -i'' -e 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites
+sed -i'' -e 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites
+./contrib/download_prerequisites || die "gcc prerequisite fetching failed"
+xpopd
+update_config_tools "gcc-${V_GCC}/gmp"
+update_config_tools "gcc-${V_GCC}/isl"
+update_config_tools "gcc-${V_GCC}/mpc"
+update_config_tools "gcc-${V_GCC}/mpfr"
 
 update_config_tools "binutils-${V_BIN}"
 update_config_tools "expat-${V_EXPAT}/conftools"

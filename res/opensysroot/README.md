@@ -15,12 +15,6 @@ for cross-compiling in various use cases or projects.
 ```sh
 # From Source
 python3 -m pip install .
-
-# From Source through Git
-python3 -m pip install git+https://github.com/RyanHir/opensysroot
-
-# From PyPi
-# TDB
 ```
 
 ## Usage

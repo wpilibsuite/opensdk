@@ -117,13 +117,3 @@ if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
     enabled_languages+=",fortran"
 fi
 CONFIGURE_GCC+=("$enabled_languages")
-
-# TODO: Broken with WPILib container (20.04 vs 18.04??)
-# if is_internal_toolchain; then
-#     CONFIGURE_GCC+=(
-#         "--with-gmp"
-#         "--with-mpfr"
-#         "--with-mpc"
-#         "--with-isl"
-#     )
-# fi

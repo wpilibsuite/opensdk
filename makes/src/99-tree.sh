@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -29,7 +29,6 @@ PROJECT_EXPORT=(
     binutils
     gcc
     gdb
-    frcmake
     license
 )
 

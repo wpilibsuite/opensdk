@@ -35,20 +35,6 @@ function download_extract() {
     tar -xf "${1/*\//}" || die "${1/*\//} extract failed"
 }
 
-function update_config_tools() {
-    if ! [ -d "${1}" ]; then
-        die "Input directory does not exist!"
-    fi
-    if [ -e "${1}/config.guess" ]; then
-        chmod +rwx "${1}/config.guess"
-        cp "${DOWNLOAD_DIR}/config.guess" "${1}/config.guess"
-    fi
-    if [ -e "${1}/config.sub" ]; then
-        chmod +rwx "${1}/config.sub"
-        cp "${DOWNLOAD_DIR}/config.sub" "${1}/config.sub"
-    fi
-}
-
 rm -rf "${DOWNLOAD_DIR}"
 mkdir -p "${DOWNLOAD_DIR}"
 

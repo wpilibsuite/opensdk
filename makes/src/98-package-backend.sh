@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -42,9 +42,11 @@ if [ "$TARGET_LIB_REBUILD" = "true" ]; then
         "gcc-install/tmp/frc/${TARGET_TUPLE}/gcclib" \
         "backend-install/${TARGET_TUPLE}/"
 fi
-rsync -aEL \
-    "gcc-install/tmp/frc/${TARGET_TUPLE}/sysroot" \
-    "backend-install/${TARGET_TUPLE}/"
+if is_lib_rebuild_required; then
+    rsync -aEL \
+        "gcc-install/tmp/frc/${TARGET_TUPLE}/sysroot" \
+        "backend-install/${TARGET_TUPLE}/"
+fi
 
 xpushd backend-install
 # Build an archive of the custom sysroot

@@ -68,6 +68,7 @@ for p in \
     "gmp-${V_GMP}" \
     "make-${V_MAKE}"; do
     for f in config.guess config.sub; do
+        find "$p" -mindepth 2 -name "$f" -exec chmod +w '{}' ';'
         find "$p" -mindepth 2 -name "$f" -exec cp -v "$f" '{}' ';'
     done
 done

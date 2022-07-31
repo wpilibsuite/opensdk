@@ -30,6 +30,7 @@ PROJECT_EXPORT=(
     gcc
     gdb
     license
+    cmake
 )
 
 rm -rf tree-{build,install}

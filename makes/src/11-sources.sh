@@ -68,20 +68,22 @@ download_or_die "${SAVANNAH_MIRROR}/config.sub"
 
 xpushd "gcc-${V_GCC}"
 # Use HTTPS from the GNU mirrors
-sed -i'' -e 's/ftp:\/\//https:\/\//g' ./contrib/download_prerequisites
-sed -i'' -e 's/http:\/\//https:\/\//g' ./contrib/download_prerequisites
+for proto in ftp http; do
+    sed -i'' -e "s/${proto}:\/\//https:\/\//g" ./contrib/download_prerequisites
+done
 ./contrib/download_prerequisites || die "gcc prerequisite fetching failed"
 xpopd
-update_config_tools "gcc-${V_GCC}/gmp"
-update_config_tools "gcc-${V_GCC}/isl"
-update_config_tools "gcc-${V_GCC}/mpc"
-update_config_tools "gcc-${V_GCC}/mpfr"
 
-update_config_tools "binutils-${V_BIN}"
-update_config_tools "expat-${V_EXPAT}/conftools"
-update_config_tools "gmp-${V_GMP}"
-update_config_tools "gcc-${V_GCC}"
-update_config_tools "gdb-${V_GDB}"
-update_config_tools "make-${V_MAKE}/config"
+for p in \
+    "binutils-${V_BIN}" \
+    "expat-${V_EXPAT}" \
+    "gcc-${V_GCC}" \
+    "gdb-${V_GDB}" \
+    "gmp-${V_GMP}" \
+    "make-${V_MAKE}"; do
+    for f in config.guess config.sub; do
+        find "$p" -mindepth 2 -name "$f" -exec cp -v "$f" '{}' ';'
+    done
+done
 
 xpopd

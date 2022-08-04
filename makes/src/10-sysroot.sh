@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -39,6 +39,7 @@ if [ "$TARGET_LIB_REBUILD" ]; then
 fi
 
 xpushd "${BUILD_DIR}/sysroot-build"
+python3 -m pip install -U "${ROOT_DIR}/res/opensysroot"
 python3 -m opensysroot \
     "${ARGS[@]}" \
     . || die "opensysroot failed"

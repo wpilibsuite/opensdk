@@ -36,7 +36,6 @@ rm -rf "${BUILD_DIR}/license-install"
 license_copy binutils "${DOWNLOAD_DIR}/binutils-${V_BIN}"
 license_copy gcc "${DOWNLOAD_DIR}/gcc-${V_GCC}"
 license_copy gdb "${DOWNLOAD_DIR}/gdb-${V_GDB}"
-license_copy make "${DOWNLOAD_DIR}/make-${V_MAKE}"
 
 license_copy expat "${DOWNLOAD_DIR}/expat-${V_EXPAT}"
 license_copy gmp "${DOWNLOAD_DIR}/gmp-${V_GMP}"

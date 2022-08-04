@@ -64,8 +64,7 @@ for p in \
     "expat-${V_EXPAT}" \
     "gcc-${V_GCC}" \
     "gdb-${V_GDB}" \
-    "gmp-${V_GMP}" \
-    "make-${V_MAKE}"; do
+    "gmp-${V_GMP}"; do
     for f in config.guess config.sub; do
         find "$p" -name "$f" -exec chmod +w '{}' ';'
         find "$p" -name "$f" -exec cp "$f" '{}' ';'

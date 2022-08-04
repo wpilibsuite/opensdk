@@ -42,11 +42,6 @@ function patch_project() {
         src="gcc-${V_GCC}"
         ver="${V_GCC}"
         ;;
-    make)
-        proj="make"
-        src="make-${V_MAKE}"
-        ver="${V_MAKE}"
-        ;;
     *) die "Unknown config" ;;
     esac
 

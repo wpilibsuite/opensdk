@@ -63,9 +63,6 @@ function patch_project() {
 
     if [ -d "${PATCH_DIR}/${proj}" ]; then
         xpushd "${PATCH_DIR}/${proj}"
-        if [ -d "./any" ]; then
-            patch_loop "any"
-        fi
         if [ -d "./${ver}" ]; then
             patch_loop "${ver}"
         fi

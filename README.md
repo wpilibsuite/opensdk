@@ -49,13 +49,10 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 | - | - | - |
 | ARMv7 (softfp) | N.I. Linux (roboRIO) | GCC 12.1
 | ARMv7 (softfp) | N.I. Linux (roboRIO) Sumo | GCC 7.3
-| ARMv6 | Raspberry Pi OS 10 | GCC 8.3
 | ARMv6 | Raspberry Pi OS 11 | GCC 10.2
-| ARMv7 | Debian/Raspberry Pi OS 10 | GCC 8.3
 | ARMv7 | Debian/Raspberry Pi OS 11 | GCC 10.2
 | ARMv7 | Ubuntu 18.04 | GCC 7.3
 | ARMv7 | Ubuntu 20.04 | GCC 9.3
-| ARMv8 | Debian/Raspberry Pi OS 10 | GCC 8.3
 | ARMv8 | Debian/Raspberry Pi OS 11 | GCC 10.2
 | ARMv8 | Ubuntu 18.04 | GCC 7.3
 | ARMv8 | Ubuntu 20.04 | GCC 9.3

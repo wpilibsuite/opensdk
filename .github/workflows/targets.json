@@ -25,24 +25,12 @@
             "port": "arm64"
         },
         {
-            "os": "buster",
-            "port": "armhf"
-        },
-        {
-            "os": "buster",
-            "port": "arm64"
-        },
-        {
             "os": "bullseye",
             "port": "armhf"
         },
         {
             "os": "bullseye",
             "port": "arm64"
-        },
-        {
-            "os": "raspi-buster",
-            "port": "armhf"
         },
         {
             "os": "raspi-bullseye",

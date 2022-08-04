@@ -76,7 +76,7 @@ ${MAKE} \
     task/20-expat \
     task/21-gmp \
     task/40-gcc-configure \
-    task/41-gcc-frontend \
+    task/41-gcc-tools \
     task/50-gdb \
     task/90-license \
     task/91-cmake-cfg \

@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -57,7 +57,7 @@ function patch_project() {
                 # Do not apply macOS specific patches for Windows and Linux
                 # builds
                 continue
-            fi 
+            fi
             _patch="${PWD}/$_patch"
             xpushd "${DOWNLOAD_DIR}/${src}"
             patch_or_die "$_patch"
@@ -79,7 +79,6 @@ function patch_project() {
 }
 
 patch_project gcc
-patch_project make
 
 if [ -d "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}" ]; then
     xpushd "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}"

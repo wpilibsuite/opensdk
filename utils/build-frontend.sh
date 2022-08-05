@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -76,10 +76,10 @@ ${MAKE} \
     task/20-expat \
     task/21-gmp \
     task/40-gcc-configure \
-    task/41-gcc-frontend \
+    task/41-gcc-tools \
     task/50-gdb \
-    task/51-frcmake \
     task/90-license \
+    task/91-cmake-cfg \
     task/99-tree
 
 ${MAKE} pkg

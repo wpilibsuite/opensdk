@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -55,11 +55,10 @@ ${MAKE} \
     task/13-normalize \
     task/30-binutils \
     task/40-gcc-configure \
-    task/41-gcc-frontend \
-    task/42-gcc-backend \
+    task/41-gcc-tools \
+    task/42-gcc-libraries \
     task/98-package-backend
 
 mkdir -p "${OUTPUT_DIR}"
 cp "${BUILD_DIR}/${TARGET_TUPLE}.tar" \
-    "${OUTPUT_DIR}/" 
-
+    "${OUTPUT_DIR}/"

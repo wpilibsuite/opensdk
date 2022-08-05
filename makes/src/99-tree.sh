@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -29,8 +29,7 @@ PROJECT_EXPORT=(
     binutils
     gcc
     gdb
-    frcmake
-    license
+    cmake
 )
 
 rm -rf tree-{build,install}
@@ -57,7 +56,6 @@ rm -rf "./${WPI_HOST_PREFIX}" "./${TARGET_TUPLE}"
 
 xpushd "${TREE_OUT}"
 rm -rf include
-find share -type d -not -name '*licenses*' -print0 | xargs -0 rm -r --
 
 xpushd bin
 

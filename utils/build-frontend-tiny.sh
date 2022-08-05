@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -39,7 +39,7 @@ ${MAKE} \
     task/12-patches \
     task/30-binutils \
     task/40-gcc-configure \
-    task/41-gcc-frontend 
+    task/41-gcc-tools
 
 rsync -aEL \
     "${BUILD_DIR}/binutils-install/tmp/frc/" \

@@ -136,3 +136,15 @@ jobs:
         with:
           name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
           path: output/*
+  combine-artifacts:
+    runs-on: ubuntu-latest
+    needs: [targets, build-sysroot, build-platform-utils]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v3
+        with:
+          path: output/*
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: output/*

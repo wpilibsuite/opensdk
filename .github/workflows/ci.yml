@@ -144,10 +144,9 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           path: output
-      - run: |
-          find output/ -name "*-sysroot" -exec rm -r {} \;
-          find output/ -type f -exec mv {} output/ \;
-          find output/ -type d -exec rmdir {} \;
+      - run: find output/ -mindepth 1
+      - run: find output/ -mindepth 1 -maxdepth 2 -type f -exec mv {} output/ \;
+      - run: find output/ -mindepth 1 -maxdepth 1 -type d -exec rmdir {} \;
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts

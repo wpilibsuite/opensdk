@@ -16,7 +16,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: set-matrix
         run: |
           # Load targets into runtime variable to reduce complexity
@@ -39,7 +39,7 @@ jobs:
       WPI_TARGET_PORT: ${{matrix.target.port}}
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install opensysroot
         run: |
           cd res/opensysroot
@@ -101,7 +101,7 @@ jobs:
       WPI_TARGET_PORT: ${{matrix.target.port}}
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Prep MacOS
         if: contains(matrix.host.runner, 'macos')
         run: brew install rsync xz gmp mpfr libmpc isl

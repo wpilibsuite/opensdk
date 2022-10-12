@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # Copyright 2021-2022 Ryan Hirasaki
-# 
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -38,7 +38,8 @@ source "$(dirname "$0")/common.sh"
 
 xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
+if [ "${TARGET_DISTRO}" = "roborio" ] ||
+    [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
     # Force rebuild of libgcc and its startup files
     rm -rf lib/libgcc*
     rm -rf usr/lib/crtbegin*.o

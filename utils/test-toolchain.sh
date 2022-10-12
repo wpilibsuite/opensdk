@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -79,11 +79,11 @@ echo "[INFO]: Testing C Compiler with libubsan"
 
 if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
     echo "[INFO]: Testing C++ Compiler"
-    "$CXX" "${TEST_DIR}/hello.cpp"  -o /dev/null || exit
+    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null || exit
     echo "[INFO]: Testing C++ Compiler with libasan"
-    "$CXX" "${TEST_DIR}/hello.cpp"  -o /dev/null -fsanitize=address || exit
+    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=address || exit
     echo "[INFO]: Testing C++ Compiler with libubsan"
-    "$CXX" "${TEST_DIR}/hello.cpp"  -o /dev/null -fsanitize=undefined || exit
+    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=undefined || exit
 fi
 
 if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then

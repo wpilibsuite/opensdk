@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -41,4 +41,3 @@ if ! grep -q "$TARGET_PORT" "$TARGET_CFG/ports.txt"; then
     echo "[ERR] $TARGET_PORT is not supported in $TOOLCHAIN_NAME"
     exit 1
 fi
-

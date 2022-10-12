@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -38,7 +38,6 @@ env_exists V_GDB
 env_exists V_GCC
 env_exists WPI_HOST_PREFIX
 env_exists DOWNLOAD_DIR
-
 
 BUILD_TUPLE="${WPI_BUILD_TUPLE}"
 HOST_TUPLE="${WPI_HOST_TUPLE}"

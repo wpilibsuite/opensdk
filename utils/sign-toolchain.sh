@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -65,8 +65,7 @@ sign_file() {
         die "Could not notarize $file"
 }
 
-sign_directory()
-{
+sign_directory() {
     find "$1" | while read fname; do
         if [ -f "$fname" ]; then
             sign_file "$fname"

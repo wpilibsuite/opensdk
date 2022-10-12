@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -61,26 +61,26 @@ archive() {
 argparse() {
     while [ $# -gt 0 ]; do
         case "$1" in
-            --archive)
-                archive
-                exit
-                ;;
-            --print-treein)
-                echo "$TREEIN_DIR"
-                exit
-                ;;
-            --print-treeout)
-                echo "$TREEOUT_TEMPLATE"
-                exit
-                ;;
-            --print-pkg)
-                if [ "${WPI_HOST_NAME}" = Windows ]; then
-                    echo "${TREEOUT_TEMPLATE}.zip"
-                else
-                    echo "${TREEOUT_TEMPLATE}.tgz"
-                fi
-                exit
-                ;;
+        --archive)
+            archive
+            exit
+            ;;
+        --print-treein)
+            echo "$TREEIN_DIR"
+            exit
+            ;;
+        --print-treeout)
+            echo "$TREEOUT_TEMPLATE"
+            exit
+            ;;
+        --print-pkg)
+            if [ "${WPI_HOST_NAME}" = Windows ]; then
+                echo "${TREEOUT_TEMPLATE}.zip"
+            else
+                echo "${TREEOUT_TEMPLATE}.tgz"
+            fi
+            exit
+            ;;
         esac
         shift
     done

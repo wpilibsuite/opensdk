@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
+# Copyright 2021-2023 Ryan Hirasaki
 #
 # This file is part of OpenSDK
 #
@@ -66,7 +66,8 @@ if [ "$TARGET_FPU" ]; then
     CONFIGURE_GCC+=("--with-fpu=${TARGET_FPU}")
 fi
 
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
+if [ "${TARGET_DISTRO}" = "roborio" ] ||
+    [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
     # Pulled by running gcc -v on target device
     CONFIGURE_GCC+=(
         "--disable-libmudflap"

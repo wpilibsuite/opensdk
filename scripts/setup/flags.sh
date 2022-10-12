@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -35,6 +35,6 @@ else
     fi
     # Allow one empty thread so you can still
     # use the machine as you are compiling.
-    JOBS="$(( "$JOBS" - 1 ))"
+    JOBS="$(("$JOBS" - 1))"
 fi
 export JOBS

@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
-# Copyright 2021-2022 Ryan Hirasaki
-# 
+# Copyright 2021-2023 Ryan Hirasaki
+#
 # This file is part of OpenSDK
 #
 # OpenSDK is free software; you can redistribute it and/or modify it
@@ -38,7 +38,8 @@ source "$(dirname "$0")/common.sh"
 
 xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
-if [ "${TARGET_DISTRO}" = "roborio" ]; then
+if [ "${TARGET_DISTRO}" = "roborio" ] ||
+    [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
     # Force rebuild of libgcc and its startup files
     rm -rf lib/libgcc*
     rm -rf usr/lib/crtbegin*.o
@@ -48,6 +49,13 @@ if [ "${TARGET_DISTRO}" = "roborio" ]; then
 
     # Why is this here on the rio?
     rm -rf lib/cpp
+
+    # Quirk with the academic branch where the headers have the full version
+    # number, but the rest of the project expects this to be the major number.
+    if [ -d "usr/include/c++/${V_GCC}" ]; then
+        mv "usr/include/c++/${V_GCC}" "usr/include/c++/${V_GCC/.*/}"
+    fi
+
 else
     # lib
     rm -rf lib/ld-linux*.so*

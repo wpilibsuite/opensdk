@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-# Copyright 2021-2022 Ryan Hirasaki
+# Copyright 2021-2023 Ryan Hirasaki
 #
 # This file is part of OpenSDK
 #

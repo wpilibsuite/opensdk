@@ -138,7 +138,7 @@ jobs:
           path: output/*
 
   release:
-    needs: [build-platform-utils]
+    needs: [targets, build-sysroot, build-platform-utils]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:

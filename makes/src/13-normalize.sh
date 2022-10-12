@@ -49,6 +49,13 @@ if [ "${TARGET_DISTRO}" = "roborio" ] ||
 
     # Why is this here on the rio?
     rm -rf lib/cpp
+
+    # Quirk with the academic branch where the headers have the full version
+    # number, but the rest of the project expects this to be the major number.
+    if [ -d "usr/include/c++/${V_GCC}" ]; then
+        mv "usr/include/c++/${V_GCC}" "usr/include/c++/${V_GCC/.*/}"
+    fi
+
 else
     # lib
     rm -rf lib/ld-linux*.so*

@@ -7,6 +7,7 @@ import io
 import re
 import gzip
 import sqlite3
+import sys
 import requests
 from pathlib import Path
 from typing import Optional
@@ -188,8 +189,10 @@ class Database:
                 print("Using cached {}".format(pkg_file.name))
                 continue
             print("Downloading {}".format(pkg_file.name))
-            pkg_data = requests.get("{}/{}".format(repo_url, pkg['filename']))
+            pkg_url = "{}/{}".format(repo_url, pkg['filename'])
+            pkg_data = requests.get(pkg_url)
             if pkg_data.status_code != 200:
+                print(pkg_url, file=sys.stderr)
                 raise ConnectionError("Could not download {} due to status code {}".format(
                     pkg_file.name,
                     pkg_data.status_code))

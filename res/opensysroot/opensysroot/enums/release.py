@@ -13,8 +13,9 @@ class Release(Enum):
     FOCAL = "focal"
     JAMMY = "jammy"
 
-    # Misc
-    ROBORIO = "roborio"
+    # NI Real-Time Linux
+    NI2021 = "2021.8"
+    NI2023 = "2023"
 
     def __str__(self):
         return self.value

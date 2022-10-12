@@ -62,7 +62,7 @@ class WorkEnvironment:
     def clean(self):
         self._symlink()
         self._delete()
-        if self.distro is Distro.ROBORIO and not self.minimal:
+        if self.distro is Distro.ROBORIO_STD and not self.minimal:
             self._major_only()
 
     def _major_only(self):
@@ -99,7 +99,7 @@ class WorkEnvironment:
                 shutil.copy2(resolved, file)
 
     def get_orig_tuple(self):
-        if self.distro in (Distro.ROBORIO, Distro.ROBORIO_ACADEMIC):
+        if self.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
             assert self.arch is Arch.CORTEXA9
             return "arm-nilrt-linux-gnueabi"
         else:
@@ -112,7 +112,7 @@ class WorkEnvironment:
             raise RuntimeError("Unknown System")
 
     def get_gcc_ver(self):
-        assert self.distro is Distro.ROBORIO, "GCC check only works on roborio"
+        assert self.distro is Distro.ROBORIO_STD, "GCC check only works on roborio"
         cxx_headers = Path(self.sysroot, "usr/include/c++")
         assert cxx_headers.is_dir()
         children = list(cxx_headers.iterdir())

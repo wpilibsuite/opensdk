@@ -28,7 +28,10 @@ def arg_info():
 
 def main():
     args = arg_info()
-    repo_url = repo.get_repo_url(args.distro, args.arch)
+    if args.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
+        repo_url = repo.get_repo_url_adv(args.distro, args.arch, args.release)
+    else:
+        repo_url = repo.get_repo_url(args.distro, args.arch)
     repo_packages_url = repo.get_repo_packages_url(
         args.distro, args.arch, args.release)
 
@@ -37,7 +40,7 @@ def main():
                           args.minimal_toolchain)
 
     db = Database(repo_packages_url)
-    if args.distro in (Distro.ROBORIO, Distro.ROBORIO_ACADEMIC):
+    if args.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
         assert args.arch is Arch.CORTEXA9
         db.add_package("libc6-dev")
         db.add_package("linux-libc-headers-dev")

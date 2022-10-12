@@ -1,7 +1,7 @@
 {
     "tasks": [
         {
-            "os": "roborio",
+            "os": "roborio-academic",
             "port": "cortexa9_vfpv3"
         },
         {

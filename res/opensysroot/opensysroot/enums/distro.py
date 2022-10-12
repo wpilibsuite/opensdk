@@ -6,6 +6,7 @@ class Distro(Enum):
     RASPBIAN = "raspbian"
     UBUNTU = "ubuntu"
     ROBORIO = "roborio"
+    ROBORIO_ACADEMIC = "roborio-academic"
 
     def __str__(self):
         return self.value

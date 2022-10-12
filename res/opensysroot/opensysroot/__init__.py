@@ -37,7 +37,7 @@ def main():
                           args.minimal_toolchain)
 
     db = Database(repo_packages_url)
-    if args.distro == Distro.ROBORIO:
+    if args.distro in (Distro.ROBORIO, Distro.ROBORIO_ACADEMIC):
         assert args.arch is Arch.CORTEXA9
         db.add_package("libc6-dev")
         db.add_package("linux-libc-headers-dev")

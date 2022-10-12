@@ -99,7 +99,7 @@ class WorkEnvironment:
                 shutil.copy2(resolved, file)
 
     def get_orig_tuple(self):
-        if self.distro is Distro.ROBORIO:
+        if self.distro in (Distro.ROBORIO, Distro.ROBORIO_ACADEMIC):
             assert self.arch is Arch.CORTEXA9
             return "arm-nilrt-linux-gnueabi"
         else:

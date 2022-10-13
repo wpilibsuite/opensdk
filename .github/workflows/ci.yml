@@ -128,6 +128,8 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
+      - name: Remove sysroots
+        run: find -name "*.tar" -delete
       - name: Release
         uses: softprops/action-gh-release@v1
         with:

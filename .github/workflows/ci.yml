@@ -33,7 +33,7 @@ jobs:
         target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
     name: Build sysroot for ${{ matrix.target.os }}-${{ matrix.target.port }}
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
     env:
       WPI_TARGET: ${{matrix.target.os}}
       WPI_TARGET_PORT: ${{matrix.target.port}}
@@ -61,13 +61,13 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
               testable: true,
             },
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
               testable: false,
             },
             {
@@ -87,7 +87,7 @@ jobs:
           - host:
               os-cfg: linux_i686
               runner: ubuntu-latest
-              container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
               testable: false
             target:
               os: raspi-bullseye

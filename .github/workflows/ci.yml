@@ -11,32 +11,14 @@ on:
       - "**.md"
 
 jobs:
-  targets:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v3
-      - id: set-matrix
-        run: |
-          # Load targets into runtime variable to reduce complexity
-          JSON="$(cat .github/workflows/targets.json)"
-          # Remove newlines
-          JSON="${JSON//'%'/'%25'}"
-          JSON="${JSON//$'\n'/'%0A'}"
-          JSON="${JSON//$'\r'/'%0D'}"
-          echo "::set-output name=matrix::${JSON}"
-  build-sysroot:
-    needs: targets
-    strategy:
-      matrix:
-        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
-    name: Build sysroot for ${{ matrix.target.os }}-${{ matrix.target.port }}
+
+  build-sysroot-roborio-academic-cortexa9_vfpv3:
+    name: Build sysroot for roborio-academic-cortexa9_vfpv3
     runs-on: ubuntu-latest
     container: "docker.io/wpilib/opensdk-ubuntu:22.04"
     env:
-      WPI_TARGET: ${{matrix.target.os}}
-      WPI_TARGET_PORT: ${{matrix.target.port}}
+      WPI_TARGET: roborio-academic
+      WPI_TARGET_PORT: cortexa9_vfpv3
       WPI_USE_THREADS: 8
     steps:
       - uses: actions/checkout@v3
@@ -49,13 +31,12 @@ jobs:
           make backend
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-sysroot
+          name: roborio-academic-cortexa9_vfpv3-sysroot
           path: output/*
-  build-platform-utils:
-    needs: [targets, build-sysroot]
+  build-platform-utils-roborio-academic-cortexa9_vfpv3:
+    needs: build-sysroot-roborio-academic-cortexa9_vfpv3
     strategy:
       matrix:
-        target: ${{fromJson(needs.targets.outputs.matrix).tasks}}
         host:
           [
             {
@@ -92,13 +73,13 @@ jobs:
             target:
               os: raspi-bullseye
               port: armhf
-    name: Build ${{ matrix.target.os }}-${{ matrix.target.port }} for ${{ matrix.host.os-cfg }}
+    name: Build roborio-academic-cortexa9_vfpv3 for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
     env:
       WPI_HOST: ${{matrix.host.os-cfg}}
-      WPI_TARGET: ${{matrix.target.os}}
-      WPI_TARGET_PORT: ${{matrix.target.port}}
+      WPI_TARGET: roborio-academic
+      WPI_TARGET_PORT: cortexa9_vfpv3
       WPI_USE_THREADS: 8
     steps:
       - uses: actions/checkout@v3
@@ -107,7 +88,7 @@ jobs:
         run: brew install rsync xz gmp mpfr libmpc isl
       - uses: actions/download-artifact@v3
         with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-sysroot
+          name: roborio-academic-cortexa9_vfpv3-sysroot
           path: output/
       - name: Build
         run: |
@@ -118,11 +99,281 @@ jobs:
         run: make test
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{matrix.target.os}}-${{matrix.target.port}}-${{matrix.host.os-cfg}}
+          name: roborio-academic-cortexa9_vfpv3-${{matrix.host.os-cfg}}
+          path: output/*
+
+  build-sysroot-bullseye-armhf:
+    name: Build sysroot for bullseye-armhf
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    env:
+      WPI_TARGET: bullseye
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
+      - name: Build sysroot
+        run: |
+          make backend
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bullseye-armhf-sysroot
+          path: output/*
+  build-platform-utils-bullseye-armhf:
+    needs: build-sysroot-bullseye-armhf
+    strategy:
+      matrix:
+        host:
+          [
+            {
+              os-cfg: linux_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: true,
+            },
+            {
+              os-cfg: windows_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+            {
+              os-cfg: macos_x86_64,
+              runner: macos-latest,
+              container: "",
+              testable: true,
+            },
+            {
+              os-cfg: macos_arm64,
+              runner: macos-latest,
+              container: "",
+              testable: false,
+            },
+          ]
+        include:
+          - host:
+              os-cfg: linux_i686
+              runner: ubuntu-latest
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+              testable: false
+            target:
+              os: raspi-bullseye
+              port: armhf
+    name: Build bullseye-armhf for ${{ matrix.host.os-cfg }}
+    runs-on: ${{ matrix.host.runner }}
+    container: ${{ matrix.host.container }}
+    env:
+      WPI_HOST: ${{matrix.host.os-cfg}}
+      WPI_TARGET: bullseye
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prep MacOS
+        if: contains(matrix.host.runner, 'macos')
+        run: brew install rsync xz gmp mpfr libmpc isl
+      - uses: actions/download-artifact@v3
+        with:
+          name: bullseye-armhf-sysroot
+          path: output/
+      - name: Build
+        run: |
+          make frontend
+          rm output/*.tar
+      - name: Test
+        if: matrix.host.testable
+        run: make test
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bullseye-armhf-${{matrix.host.os-cfg}}
+          path: output/*
+
+  build-sysroot-bullseye-arm64:
+    name: Build sysroot for bullseye-arm64
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    env:
+      WPI_TARGET: bullseye
+      WPI_TARGET_PORT: arm64
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
+      - name: Build sysroot
+        run: |
+          make backend
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bullseye-arm64-sysroot
+          path: output/*
+  build-platform-utils-bullseye-arm64:
+    needs: build-sysroot-bullseye-arm64
+    strategy:
+      matrix:
+        host:
+          [
+            {
+              os-cfg: linux_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: true,
+            },
+            {
+              os-cfg: windows_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+            {
+              os-cfg: macos_x86_64,
+              runner: macos-latest,
+              container: "",
+              testable: true,
+            },
+            {
+              os-cfg: macos_arm64,
+              runner: macos-latest,
+              container: "",
+              testable: false,
+            },
+          ]
+        include:
+          - host:
+              os-cfg: linux_i686
+              runner: ubuntu-latest
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+              testable: false
+            target:
+              os: raspi-bullseye
+              port: armhf
+    name: Build bullseye-arm64 for ${{ matrix.host.os-cfg }}
+    runs-on: ${{ matrix.host.runner }}
+    container: ${{ matrix.host.container }}
+    env:
+      WPI_HOST: ${{matrix.host.os-cfg}}
+      WPI_TARGET: bullseye
+      WPI_TARGET_PORT: arm64
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prep MacOS
+        if: contains(matrix.host.runner, 'macos')
+        run: brew install rsync xz gmp mpfr libmpc isl
+      - uses: actions/download-artifact@v3
+        with:
+          name: bullseye-arm64-sysroot
+          path: output/
+      - name: Build
+        run: |
+          make frontend
+          rm output/*.tar
+      - name: Test
+        if: matrix.host.testable
+        run: make test
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bullseye-arm64-${{matrix.host.os-cfg}}
+          path: output/*
+
+  build-sysroot-raspi-bullseye-armhf:
+    name: Build sysroot for raspi-bullseye-armhf
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    env:
+      WPI_TARGET: raspi-bullseye
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
+      - name: Build sysroot
+        run: |
+          make backend
+      - uses: actions/upload-artifact@v3
+        with:
+          name: raspi-bullseye-armhf-sysroot
+          path: output/*
+  build-platform-utils-raspi-bullseye-armhf:
+    needs: build-sysroot-raspi-bullseye-armhf
+    strategy:
+      matrix:
+        host:
+          [
+            {
+              os-cfg: linux_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: true,
+            },
+            {
+              os-cfg: windows_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+            {
+              os-cfg: macos_x86_64,
+              runner: macos-latest,
+              container: "",
+              testable: true,
+            },
+            {
+              os-cfg: macos_arm64,
+              runner: macos-latest,
+              container: "",
+              testable: false,
+            },
+          ]
+        include:
+          - host:
+              os-cfg: linux_i686
+              runner: ubuntu-latest
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+              testable: false
+            target:
+              os: raspi-bullseye
+              port: armhf
+    name: Build raspi-bullseye-armhf for ${{ matrix.host.os-cfg }}
+    runs-on: ${{ matrix.host.runner }}
+    container: ${{ matrix.host.container }}
+    env:
+      WPI_HOST: ${{matrix.host.os-cfg}}
+      WPI_TARGET: raspi-bullseye
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prep MacOS
+        if: contains(matrix.host.runner, 'macos')
+        run: brew install rsync xz gmp mpfr libmpc isl
+      - uses: actions/download-artifact@v3
+        with:
+          name: raspi-bullseye-armhf-sysroot
+          path: output/
+      - name: Build
+        run: |
+          make frontend
+          rm output/*.tar
+      - name: Test
+        if: matrix.host.testable
+        run: make test
+      - uses: actions/upload-artifact@v3
+        with:
+          name: raspi-bullseye-armhf-${{matrix.host.os-cfg}}
           path: output/*
 
   release:
-    needs: [targets, build-sysroot, build-platform-utils]
+    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-roborio-academic-cortexa9_vfpv3, build-sysroot-bullseye-armhf, build-platform-utils-bullseye-armhf, build-sysroot-bullseye-arm64, build-platform-utils-bullseye-arm64, build-sysroot-raspi-bullseye-armhf, build-platform-utils-raspi-bullseye-armhf]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:

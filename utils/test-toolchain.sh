@@ -76,6 +76,8 @@ echo "[INFO]: Testing C Compiler with libasan"
 "$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=address || exit
 echo "[INFO]: Testing C Compiler with libubsan"
 "$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=undefined || exit
+echo "[INFO]: Testing C Compiler with symbol visibility"
+"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fvisibility=hidden -Werror || exit
 
 if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
     echo "[INFO]: Testing C++ Compiler"
@@ -84,6 +86,8 @@ if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
     "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=address || exit
     echo "[INFO]: Testing C++ Compiler with libubsan"
     "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=undefined || exit
+    echo "[INFO]: Testing C++ Compiler with symbol visibility"
+    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fvisibility=hidden -Werror || exit
 fi
 
 if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then

@@ -30,7 +30,7 @@ Tier 2 is used for select targets on an as needed basis.
 
 | OS | Arch | Known to work on | Note |
 | - | - | - | - |
-| Linux | i686 | Ubuntu 20.04 | Only for Raspberry Pi OS targets |
+| Linux | i686 | Ubuntu 22.04 | Only for Raspberry Pi OS targets |
 
 ### Tier 3
 
@@ -39,9 +39,9 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 | OS | Arch | Known to work on |
 | - | - | - |
 | Windows | i686 | Windows XP |
-| Linux | i686 | Ubuntu 20.04 |
-| Linux | ARMv7 | Ubuntu 20.04 |
-| Linux | ARMv8 | Ubuntu 20.04 |
+| Linux | i686 | Ubuntu 22.04 |
+| Linux | ARMv7 | Ubuntu 22.04 |
+| Linux | ARMv8 | Ubuntu 22.04 |
 
 ## Supported Targets
 

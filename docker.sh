@@ -18,7 +18,7 @@
 # <http://www.gnu.org/licenses/>.
 
 CONTAINER_IMAGE="docker.io/wpilib/opensdk-ubuntu"
-CONTAINER_VERSION="20.04"
+CONTAINER_VERSION="22.04"
 
 DOCKER_ARGS=(
     --rm

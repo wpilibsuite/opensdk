@@ -20,7 +20,7 @@ for macOS and Ubuntu.
 | OS | Arch | Known to work on |
 | - | - | - |
 | Windows | x86_64 | Windows XP |
-| Linux | x86_64 | Ubuntu 20.04 |
+| Linux | x86_64 | Ubuntu 22.04 |
 | Mac | x86_64 | macOS 10.9 |
 | Mac | ARMv8 | macOS 11.0 |
 

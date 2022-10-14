@@ -1,20 +1,18 @@
-{
-    "tasks": [
-        {
-            "os": "roborio-academic",
-            "port": "cortexa9_vfpv3"
-        },
-        {
-            "os": "bullseye",
-            "port": "armhf"
-        },
-        {
-            "os": "bullseye",
-            "port": "arm64"
-        },
-        {
-            "os": "raspi-bullseye",
-            "port": "armhf"
-        }
-    ]
-}
+[
+    {
+        "os": "roborio-academic",
+        "port": "cortexa9_vfpv3"
+    },
+    {
+        "os": "bullseye",
+        "port": "armhf"
+    },
+    {
+        "os": "bullseye",
+        "port": "arm64"
+    },
+    {
+        "os": "raspi-bullseye",
+        "port": "armhf"
+    }
+]

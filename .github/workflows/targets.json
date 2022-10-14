@@ -5,26 +5,6 @@
             "port": "cortexa9_vfpv3"
         },
         {
-            "os": "roborio-sumo",
-            "port": "cortexa9_vfpv3"
-        },
-        {
-            "os": "bionic",
-            "port": "armhf"
-        },
-        {
-            "os": "bionic",
-            "port": "arm64"
-        },
-        {
-            "os": "focal",
-            "port": "armhf"
-        },
-        {
-            "os": "focal",
-            "port": "arm64"
-        },
-        {
             "os": "bullseye",
             "port": "armhf"
         },

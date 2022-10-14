@@ -44,7 +44,7 @@ process_background "Building binutils" \
 process_background "Installing binutils" \
     make DESTDIR="${BUILD_DIR}/binutils-install" \
     install-strip || die "binutils install failed"
-if is_step_backend; then
+if is_step_backend || [ "$WPI_BUILD_TUPLE" == "$WPI_HOST_TUPLE" ]; then
     # GCC needs binutils in prefix path while building
     # the target libraries. Previously this required
     # the build user to have root access, but now

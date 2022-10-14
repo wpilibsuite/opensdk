@@ -64,15 +64,6 @@ jobs:
               testable: false,
             },
           ]
-        include:
-          - host:
-              os-cfg: linux_i686
-              runner: ubuntu-latest
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
-              testable: false
-            target:
-              os: raspi-bullseye
-              port: armhf
     name: Build roborio-academic-cortexa9_vfpv3 for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
@@ -154,15 +145,6 @@ jobs:
               testable: false,
             },
           ]
-        include:
-          - host:
-              os-cfg: linux_i686
-              runner: ubuntu-latest
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
-              testable: false
-            target:
-              os: raspi-bullseye
-              port: armhf
     name: Build bullseye-armhf for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
@@ -244,15 +226,6 @@ jobs:
               testable: false,
             },
           ]
-        include:
-          - host:
-              os-cfg: linux_i686
-              runner: ubuntu-latest
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
-              testable: false
-            target:
-              os: raspi-bullseye
-              port: armhf
     name: Build bullseye-arm64 for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
@@ -333,16 +306,13 @@ jobs:
               container: "",
               testable: false,
             },
+            {
+              os-cfg: linux_i686,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
           ]
-        include:
-          - host:
-              os-cfg: linux_i686
-              runner: ubuntu-latest
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
-              testable: false
-            target:
-              os: raspi-bullseye
-              port: armhf
     name: Build raspi-bullseye-armhf for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}

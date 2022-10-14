@@ -63,16 +63,15 @@ jobs:
               container: "",
               testable: false,
             },
+{%- if target.os == "raspi-bullseye" %}
+            {
+              os-cfg: linux_i686,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+{%- endif %}
           ]
-        include:
-          - host:
-              os-cfg: linux_i686
-              runner: ubuntu-latest
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04"
-              testable: false
-            target:
-              os: raspi-bullseye
-              port: armhf
     name: Build {{ target.os }}-{{ target.port }} for ${{ '{{' }} matrix.host.os-cfg }}
     runs-on: ${{ '{{' }} matrix.host.runner }}
     container: ${{ '{{' }} matrix.host.container }}

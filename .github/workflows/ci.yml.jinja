@@ -102,7 +102,7 @@ jobs:
           path: output/*
 {% endfor %}
   release:
-    needs: [{% for target in targets %}build-sysroot-{{ target.os }}-{{ target.port }}, build-platform-utils-{{ target.os }}-{{ target.port }}{% if not loop.last %}, {% endif %}{% endfor %}]
+    needs: [{% for target in targets %}build-platform-utils-{{ target.os }}-{{ target.port }}{% if not loop.last %}, {% endif %}{% endfor %}]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:

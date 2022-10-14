@@ -343,7 +343,7 @@ jobs:
           path: output/*
 
   release:
-    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-roborio-academic-cortexa9_vfpv3, build-sysroot-bullseye-armhf, build-platform-utils-bullseye-armhf, build-sysroot-bullseye-arm64, build-platform-utils-bullseye-arm64, build-sysroot-raspi-bullseye-armhf, build-platform-utils-raspi-bullseye-armhf]
+    needs: [build-platform-utils-roborio-academic-cortexa9_vfpv3, build-platform-utils-bullseye-armhf, build-platform-utils-bullseye-arm64, build-platform-utils-raspi-bullseye-armhf]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:

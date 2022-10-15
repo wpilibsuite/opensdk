@@ -61,11 +61,11 @@ configure_host_vars() {
 }
 
 configure_target_vars() {
-    env_exists TARGET_PREFIX
+    env_exists TARGET_TUPLE
 
     define_target_export() {
         local var="${1}_FOR_TARGET"
-        local tool="${TARGET_PREFIX}$2"
+        local tool="${TARGET_TUPLE}-$2"
         if [ "${!var}" ]; then
             die "$var is already set with '${!var}'"
         else

@@ -63,6 +63,22 @@ jobs:
               container: "",
               testable: false,
             },
+{%- if "roborio" in target.os %}
+            {
+              os-cfg: linux_arm64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+{%- endif %}
+{%- if "roborio" in target.os %}
+            {
+              os-cfg: linux_armhf,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+{%- endif %}
 {%- if target.os == "raspi-bullseye" %}
             {
               os-cfg: linux_i686,

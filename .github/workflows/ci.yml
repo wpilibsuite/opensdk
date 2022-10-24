@@ -63,6 +63,18 @@ jobs:
               container: "",
               testable: false,
             },
+            {
+              os-cfg: linux_arm64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
+            {
+              os-cfg: linux_armhf,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              testable: false,
+            },
           ]
     name: Build roborio-academic-cortexa9_vfpv3 for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}

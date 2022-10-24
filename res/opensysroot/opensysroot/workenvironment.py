@@ -87,6 +87,8 @@ class WorkEnvironment:
         for file in self.sysroot.glob("**/*"):
             if not file.is_symlink():
                 continue
+            if "usr/bin" in str(file):
+                continue
             resolved = Path(os.readlink(file))
             if resolved.is_absolute():
                 resolved = Path("{}/{}".format(self.sysroot, resolved))
@@ -95,7 +97,9 @@ class WorkEnvironment:
                     "{}/{}".format(file.parent.absolute(), resolved))
             resolved = resolved.resolve()
             file.unlink()
-            if resolved.exists():
+            if resolved.is_dir():
+                shutil.copytree(resolved, file)
+            elif resolved.exists():
                 shutil.copy2(resolved, file)
 
     def get_orig_tuple(self):

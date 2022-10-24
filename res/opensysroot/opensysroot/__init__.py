@@ -52,6 +52,7 @@ def main():
         assert args.arch is not Arch.CORTEXA9
         db.add_package("gcc")
         db.add_package("g++")
+        db.add_package("xorg-dev")
         if args.minimal_toolchain:
             raise RuntimeError("Minimal toolchain flag is unsupported for Debian targets")
 

@@ -31,6 +31,9 @@ Tier 2 is used for select targets on an as needed basis.
 | OS | Arch | Known to work on | Note |
 | - | - | - | - |
 | Linux | i686 | Ubuntu 22.04 | Only for Raspberry Pi OS targets |
+| Linux | ARMv7 | Ubuntu 22.04 | Only for roboRIO targets |
+| Linux | ARMv8 | Ubuntu 22.04 | Only for roboRIO targets |
+
 
 ### Tier 3
 

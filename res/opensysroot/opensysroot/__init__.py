@@ -52,6 +52,15 @@ def main():
         assert args.arch is not Arch.CORTEXA9
         db.add_package("gcc")
         db.add_package("g++")
+
+        # Packages for GLFW
+        db.add_package("libx11-dev")
+        db.add_package("libxcursor-dev")
+        db.add_package("libxrandr-dev")
+        db.add_package("libxinerama-dev")
+        db.add_package("libxi-dev")
+        db.add_package("mesa-common-dev")
+
         if args.minimal_toolchain:
             raise RuntimeError("Minimal toolchain flag is unsupported for Debian targets")
 

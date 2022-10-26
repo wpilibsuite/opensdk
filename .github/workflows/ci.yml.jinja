@@ -127,8 +127,8 @@ jobs:
       - name: Remove sysroots
         run: find -name "*.tar" -delete
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: ncipollo/release-action@v1.11.1
         with:
-          files: "**/*"
-        env:
-          GITHUB_TOKEN: ${{ '{{' }} secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          artifacts: "**/*"
+          token: ${{ '{{' }} secrets.GITHUB_TOKEN }}

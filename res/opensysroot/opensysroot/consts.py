@@ -34,9 +34,22 @@ ipk https://download.ni.com/ni-linux-rt/feeds 2022Q4 ni-lv2022
 """,
 }
 
-# These packages cause issues for the roboRIO since they are packaged incorrectly
-# and have dependencies that do not exist.
 BLOCKLIST = [
-    "bash",
+    # These packages cause issues for the roboRIO since they are packaged incorrectly
+    # and have dependencies that do not exist.
     "dkms",
+
+    # These packages cause issues for Raspberry Pi OS. Not exactly sure why, but these
+    # are not needed for a sysroot.
+    "perl",
+    "perlapi",
+    "debconf",
+
+    # These packages are loaded at runtime, and are not necessary for cross-compiling
+    "bash",
+    "libdrm-nouveau2",
+    "libdrm-amdgpu1",
+    "libdrm-radeon1",
+    "libdrm-tegra0",
+    "libdrn-exynos1",
 ]

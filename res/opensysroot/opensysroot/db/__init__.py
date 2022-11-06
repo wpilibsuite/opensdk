@@ -18,6 +18,7 @@ PACKAGE_VERSION_REGEX = re.compile(r'(\S+) \((\S+) (\S+)\)')
 YAML_PKG_ARCH = re.compile(r"(^Architecture: )(.*)")
 YAML_PKG_NAME = re.compile(r"(^Package: )(.*)")
 YAML_PKG_PATH = re.compile(r"(^Filename: )(.*)")
+YAML_PKG_PROVIDE = re.compile(r"(^Provides: )(.*)")
 YAML_PKG_DEP = re.compile(r"(^Depends: )(.*)")
 YAML_PKG_VER = re.compile(r"(^Version: )(.*)")
 YAML_PKG_LICENSE = re.compile(r"(^License: )(.*)")
@@ -41,8 +42,8 @@ INSERT INTO PackageInfo
 """
 _DB_FIND_FILENAME = """
 SELECT Filename, Dependencies, BaseURL FROM Packages WHERE 
-    Name LIKE '%%{}%%' AND
-    (Architecture LIKE '%%{}%%' OR Architecture == 'all')
+    (Name LIKE '%%{0}%%') AND
+    (Architecture LIKE '%%{1}%%' OR Architecture == 'all')
 """
 
 
@@ -76,7 +77,7 @@ def _parse_lists(base: str, packages: str, cursor: sqlite3.Cursor):
             _pkg = YAML_PKG_NAME.match(line)
             _pwd = YAML_PKG_PATH.match(line)
             _ver = YAML_PKG_VER.match(line)
-            _dep = YAML_PKG_DEP.match(line)
+            _provide = YAML_PKG_PROVIDE.match(line)
             _dep = YAML_PKG_DEP.match(line)
             _license = YAML_PKG_LICENSE.match(line)
             _section = YAML_PKG_SECTION.match(line)
@@ -97,7 +98,8 @@ def _parse_lists(base: str, packages: str, cursor: sqlite3.Cursor):
             line = data.readline().strip()
         if name is None or vers is None or path is None:
             continue
-        cursor.execute(_DB_INSERT, (name, arch, vers, path, deps, base))
+        cursor.execute(_DB_INSERT, (name, arch, vers,
+                       path, deps, base))
         cursor.execute(_DB_INSERT_EXTRA, (name, license, section))
 
 
@@ -146,7 +148,7 @@ class Database:
             version = version[0][2]
             self.add_package(package_name, version, version_type)
         else:
-            # Case there is no version
+            # In case there is no version
             self.add_package(data)
 
     def add_package(self, name: str, version=None, version_type=None):
@@ -182,7 +184,8 @@ class Database:
                     return
                 except:
                     pass
-            raise RuntimeError("Cannot find dependency")
+            raise RuntimeError(
+                "Cannot find dependency '{}'".format(dependency))
         self.DEPENDENCIES_TO_RESOLVE.clear()
 
     def download(self, downloads: Path):

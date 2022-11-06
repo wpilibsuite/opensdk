@@ -52,6 +52,7 @@ def main():
         db.add_package("ni-rio-fpga-ids")
         db.add_package("ni-rtlog")
         db.add_package("ni-embeddedcan")
+        db.add_package("ni-labview-realtime")
     else:
         assert args.arch is not Arch.CORTEXA9
         db.add_package("gcc")

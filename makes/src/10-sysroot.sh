@@ -34,9 +34,6 @@ ARGS=(
     "${TARGET_PORT}"
     "${TARGET_DISTRO_RELEASE}"
 )
-if [ "$TARGET_LIB_REBUILD" ]; then
-    ARGS+=("--minimal-toolchain")
-fi
 
 xpushd "${BUILD_DIR}/sysroot-build"
 python3 -m pip install -U "${ROOT_DIR}/res/opensysroot"

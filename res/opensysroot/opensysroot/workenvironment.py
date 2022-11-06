@@ -16,6 +16,7 @@ TO_DELETE = [
     "usr/bin",
     "usr/sbin",
     "usr/share",
+    "usr/{tuple}/bin",
     "usr/lib/{tuple}/audit",
     "usr/lib/{tuple}/ldscripts",
     "usr/lib/{tuple}/perl",
@@ -24,7 +25,8 @@ TO_DELETE = [
     "usr/lib/bfd-plugins",
     "usr/lib/compat-ld",
     "usr/lib/gold-ld",
-    "usr/libexec"
+    "usr/libexec",
+    "usr/src"
 ]
 
 ROBORIO_TO_RENAME = [
@@ -32,18 +34,18 @@ ROBORIO_TO_RENAME = [
     "usr/lib/gcc/{tuple}/{ver}",
 ]
 
+
 class WorkEnvironment:
     base: Path
     sysroot: Path
     downloads: Path
 
-    def __init__(self, distro: Distro, arch: Arch, release: Release, workdir: Path, print_dest_sysroot: bool, minimal_toolchain: bool):
+    def __init__(self, distro: Distro, arch: Arch, release: Release, workdir: Path, print_dest_sysroot: bool):
         self.arch = arch
         self.distro = distro
         self.base = Path(workdir, str(distro), str(release), str(arch))
         self.sysroot = Path(self.base, "sysroot")
         self.downloads = Path(self.base, "downloads")
-        self.minimal = minimal_toolchain
 
         if print_dest_sysroot:
             print(self.sysroot.resolve())
@@ -62,7 +64,7 @@ class WorkEnvironment:
     def clean(self):
         self._symlink()
         self._delete()
-        if self.distro is Distro.ROBORIO_STD and not self.minimal:
+        if self.distro is Distro.ROBORIO_STD:
             self._major_only()
 
     def _major_only(self):

@@ -11,6 +11,7 @@ import sys
 import requests
 from pathlib import Path
 from typing import Optional
+from .. import consts
 
 PACKAGE_VERSION_REGEX = re.compile(r'(\S+) \((\S+) (\S+)\)')
 
@@ -24,28 +25,28 @@ YAML_PKG_SECTION = re.compile(r"(^License: )(.*)")
 
 _DB_INIT = """
 CREATE TABLE Packages(ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name, Architecture, Version, Filename, Dependencies);
+    Name, Architecture, Version, Filename, Dependencies, BaseURL);
 CREATE TABLE PackageInfo(ID INTEGER PRIMARY KEY AUTOINCREMENT,
     Name, License, Section);
 """
 _DB_INSERT = """
 INSERT INTO Packages
-    (Name, Architecture, Version, Filename, Dependencies)
-    VALUES (?,?,?,?,?)
+    (Name, Architecture, Version, Filename, Dependencies, BaseURL)
+    VALUES (?,?,?,?,?,?)
 """
 _DB_INSERT_EXTRA = """
 INSERT INTO PackageInfo
     (Name, License, Section)
     VALUES (?,?,?)
 """
-_DB_FIND_FUZZY_NAME = """
-SELECT Name FROM Packages WHERE Name LIKE '%%{}%%'
-"""
 _DB_FIND_FILENAME = """
-SELECT Filename, Dependencies FROM Packages WHERE Name='{}'
+SELECT Filename, Dependencies, BaseURL FROM Packages WHERE 
+    Name LIKE '%%{}%%' AND
+    (Architecture LIKE '%%{}%%' OR Architecture == 'all')
 """
 
-def _parse_lists(packages: str, cursor: sqlite3.Cursor):
+
+def _parse_lists(base: str, packages: str, cursor: sqlite3.Cursor):
     """
     Parse the package lists from the Distro database.
 
@@ -96,8 +97,9 @@ def _parse_lists(packages: str, cursor: sqlite3.Cursor):
             line = data.readline().strip()
         if name is None or vers is None or path is None:
             continue
-        cursor.execute(_DB_INSERT, (name, arch, vers, path, deps))
+        cursor.execute(_DB_INSERT, (name, arch, vers, path, deps, base))
         cursor.execute(_DB_INSERT_EXTRA, (name, license, section))
+
 
 class Database:
     con: sqlite3.Connection
@@ -105,27 +107,25 @@ class Database:
     PACKAGES_TO_INSTALL: dict
     DEPENDENCIES_TO_RESOLVE: list
 
-    def __init__(self, package_url, db: str = ":memory:") -> None:
+    def __init__(self, arch, package_urls, db: str = ":memory:") -> None:
         self.PACKAGES_TO_INSTALL = dict()
         self.DEPENDENCIES_TO_RESOLVE = list()
+        self.arch = arch
         self.con = sqlite3.connect(db)
         self.cur = self.con.cursor()
         self.cur.executescript(_DB_INIT)
-        data = requests.get(package_url)
-        if data.status_code != 200:
-            raise IOError("Could not download package lists from {}".format(package_url))
-        data = gzip.decompress(data.content)
-        _parse_lists(data.strip().decode('utf8'), self.cur)
-        self.con.commit()
+        for (base, pkg_file) in package_urls:
+            data = requests.get(pkg_file)
+            if data.status_code != 200:
+                raise IOError(
+                    "Could not download package lists from {}".format(pkg_file))
+            data = gzip.decompress(data.content)
+            _parse_lists(base, data.strip().decode('utf8'), self.cur)
+            self.con.commit()
 
     def __del__(self) -> None:
         self.con.commit()
         self.con.close()
-
-    def find_similar(self, name):
-        self.cur.execute(_DB_FIND_FUZZY_NAME.format(name))
-        rows = self.cur.fetchall()
-        return rows
 
     def add_dependency(self, data: str):
         data = data.split(',')
@@ -150,14 +150,19 @@ class Database:
             self.add_package(data)
 
     def add_package(self, name: str, version=None, version_type=None):
+        # These packages cause issues for the roboRIO since they are packaged incorrectly
+        # and have dependencies that do not exist
         name = name.replace(':any', '')
+        if name in consts.BLOCKLIST:
+            return
         if name in self.PACKAGES_TO_INSTALL:
             return
-        self.cur.execute(_DB_FIND_FILENAME.format(name))
+        self.cur.execute(_DB_FIND_FILENAME.format(name, self.arch))
         info = self.cur.fetchone()
         if not info:
             raise RuntimeError("Cannot find exact package {}".format(name))
-        self.PACKAGES_TO_INSTALL[name] = {"name": name, "filename": info[0]}
+        self.PACKAGES_TO_INSTALL[name] = {
+            "name": name, "filename": info[0], "base_url": info[2]}
 
         if version:
             self.PACKAGES_TO_INSTALL[name]['version'] = version
@@ -180,7 +185,7 @@ class Database:
             raise RuntimeError("Cannot find dependency")
         self.DEPENDENCIES_TO_RESOLVE.clear()
 
-    def download(self, repo_url: str, downloads: Path):
+    def download(self, downloads: Path):
         assert downloads.is_dir()
         for pkg in self.PACKAGES_TO_INSTALL.values():
             pkg_file = pkg["filename"].split("/")[-1]
@@ -189,7 +194,7 @@ class Database:
                 print("Using cached {}".format(pkg_file.name))
                 continue
             print("Downloading {}".format(pkg_file.name))
-            pkg_url = "{}/{}".format(repo_url, pkg['filename'])
+            pkg_url = "{}/{}".format(pkg["base_url"], pkg['filename'])
             pkg_data = requests.get(pkg_url)
             if pkg_data.status_code != 200:
                 print(pkg_url, file=sys.stderr)

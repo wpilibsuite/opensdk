@@ -26,7 +26,6 @@ TO_DELETE = [
     "usr/lib/compat-ld",
     "usr/lib/gold-ld",
     "usr/libexec",
-    "usr/src"
 ]
 
 ROBORIO_TO_RENAME = [

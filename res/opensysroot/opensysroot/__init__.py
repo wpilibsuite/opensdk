@@ -48,6 +48,10 @@ def main():
             db.add_package("gcc-dev")
             db.add_package("libstdc++-dev")
             db.add_package("libatomic-dev")
+            # debug symbols for remote debugging
+            db.add_package("libc6-dbg")
+            db.add_package("libgcc-s-dbg")
+            db.add_package("gcc-runtime-dbg")
     else:
         assert args.arch is not Arch.CORTEXA9
         db.add_package("gcc")

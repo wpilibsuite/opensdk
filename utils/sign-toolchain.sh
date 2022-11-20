@@ -81,6 +81,7 @@ ARCHIVE_FILE="$ROOT_DIR/output/$ARCHIVE_NAME"
 tar -xzf "$ARCHIVE_FILE" || die "extraction"
 
 sign_directory "${TOOLCHAIN_NAME}/bin"
+sign_directory "${TOOLCHAIN_NAME}/libexec"
 sign_directory "${TOOLCHAIN_NAME}/${TARGET_TUPLE}/bin"
 sign_directory "${TOOLCHAIN_NAME}/${TARGET_TUPLE}/libexec"
 

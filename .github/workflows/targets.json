@@ -1,5 +1,39 @@
 {
+    "sysroots": [
+        {
+            "os": "roborio-academic",
+            "port": "cortexa9_vfpv3"
+        },
+        {
+            "os": "bullseye",
+            "port": "armhf"
+        },
+        {
+            "os": "bullseye",
+            "port": "arm64"
+        },
+        {
+            "os": "raspi-bullseye",
+            "port": "armhf"
+        }
+    ],
     "single_stage": [
+        {
+            "os": "roborio-academic",
+            "port": "cortexa9_vfpv3"
+        },
+        {
+            "os": "bullseye",
+            "port": "armhf"
+        },
+        {
+            "os": "bullseye",
+            "port": "arm64"
+        },
+        {
+            "os": "raspi-bullseye",
+            "port": "armhf"
+        }
     ],
     "two_stage": [
         {

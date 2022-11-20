@@ -127,10 +127,17 @@ jobs:
         with:
           name: raspi-bullseye-armhf-linux_x86_64
           path: cross/
+      - name: Install cross-compiler
+        run: |
+          cd cross
+          find . -type f
+          tar xzf *.tgz
+          cd raspi-bullseye
+          cp -Rp * /usr
 
       - name: Build
         run: |
-          env PATH=$PATH:$PWD/cross/*/bin make frontend
+          make frontend
           rm output/*.tar
       - uses: actions/upload-artifact@v3
         with:
@@ -184,10 +191,17 @@ jobs:
         with:
           name: bullseye-arm64-linux_x86_64
           path: cross/
+      - name: Install cross-compiler
+        run: |
+          cd cross
+          find . -type f
+          tar xzf *.tgz
+          cd bullseye
+          cp -Rp * /usr
 
       - name: Build
         run: |
-          env PATH=$PATH:$PWD/cross/*/bin make frontend
+          make frontend
           rm output/*.tar
       - uses: actions/upload-artifact@v3
         with:

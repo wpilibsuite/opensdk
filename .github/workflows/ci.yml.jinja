@@ -143,10 +143,17 @@ jobs:
         with:
           name: {{ task.host.os }}-{{ task.host.port }}-linux_x86_64
           path: cross/
+      - name: Install cross-compiler
+        run: |
+          cd cross
+          find . -type f
+          tar xzf *.tgz
+          cd {{ task.host.os }}
+          cp -Rp * /usr
 {% endif %}
       - name: Build
         run: |
-          {% if task.host.os != "linux" or task.host.port != "x86_64" %}env PATH=$PATH:$PWD/cross/*/bin {% endif %}make frontend
+          make frontend
           rm output/*.tar
       - uses: actions/upload-artifact@v3
         with:

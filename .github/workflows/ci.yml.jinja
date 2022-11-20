@@ -121,7 +121,7 @@ jobs:
 {% endfor %}
 {% for task in targets.two_stage %}
   build-platform-utils-{{ task.target.os }}-{{ task.target.port }}-{{ task.host.os }}-{{ task.host.port }}:
-    needs: [build-sysroot-{{ task.target.os }}-{{ task.target.port }}{% if task.host.os != "linux" or task.host.port != "x86_64" %}, build-platform-utils-{{ task.host.os }}-{{ task.host.port }}{% endif %}]
+    needs: [build-sysroot-{{ task.target.os }}-{{ task.target.port }}{% if task.host.os != "linux" or task.host.port != "x86_64" %}, build-platform-utils-{{ task.host.os }}-{{ task.host.port }}-linux-x86_64{% endif %}]
     name: Build {{ task.target.os }}-{{ task.target.port }} for {{ task.host.os }}_{{ task.host.port }}
     runs-on: ubuntu-latest
     container: "docker.io/wpilib/opensdk-ubuntu:22.04"

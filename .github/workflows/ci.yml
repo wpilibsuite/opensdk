@@ -428,7 +428,7 @@ jobs:
           path: output/*
 
   build-platform-utils-roborio-academic-cortexa9_vfpv3-raspi-bullseye-armhf:
-    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-raspi-bullseye-armhf]
+    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-raspi-bullseye-armhf-linux-x86_64]
     name: Build roborio-academic-cortexa9_vfpv3 for raspi-bullseye_armhf
     runs-on: ubuntu-latest
     container: "docker.io/wpilib/opensdk-ubuntu:22.04"
@@ -485,7 +485,7 @@ jobs:
           path: output/*
 
   build-platform-utils-roborio-academic-cortexa9_vfpv3-bullseye-arm64:
-    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-bullseye-arm64]
+    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-bullseye-arm64-linux-x86_64]
     name: Build roborio-academic-cortexa9_vfpv3 for bullseye_arm64
     runs-on: ubuntu-latest
     container: "docker.io/wpilib/opensdk-ubuntu:22.04"

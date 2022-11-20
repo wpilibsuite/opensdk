@@ -103,7 +103,7 @@ jobs:
       - name: Import Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         uses: wpilibsuite/import-signing-certificate@v1
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
@@ -112,7 +112,7 @@ jobs:
       - name: Sign toolchain with Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
         run: make sign
@@ -200,7 +200,7 @@ jobs:
       - name: Import Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         uses: wpilibsuite/import-signing-certificate@v1
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
@@ -209,7 +209,7 @@ jobs:
       - name: Sign toolchain with Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
         run: make sign
@@ -297,7 +297,7 @@ jobs:
       - name: Import Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         uses: wpilibsuite/import-signing-certificate@v1
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
@@ -306,7 +306,7 @@ jobs:
       - name: Sign toolchain with Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
         run: make sign
@@ -400,7 +400,7 @@ jobs:
       - name: Import Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         uses: wpilibsuite/import-signing-certificate@v1
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
@@ -409,7 +409,7 @@ jobs:
       - name: Sign toolchain with Apple Developer ID Certificate
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
-          startsWith(github.ref, 'refs/tags/v')
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
         run: make sign

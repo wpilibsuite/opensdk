@@ -149,6 +149,7 @@ jobs:
           find . -type f
           tar xzf *.tgz
           cd {{ task.host.os }}
+          rm -rf /usr/aarch64-linux-gnu /usr/arm-linux-gnueabihf
           cp -Rp * /usr
 {% endif %}
       - name: Build

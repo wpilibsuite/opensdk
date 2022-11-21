@@ -133,6 +133,7 @@ jobs:
           find . -type f
           tar xzf *.tgz
           cd raspi-bullseye
+          rm -rf /usr/aarch64-linux-gnu /usr/arm-linux-gnueabihf
           cp -Rp * /usr
 
       - name: Build
@@ -197,6 +198,7 @@ jobs:
           find . -type f
           tar xzf *.tgz
           cd bullseye
+          rm -rf /usr/aarch64-linux-gnu /usr/arm-linux-gnueabihf
           cp -Rp * /usr
 
       - name: Build

@@ -48,12 +48,12 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 
 ## Supported Targets
 
-| Architecture | Operating System | Version |
-| - | - | - |
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Academic | GCC 12.1
-| ARMv6 | Raspberry Pi OS 11 | GCC 10.2
-| ARMv7 | Debian/Raspberry Pi OS 11 | GCC 10.2
-| ARMv8 | Debian/Raspberry Pi OS 11 | GCC 10.2
+| Architecture | Operating System | Version | Release Name
+| - | - | - | - |
+| ARMv7 (softfp) | N.I. Linux (roboRIO) Academic | GCC 12.1 | cortexa9_vfpv3-roborio-academic-2023-*
+| ARMv6 | Raspberry Pi OS 11 | GCC 10.2 | armhf-raspi-bullseye-2023-*
+| ARMv7 | Debian/Raspberry Pi OS 11 | GCC 10.2 | armhf-bullseye-2023-*
+| ARMv8 | Debian/Raspberry Pi OS 11 | GCC 10.2 | arm64-bullseye-2023-*
 
 -----
 

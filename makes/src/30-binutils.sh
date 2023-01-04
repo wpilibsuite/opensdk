@@ -27,6 +27,13 @@ if is_step_backend && ! is_lib_rebuild_required; then
     exit 0
 fi
 
+if [ "${TARGET_DISTRO}" != "roborio" ] &&
+    [ "${TARGET_DISTRO}" != "roborio-academic" ]; then
+    # Patch is applied with expected env var for
+    # debian targets.
+    export APPEND_TOOLLIBDIR=yes
+fi
+
 CONFIGURE_BINUTILS=(
     "${CONFIGURE_COMMON[@]}"
     "--enable-poison-system-directories"

@@ -39,7 +39,7 @@ rm -rf "${DOWNLOAD_DIR}"
 mkdir -p "${DOWNLOAD_DIR}"
 
 xpushd "${DOWNLOAD_DIR}"
-GNU_MIRROR="https://ftpmirror.gnu.org/gnu"
+GNU_MIRROR="https://ftp.gnu.org/gnu"
 GCC_INFRA_MIRROR="https://gcc.gnu.org/pub/gcc/infrastructure"
 EXPAT_MIRROR="https://github.com/libexpat/libexpat/releases/download"
 SAVANNAH_MIRROR="https://git.savannah.gnu.org/cgit/config.git/plain"

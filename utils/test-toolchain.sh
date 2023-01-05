@@ -59,6 +59,9 @@ xpushd toolchain
 tar -xf "$ROOT_DIR/output/$ARCHIVE_NAME"
 xcd "${TOOLCHAIN_NAME}"
 
+cp -r aarch64-linux-gnu/sysroot/lib/aarch64-linux-gnu/* aarch64-linux-gnu/sysroot/lib
+# cp -r aarch64-linux-gnu/sysroot/lib/aarch64-linux-gnu/* aarch64-linux-gnu/sysroot/usr/lib/gcc/aarch64-linux-gnu/10
+
 CC="./bin/${TARGET_PREFIX}gcc"
 CXX="./bin/${TARGET_PREFIX}g++"
 GFORTRAN="./bin/${TARGET_PREFIX}gfortran"

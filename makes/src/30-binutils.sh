@@ -27,18 +27,19 @@ if is_step_backend && ! is_lib_rebuild_required; then
     exit 0
 fi
 
-if [ "${TARGET_DISTRO}" != "roborio" ] &&
-    [ "${TARGET_DISTRO}" != "roborio-academic" ]; then
-    # Patch is applied with expected env var for
-    # debian targets.
-    export APPEND_TOOLLIBDIR=yes
-fi
+# This is a part of the debian specific patch. This is no-op for the roborio.
+export APPEND_TOOLLIBDIR=yes
 
 CONFIGURE_BINUTILS=(
-    "${CONFIGURE_COMMON[@]}"
-    "--enable-poison-system-directories"
-    "--enable-ld"
-    "--enable-deterministic-archives"
+    "--build=${BUILD_TUPLE}"            # Build machine
+    "--host=${HOST_TUPLE}"              # Host machine
+    "--target=${TARGET_TUPLE}"          # Target machine
+    "--prefix=${WPI_HOST_PREFIX}"       # Filesystem prefix
+    "--program-prefix=${TARGET_PREFIX}" # Program prefix
+    "--disable-werror"                  # Allow host builds to be permissive
+    "--disable-nls"                     # Disable localization
+
+    "--with-sysroot=${SYSROOT_PATH}"
 )
 
 xpushd "${BUILD_DIR}/binutils-build"

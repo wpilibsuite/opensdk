@@ -91,11 +91,15 @@ configure_target_vars() {
 gcc_update_target_list() {
     env_exists SYSROOT_BUILD_PATH
     gcc_need_lib_build() {
-        local lib="${SYSROOT_BUILD_PATH}/usr/lib/$1"
+        local lib1="${SYSROOT_BUILD_PATH}/usr/lib/$1"
+        local lib2="${SYSROOT_BUILD_PATH}/usr/lib/${TARGET_TUPLE}/$1"
+        local lib3="${SYSROOT_BUILD_PATH}/usr/lib/${TARGET_TUPLE}/gcc/${TARGET_TUPLE}/${V_GCC/.*/}/$1"
         if [ "$TARGET_LIB_REBUILD" = "true" ]; then
             return 0
         fi
-        if compgen -G "${lib}.so*" >/dev/null; then
+        if compgen -G "${lib1}.so*" >/dev/null ||
+            compgen -G "${lib2}.so*" >/dev/null ||
+            compgen -G "${lib3}.so*" >/dev/null; then
             return 1
         fi
         return 0

@@ -39,6 +39,7 @@ CONFIGURE_GCC=(
     "--program-prefix=${TARGET_PREFIX}"
     "--disable-werror"
     "--disable-nls"
+    "--disable-multilib"
 
     "--libdir=${SYSROOT_PATH}/usr/lib"
     "--with-sysroot=${SYSROOT_PATH}"

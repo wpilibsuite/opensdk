@@ -51,6 +51,7 @@ CONFIGURE_COMMON_LITE=(
     "--program-prefix=${TARGET_PREFIX}"
     "--disable-nls"
     "--disable-werror"
+    "--disable-multilib"
 )
 
 CONFIGURE_COMMON=(

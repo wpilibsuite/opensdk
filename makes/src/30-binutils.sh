@@ -29,6 +29,7 @@ fi
 
 # This is a part of the debian specific patch. This is no-op for the roborio.
 export APPEND_TOOLLIBDIR=yes
+export DEB_TARGET_MULTIARCH="${TARGET_TUPLE}"
 
 CONFIGURE_BINUTILS=(
     "--build=${BUILD_TUPLE}"            # Build machine
@@ -38,6 +39,7 @@ CONFIGURE_BINUTILS=(
     "--program-prefix=${TARGET_PREFIX}" # Program prefix
     "--disable-werror"                  # Allow host builds to be permissive
     "--disable-nls"                     # Disable localization
+    "--disable-multilib"                # Disable multilib for 64-bit targets
 
     "--with-sysroot=${SYSROOT_PATH}"
 )

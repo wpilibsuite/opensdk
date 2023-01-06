@@ -118,4 +118,4 @@ xpopd
 rm -r toolchain
 xpopd
 
-rm -r "$tmp"
+rm -rf "$tmp"

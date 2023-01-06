@@ -12,7 +12,7 @@ All tiers should compile with these scripts. But support will only
 be given if the OS vendor supports the platform.
 
 For example, these tools should work on Windows XP but support
-will only be given to Windows 8.1 or newer. The same logic applies
+will only be given to Windows 10 or newer. The same logic applies
 for macOS and Ubuntu.
 
 ### Tier 1

@@ -37,6 +37,13 @@ xpopd() {
     popd >/dev/null || die "popd failed"
 }
 
+cleanup() {
+    if [ -d "$tmp" ]; then
+        echo "Deleting temporary files"
+        rm -rf "$tmp"
+    fi
+}
+
 ROOT_DIR="${PWD}" && export ROOT_DIR
 TEST_SYS_GCC=false && export TEST_SYS_GCC
 TEST_DIR="${ROOT_DIR}/utils/test"
@@ -52,15 +59,14 @@ if [ ! -f "$ROOT_DIR/output/$ARCHIVE_NAME" ]; then
 fi
 
 tmp="$(mktemp -d)"
+trap cleanup EXIT
+
 xpushd "${tmp}"
 
 mkdir -p toolchain
 xpushd toolchain
 tar -xf "$ROOT_DIR/output/$ARCHIVE_NAME"
 xcd "${TOOLCHAIN_NAME}"
-
-cp -r aarch64-linux-gnu/sysroot/lib/aarch64-linux-gnu/* aarch64-linux-gnu/sysroot/lib
-# cp -r aarch64-linux-gnu/sysroot/lib/aarch64-linux-gnu/* aarch64-linux-gnu/sysroot/usr/lib/gcc/aarch64-linux-gnu/10
 
 CC="./bin/${TARGET_PREFIX}gcc"
 CXX="./bin/${TARGET_PREFIX}g++"

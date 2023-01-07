@@ -353,12 +353,6 @@ jobs:
               container: "",
               testable: false,
             },
-            {
-              os-cfg: linux_i686,
-              runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
-              testable: false,
-            },
           ]
     name: Build raspi-bullseye-armhf for ${{ matrix.host.os-cfg }}
     runs-on: ${{ matrix.host.runner }}

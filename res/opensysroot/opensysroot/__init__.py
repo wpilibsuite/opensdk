@@ -21,8 +21,6 @@ def arg_info():
     parser.add_argument("output", type=Path, default=Path("build"))
     parser.add_argument("--print-dest-sysroot",
                         default=False, action='store_true')
-    parser.add_argument("--minimal-toolchain",
-                        default=False, action='store_true')
     return parser.parse_args()
 
 
@@ -36,22 +34,20 @@ def main():
         args.distro, args.arch, args.release)
 
     env = WorkEnvironment(args.distro, args.arch, args.release,
-                          args.output, args.print_dest_sysroot,
-                          args.minimal_toolchain)
+                          args.output, args.print_dest_sysroot)
 
     db = Database(repo_packages_url)
     if args.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
         assert args.arch is Arch.CORTEXA9
         db.add_package("libc6-dev")
         db.add_package("linux-libc-headers-dev")
-        if not args.minimal_toolchain:
-            db.add_package("gcc-dev")
-            db.add_package("libstdc++-dev")
-            db.add_package("libatomic-dev")
-            # debug symbols for remote debugging
-            db.add_package("libc6-dbg")
-            db.add_package("libgcc-s-dbg")
-            db.add_package("gcc-runtime-dbg")
+        db.add_package("gcc-dev")
+        db.add_package("libstdc++-dev")
+        db.add_package("libatomic-dev")
+        # debug symbols for remote debugging
+        db.add_package("libc6-dbg")
+        db.add_package("libgcc-s-dbg")
+        db.add_package("gcc-runtime-dbg")
     else:
         assert args.arch is not Arch.CORTEXA9
         db.add_package("gcc")
@@ -64,9 +60,6 @@ def main():
         db.add_package("libxinerama-dev")
         db.add_package("libxi-dev")
         db.add_package("mesa-common-dev")
-
-        if args.minimal_toolchain:
-            raise RuntimeError("Minimal toolchain flag is unsupported for Debian targets")
 
     db.post_resolve()
     db.download(repo_url, env.downloads)

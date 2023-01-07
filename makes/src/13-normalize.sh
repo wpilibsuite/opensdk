@@ -65,22 +65,3 @@ else
     rm -rf usr/lib/mime
     rm -rf usr/lib/tar
 fi
-
-if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
-    # Delete libstdc++ headers which will be replaced
-    rm -rf usr/include/c++/
-
-    # Delete GCC runtime artifacts
-    if [ "${TARGET_DISTRO}" = "roborio" ] ||
-        [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
-        rm -rf usr/lib/gcc/
-        rm -rf usr/lib/libgcc_s.so*
-        rm -rf usr/lib/libatomic.so*
-        rm -rf usr/lib/libstdc++.so*
-    else
-        rm -rf usr/lib/"${TARGET_TUPLE}"/gcc/
-        rm -rf usr/lib/"${TARGET_TUPLE}"/libgcc_s.so*
-        rm -rf usr/lib/"${TARGET_TUPLE}"/libatomic.so*
-        rm -rf usr/lib/"${TARGET_TUPLE}"/libstdc++.so*
-    fi
-fi

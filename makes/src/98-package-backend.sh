@@ -23,25 +23,11 @@ source "$(dirname "$0")/common.sh"
 rm -rf backend-install
 mkdir -p backend-install/tmp/frc
 
-if [ "$TARGET_LIB_REBUILD" = "true" ]; then
-    # Hack to make the linker behave nicely with a out of tree libgcc.
-    # This will take double the space on disk but is compressed
-    # within the zip/tgz file.
-    # TODO: Remove artifact from the old GCC build to cut down on space.
-    rsync -aEL \
-        "gcc-install/tmp/frc/${TARGET_TUPLE}/gcclib/" \
-        "gcc-install/tmp/frc/${TARGET_TUPLE}/sysroot/usr/lib/"
-fi
-
 # Build backend archive for use by the frontend builds.
 rsync -aEL \
     "sysroot-install/" \
     "backend-install/"
-if [ "$TARGET_LIB_REBUILD" = "true" ]; then
-    rsync -aEL \
-        "gcc-install/tmp/frc/${TARGET_TUPLE}/gcclib" \
-        "backend-install/${TARGET_TUPLE}/"
-fi
+
 if is_lib_rebuild_required; then
     rsync -aEL \
         "gcc-install/tmp/frc/${TARGET_TUPLE}/sysroot" \

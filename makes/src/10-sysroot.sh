@@ -34,9 +34,6 @@ ARGS=(
     "${TARGET_PORT}"
     "${TARGET_DISTRO_RELEASE}"
 )
-if [ "$TARGET_LIB_REBUILD" ]; then
-    ARGS+=("--minimal-toolchain")
-fi
 
 xpushd "${BUILD_DIR}/sysroot-build"
 python3 -m pip install -U "${ROOT_DIR}/res/opensysroot"
@@ -44,13 +41,14 @@ python3 -m opensysroot \
     "${ARGS[@]}" \
     . || die "opensysroot failed"
 SYSROOT_DIR="${PWD}/${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}"
-if ! [ "$TARGET_LIB_REBUILD" ]; then
-    xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
-    find . -type f -or -type l \
-        -exec /usr/bin/test -x {} \; \
-        -exec /bin/rm {} \;
-    xpopd
-fi
+
+# Remove all executables from sysroot
+xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
+find . -type f -or -type l \
+    -exec /usr/bin/test -x {} \; \
+    -exec /bin/rm {} \;
+xpopd
+
 rsync -a \
     "${SYSROOT_DIR}/sysroot/" \
     "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot" ||

@@ -45,13 +45,3 @@ if [ -d "${BUILD_DIR}/gcc-install/tmp/frc/${TARGET_TUPLE}/lib" ]; then
         "${BUILD_DIR}/gcc-install/tmp/frc/${TARGET_TUPLE}/sysroot/usr/lib/"
     rm -rf "${BUILD_DIR}/gcc-install/tmp/frc/${TARGET_TUPLE}/lib"
 fi
-
-if [ "${TARGET_LIB_REBUILD}" = "true" ]; then
-    # Duplicate the GCC runtime artifacts to a seperate directory
-    # so it can later be scp'd to the roboRIO.
-    rsync -aEL \
-        "${BUILD_DIR}/gcc-install/tmp/frc/${TARGET_TUPLE}/sysroot/usr/lib/" \
-        "${BUILD_DIR}/gcc-install/tmp/frc/${TARGET_TUPLE}/gcclib/"
-    # We don't need the static libraries of the GCC runtime
-    rm -r "${BUILD_DIR}/gcc-install/tmp/frc/${TARGET_TUPLE}/gcclib/gcc"
-fi

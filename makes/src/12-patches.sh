@@ -42,6 +42,11 @@ function patch_project() {
         src="gcc-${V_GCC}"
         ver="${V_GCC}"
         ;;
+    bin)
+        proj="binutils"
+        src="binutils-${V_BIN}"
+        ver="${V_BIN}"
+        ;;
     *) die "Unknown config" ;;
     esac
 
@@ -51,6 +56,11 @@ function patch_project() {
             if [[ "$_patch" =~ darwin ]] && [ "$WPI_HOST_NAME" != "Mac" ]; then
                 # Do not apply macOS specific patches for Windows and Linux
                 # builds
+                continue
+            fi
+            if [[ "$_patch" =~ debian ]] && [ "$TARGET_DISTRO" != "debian" ] &&
+                [ "$TARGET_DISTRO" != "raspbian" ]; then
+                # Do not apply debian patches to roborio targets
                 continue
             fi
             _patch="${PWD}/$_patch"
@@ -71,6 +81,7 @@ function patch_project() {
 }
 
 patch_project gcc
+patch_project bin
 
 if [ -d "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}" ]; then
     xpushd "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}"

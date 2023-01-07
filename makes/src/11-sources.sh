@@ -26,6 +26,8 @@ FUNC_ONLY=true
 source "$(dirname "$0")/common.sh"
 
 function download_or_die() {
+    echo "[INFO] Downloading from $1"
+
     wget -nc -nv "$1" &>/dev/null ||
         die "Failed to download archive from $1"
 }
@@ -39,7 +41,7 @@ rm -rf "${DOWNLOAD_DIR}"
 mkdir -p "${DOWNLOAD_DIR}"
 
 xpushd "${DOWNLOAD_DIR}"
-GNU_MIRROR="https://ftpmirror.gnu.org/gnu"
+GNU_MIRROR="https://mirrors.kernel.org/gnu"
 GCC_INFRA_MIRROR="https://gcc.gnu.org/pub/gcc/infrastructure"
 EXPAT_MIRROR="https://github.com/libexpat/libexpat/releases/download"
 SAVANNAH_MIRROR="https://git.savannah.gnu.org/cgit/config.git/plain"

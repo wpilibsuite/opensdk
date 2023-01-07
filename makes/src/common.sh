@@ -49,11 +49,9 @@ CONFIGURE_COMMON_LITE=(
     "--host=${HOST_TUPLE}"
     "--prefix=${WPI_HOST_PREFIX}"
     "--program-prefix=${TARGET_PREFIX}"
-    "--enable-lto"
     "--disable-nls"
-    "--disable-plugin"
     "--disable-werror"
-    "--disable-dependency-tracking"
+    "--disable-multilib"
 )
 
 CONFIGURE_COMMON=(
@@ -61,7 +59,6 @@ CONFIGURE_COMMON=(
     "--target=${TARGET_TUPLE}"
     "--with-sysroot=${SYSROOT_PATH}"
     "--libdir=${SYSROOT_PATH}/usr/lib"
-    "--with-toolexeclibdir=${SYSROOT_PATH}/usr/lib"
     "--with-build-sysroot=${SYSROOT_BUILD_PATH}"
 )
 

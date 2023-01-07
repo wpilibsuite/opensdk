@@ -32,8 +32,19 @@ function gcc_make_multi() {
 }
 
 CONFIGURE_GCC=(
-    "${CONFIGURE_COMMON[@]}"
-    "--enable-poison-system-directories"
+    "--build=${BUILD_TUPLE}"
+    "--host=${HOST_TUPLE}"
+    "--target=${TARGET_TUPLE}"
+    "--prefix=${WPI_HOST_PREFIX}"
+    "--program-prefix=${TARGET_PREFIX}"
+    "--disable-werror"
+    "--disable-nls"
+    "--disable-multilib"
+
+    "--libdir=${SYSROOT_PATH}/usr/lib"
+    "--with-sysroot=${SYSROOT_PATH}"
+    "--with-build-sysroot=${SYSROOT_BUILD_PATH}"
+
     "--enable-threads=posix"
     "--enable-shared"
     "--with-gcc-major-version-only"

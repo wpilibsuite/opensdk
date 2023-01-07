@@ -65,10 +65,14 @@ elif [ -e "/usr/bin/${HOST_TUPLE}-strip" ]; then
     STRIP_CMD="/usr/bin/${HOST_TUPLE}-strip"
 elif [ -e "/usr/bin/${WPI_HOST_TUPLE}-strip" ]; then
     STRIP_CMD="/usr/bin/${WPI_HOST_TUPLE}-strip"
+elif [ -e "/usr/bin/llvm-strip" ]; then
+    # LLVM strip is architecture agnostic
+    STRIP_CMD="/usr/bin/llvm-strip"
 elif [ "${WPI_HOST_NAME}" = "Mac" ]; then
+    # Xcode strip is just LLVM strip
     STRIP_CMD="strip"
 else
-    die "Cannot find proper strip command"
+    warn "Cannot find proper strip command"
 fi
 
 # Remove any executables that may have the incorrect names

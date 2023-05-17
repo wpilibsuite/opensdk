@@ -15,7 +15,7 @@ jobs:
   build-sysroot-roborio-academic-cortexa9_vfpv3:
     name: Build sysroot for roborio-academic-cortexa9_vfpv3
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_TARGET: roborio-academic
       WPI_TARGET_PORT: cortexa9_vfpv3
@@ -37,7 +37,7 @@ jobs:
   build-sysroot-bullseye-armhf:
     name: Build sysroot for bullseye-armhf
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_TARGET: bullseye
       WPI_TARGET_PORT: armhf
@@ -59,7 +59,7 @@ jobs:
   build-sysroot-bullseye-arm64:
     name: Build sysroot for bullseye-arm64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_TARGET: bullseye
       WPI_TARGET_PORT: arm64
@@ -81,7 +81,7 @@ jobs:
   build-sysroot-raspi-bullseye-armhf:
     name: Build sysroot for raspi-bullseye-armhf
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_TARGET: raspi-bullseye
       WPI_TARGET_PORT: armhf
@@ -111,14 +111,14 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: true,
             },
 
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: false,
             },
             {
@@ -189,14 +189,14 @@ jobs:
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: true,
             },
 
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: false,
             },
             {
@@ -267,7 +267,7 @@ jobs:
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: false,
             },
             {
@@ -338,7 +338,7 @@ jobs:
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
               testable: false,
             },
             {
@@ -404,7 +404,7 @@ jobs:
     needs: [build-sysroot-raspi-bullseye-armhf]
     name: Build raspi-bullseye-armhf for linux_x86_64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_HOST: linux_x86_64
       WPI_TARGET: raspi-bullseye
@@ -430,7 +430,7 @@ jobs:
     needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-raspi-bullseye-armhf-linux-x86_64]
     name: Build roborio-academic-cortexa9_vfpv3 for raspi-bullseye_armhf
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_HOST: raspi-bullseye_armhf
       WPI_TARGET: roborio-academic
@@ -469,7 +469,7 @@ jobs:
     needs: [build-sysroot-bullseye-arm64]
     name: Build bullseye-arm64 for linux_x86_64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_HOST: linux_x86_64
       WPI_TARGET: bullseye
@@ -495,7 +495,7 @@ jobs:
     needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-bullseye-arm64-linux-x86_64]
     name: Build roborio-academic-cortexa9_vfpv3 for bullseye_arm64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
     env:
       WPI_HOST: bullseye_arm64
       WPI_TARGET: roborio-academic

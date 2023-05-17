@@ -20,7 +20,7 @@ for macOS and Ubuntu.
 | OS      | Arch   | Known to work on |
 | ------- | ------ | ---------------- |
 | Windows | x86_64 | Windows XP       |
-| Linux   | x86_64 | Ubuntu 22.04     |
+| Linux   | x86_64 | Ubuntu 20.04     |
 | Mac     | x86_64 | macOS 10.9       |
 | Mac     | ARMv8  | macOS 11.0       |
 
@@ -28,10 +28,10 @@ for macOS and Ubuntu.
 
 Tier 2 is used for select targets on an as needed basis.
 
-| OS    | Arch  | Known to work on | Note                     |
-| ----- | ----- | ---------------- | ------------------------ |
-| Linux | ARMv7 | Ubuntu 22.04     | Only for roboRIO targets |
-| Linux | ARMv8 | Ubuntu 22.04     | Only for roboRIO targets |
+| OS    | Arch  | Known to work on          | Note                     |
+| ----- | ----- | ------------------------- | ------------------------ |
+| Linux | ARMv7 | Debian/Raspberry Pi OS 11 | Only for roboRIO targets |
+| Linux | ARMv8 | Debian/Raspberry Pi OS 11 | Only for roboRIO targets |
 
 
 ### Tier 3
@@ -41,9 +41,9 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 | OS      | Arch  | Known to work on |
 | ------- | ----- | ---------------- |
 | Windows | i686  | Windows XP       |
-| Linux   | i686  | Ubuntu 22.04     |
-| Linux   | ARMv7 | Ubuntu 22.04     |
-| Linux   | ARMv8 | Ubuntu 22.04     |
+| Linux   | i686  | Ubuntu 20.04     |
+| Linux   | ARMv7 | Ubuntu 20.04     |
+| Linux   | ARMv8 | Ubuntu 20.04     |
 
 ## Supported Targets
 

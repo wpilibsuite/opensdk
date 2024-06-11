@@ -123,13 +123,13 @@ jobs:
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: true,
             },
             {
               os-cfg: macos_arm64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: false,
             },
@@ -201,13 +201,13 @@ jobs:
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: true,
             },
             {
               os-cfg: macos_arm64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: false,
             },
@@ -272,13 +272,13 @@ jobs:
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: true,
             },
             {
               os-cfg: macos_arm64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: false,
             },
@@ -343,13 +343,13 @@ jobs:
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: true,
             },
             {
               os-cfg: macos_arm64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: false,
             },

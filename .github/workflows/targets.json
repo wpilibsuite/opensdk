@@ -15,6 +15,14 @@
         {
             "os": "raspi-bullseye",
             "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "arm64"
         }
     ],
     "single_stage": [

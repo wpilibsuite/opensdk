@@ -99,6 +99,50 @@ jobs:
           name: raspi-bullseye-armhf-sysroot
           path: output/*
 
+  build-sysroot-bookworm-armhf:
+    name: Build sysroot for bookworm-armhf
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    env:
+      WPI_TARGET: bookworm
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
+      - name: Build sysroot
+        run: |
+          make backend
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bookworm-armhf-sysroot
+          path: output/*
+
+  build-sysroot-bookworm-arm64:
+    name: Build sysroot for bookworm-arm64
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    env:
+      WPI_TARGET: bookworm
+      WPI_TARGET_PORT: arm64
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
+      - name: Build sysroot
+        run: |
+          make backend
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bookworm-arm64-sysroot
+          path: output/*
+
   build-platform-utils-roborio-academic-cortexa9_vfpv3:
     needs: build-sysroot-roborio-academic-cortexa9_vfpv3
     strategy:

@@ -33,6 +33,14 @@
         {
             "os": "raspi-bullseye",
             "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "arm64"
         }
     ],
     "two_stage": [
@@ -73,6 +81,26 @@
             },
             "host": {
                 "os": "bullseye",
+                "port": "arm64"
+            }
+        },
+        {
+            "target": {
+                "os": "bookworm",
+                "port": "arm64"
+            },
+            "host": {
+                "os": "linux",
+                "port": "x86_64"
+            }
+        },
+        {
+            "target": {
+                "os": "roborio-academic",
+                "port": "cortexa9_vfpv3"
+            },
+            "host": {
+                "os": "bookworm",
                 "port": "arm64"
             }
         }

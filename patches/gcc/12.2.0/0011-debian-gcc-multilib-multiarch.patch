@@ -1,7 +1,7 @@
 # DP: Don't auto-detect multilib osdirnames.
 
---- a/src/gcc/config/sparc/t-linux64
-+++ b/src/gcc/config/sparc/t-linux64
+--- a/gcc/config/sparc/t-linux64
++++ b/gcc/config/sparc/t-linux64
 @@ -25,7 +25,12 @@
  
  MULTILIB_OPTIONS = m64/m32
@@ -14,10 +14,10 @@
 -MULTILIB_OSDIRNAMES += $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)$(call if_multiarch,:sparc-linux-gnu)
 +MULTILIB_OSDIRNAMES += ../lib$(call if_multiarch,:sparc-linux-gnu)
 +endif
-
+ 
  MULTIARCH_DIRNAME = $(call if_multiarch,sparc$(if $(findstring 64,$(target)),64)-linux-gnu)
---- a/src/gcc/config/s390/t-linux64
-+++ b/src/gcc/config/s390/t-linux64
+--- a/gcc/config/s390/t-linux64
++++ b/gcc/config/s390/t-linux64
 @@ -7,7 +7,12 @@
  
  MULTILIB_OPTIONS = m64/m31
@@ -32,8 +32,8 @@
 +endif
  
  MULTIARCH_DIRNAME = $(call if_multiarch,s390$(if $(findstring s390x,$(target)),x)-linux-gnu)
---- a/src/gcc/config/rs6000/t-linux64
-+++ b/src/gcc/config/rs6000/t-linux64
+--- a/gcc/config/rs6000/t-linux64
++++ b/gcc/config/rs6000/t-linux64
 @@ -28,8 +28,13 @@
  MULTILIB_OPTIONS    := m64/m32
  MULTILIB_DIRNAMES   := 64 32
@@ -49,8 +49,8 @@
  
  MULTIARCH_DIRNAME = $(call if_multiarch,powerpc$(if $(findstring 64,$(target)),64)-linux-gnu)
  
---- a/src/gcc/config/i386/t-linux64
-+++ b/src/gcc/config/i386/t-linux64
+--- a/gcc/config/i386/t-linux64
++++ b/gcc/config/i386/t-linux64
 @@ -33,9 +33,19 @@
  comma=,
  MULTILIB_OPTIONS    = $(subst $(comma),/,$(TM_MULTILIB_CONFIG))
@@ -72,8 +72,8 @@
  
  ifneq (,$(findstring x86_64,$(target)))
    ifneq (,$(findstring biarchx32.h,$(tm_include_list)))
---- a/src/gcc/config/mips/t-linux64
-+++ b/src/gcc/config/mips/t-linux64
+--- a/gcc/config/mips/t-linux64
++++ b/gcc/config/mips/t-linux64
 @@ -23,10 +23,23 @@ MIPS_32 = $(if $(findstring r6, $(firstw
  MIPS_ISA = $(if $(findstring r6, $(firstword $(subst -, ,$(target)))),isa)
  MIPS_EL = $(if $(filter %el, $(firstword $(subst -, ,$(target)))),el)
@@ -101,8 +101,8 @@
  
  ifneq (,$(findstring abin32,$(target)))
  MULTIARCH_DIRNAME = $(call if_multiarch,mips$(MIPS_ISA)64$(MIPS_R6)$(MIPS_EL)-linux-gnuabin32$(MIPS_SOFT))
---- a/src/gcc/config/rs6000/t-linux
-+++ b/src/gcc/config/rs6000/t-linux
+--- a/gcc/config/rs6000/t-linux
++++ b/gcc/config/rs6000/t-linux
 @@ -2,7 +2,7 @@
  # or soft-float.
  ifeq (,$(filter $(with_cpu),$(SOFT_FLOAT_CPUS))$(findstring soft,$(with_float)))
@@ -111,33 +111,4 @@
 +MULTILIB_OSDIRNAMES := .=../lib$(call if_multiarch,:powerpc64-linux-gnu)
  else
  MULTIARCH_DIRNAME := $(call if_multiarch,powerpc-linux-gnu)
- endif
---- a/src/gcc/config/loongarch/t-linux
-+++ b/src/gcc/config/loongarch/t-linux
-@@ -32,22 +32,19 @@ ifneq ($(call if_multiarch,yes),yes)
- else
-     # Only define MULTIARCH_DIRNAME when multiarch is enabled,
-     # or it would always introduce ${target} into the search path.
--    MULTIARCH_DIRNAME = $(LA_MULTIARCH_TRIPLET)
-+    MULTIARCH_DIRNAME = $(call if_multiarch,loongarch64-linux-gnuf64)
- endif
- 
- # Don't define MULTILIB_OSDIRNAMES if multilib is disabled.
- ifeq ($(filter LA_DISABLE_MULTILIB,$(tm_defines)),)
- 
-     MULTILIB_OSDIRNAMES = \
--      mabi.lp64d=../lib64$\
--      $(call if_multiarch,:loongarch64-linux-gnu)
-+      mabi.lp64d=../lib$(call if_multiarch,:loongarch64-linux-gnuf64)
- 
-     MULTILIB_OSDIRNAMES += \
--      mabi.lp64f=../lib64/f32$\
--      $(call if_multiarch,:loongarch64-linux-gnuf32)
-+      mabi.lp64f=../lib/f32$(call if_multiarch,:loongarch64-linux-gnuf32)
- 
-     MULTILIB_OSDIRNAMES += \
--      mabi.lp64s=../lib64/sf$\
--      $(call if_multiarch,:loongarch64-linux-gnusf)
-+      mabi.lp64s=../lib/sf$(call if_multiarch,:loongarch64-linux-gnusf)
- 
  endif

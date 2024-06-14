@@ -421,6 +421,8 @@ jobs:
         run: |
           make frontend
           rm output/*.tar
+      - name: Test
+        run: make test
       - uses: actions/upload-artifact@v4
         with:
           name: raspi-bullseye-armhf-linux_x86_64
@@ -486,6 +488,8 @@ jobs:
         run: |
           make frontend
           rm output/*.tar
+      - name: Test
+        run: make test
       - uses: actions/upload-artifact@v4
         with:
           name: bullseye-arm64-linux_x86_64

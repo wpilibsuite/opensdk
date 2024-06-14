@@ -41,7 +41,7 @@ jobs:
       matrix:
         host:
           [
-{%- if not ((target.os == "bullseye" and target.port == "arm64") or (target.os == "bookworm" and target.port == "arm64") or target.os == "raspi-bullseye") %}
+{%- if not ((target.os in ["bullseye", "bookworm"] and target.port == "arm64") or (target.os in ["raspi-bullseye", "raspi-bookworm"])) %}
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,

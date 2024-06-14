@@ -143,6 +143,28 @@ jobs:
           name: bookworm-arm64-sysroot
           path: output/*
 
+  build-sysroot-raspi-bookworm-armhf:
+    name: Build sysroot for raspi-bookworm-armhf
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    env:
+      WPI_TARGET: raspi-bookworm
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install opensysroot
+        run: |
+          cd res/opensysroot
+          python3 -m pip install .
+      - name: Build sysroot
+        run: |
+          make backend
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raspi-bookworm-armhf-sysroot
+          path: output/*
+
   build-platform-utils-roborio-academic-cortexa9_vfpv3:
     needs: build-sysroot-roborio-academic-cortexa9_vfpv3
     strategy:
@@ -581,6 +603,76 @@ jobs:
           name: bookworm-arm64-${{matrix.host.os-cfg }}
           path: output/*
 
+  build-platform-utils-raspi-bookworm-armhf:
+    needs: build-sysroot-raspi-bookworm-armhf
+    strategy:
+      matrix:
+        host:
+          [
+            {
+              os-cfg: windows_x86_64,
+              runner: ubuntu-latest,
+              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
+              testable: false,
+            },
+            {
+              os-cfg: macos_x86_64,
+              runner: macos-13,
+              container: "",
+              testable: true,
+            },
+            {
+              os-cfg: macos_arm64,
+              runner: macos-13,
+              container: "",
+              testable: false,
+            },
+          ]
+    name: Build raspi-bookworm-armhf for ${{ matrix.host.os-cfg }}
+    runs-on: ${{ matrix.host.runner }}
+    container: ${{ matrix.host.container }}
+    env:
+      WPI_HOST: ${{matrix.host.os-cfg}}
+      WPI_TARGET: raspi-bookworm
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prep MacOS
+        if: contains(matrix.host.runner, 'macos')
+        run: brew install rsync texinfo
+      - uses: actions/download-artifact@v4
+        with:
+          name: raspi-bookworm-armhf-sysroot
+          path: output/
+      - name: Build
+        run: |
+          make frontend
+          rm output/*.tar
+      - name: Test
+        if: matrix.host.testable
+        run: make test
+      - name: Import Apple Developer ID Certificate
+        if: contains(matrix.host.os-cfg, 'macos') &&
+          github.repository_owner == 'wpilibsuite' &&
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+        uses: wpilibsuite/import-signing-certificate@v2
+        with:
+          certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
+          certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          keychain-password: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+      - name: Sign toolchain with Apple Developer ID Certificate
+        if: contains(matrix.host.os-cfg, 'macos') &&
+          github.repository_owner == 'wpilibsuite' &&
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+        env:
+          APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
+        run: make sign
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raspi-bookworm-armhf-${{matrix.host.os-cfg }}
+          path: output/*
+
   build-platform-utils-raspi-bullseye-armhf-linux-x86_64:
     needs: [build-sysroot-raspi-bullseye-armhf]
     name: Build raspi-bullseye-armhf for linux_x86_64
@@ -713,6 +805,72 @@ jobs:
           name: roborio-academic-cortexa9_vfpv3-bullseye_arm64
           path: output/*
 
+  build-platform-utils-raspi-bookworm-armhf-linux-x86_64:
+    needs: [build-sysroot-raspi-bookworm-armhf]
+    name: Build raspi-bookworm-armhf for linux_x86_64
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    env:
+      WPI_HOST: linux_x86_64
+      WPI_TARGET: raspi-bookworm
+      WPI_TARGET_PORT: armhf
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: raspi-bookworm-armhf-sysroot
+          path: output/
+
+      - name: Build
+        run: |
+          make frontend
+          rm output/*.tar
+      - name: Test
+        run: make test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raspi-bookworm-armhf-linux_x86_64
+          path: output/*
+
+  build-platform-utils-roborio-academic-cortexa9_vfpv3-raspi-bookworm-armhf:
+    needs: [build-sysroot-roborio-academic-cortexa9_vfpv3, build-platform-utils-raspi-bookworm-armhf-linux-x86_64]
+    name: Build roborio-academic-cortexa9_vfpv3 for raspi-bookworm_armhf
+    runs-on: ubuntu-latest
+    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    env:
+      WPI_HOST: raspi-bookworm_armhf
+      WPI_TARGET: roborio-academic
+      WPI_TARGET_PORT: cortexa9_vfpv3
+      WPI_USE_THREADS: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: roborio-academic-cortexa9_vfpv3-sysroot
+          path: output/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: raspi-bookworm-armhf-linux_x86_64
+          path: cross/
+      - name: Install cross-compiler
+        run: |
+          cd cross
+          find . -type f
+          tar xzf *.tgz
+          cd raspi-bookworm
+          rm -rf /usr/aarch64-linux-gnu /usr/arm-linux-gnueabihf
+          cp -Rp * /usr
+      - name: Build
+        run: |
+          make frontend
+          rm output/*.tar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: roborio-academic-cortexa9_vfpv3-raspi-bookworm_armhf
+          path: output/*
+
   build-platform-utils-bookworm-arm64-linux-x86_64:
     needs: [build-sysroot-bookworm-arm64]
     name: Build bookworm-arm64 for linux_x86_64
@@ -780,7 +938,7 @@ jobs:
           path: output/*
 
   release:
-    needs: [build-platform-utils-roborio-academic-cortexa9_vfpv3, build-platform-utils-bullseye-armhf, build-platform-utils-bullseye-arm64, build-platform-utils-raspi-bullseye-armhf, build-platform-utils-bookworm-armhf, build-platform-utils-bookworm-arm64, build-platform-utils-raspi-bullseye-armhf-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-raspi-bullseye-armhf, build-platform-utils-bullseye-arm64-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-bullseye-arm64, build-platform-utils-bookworm-arm64-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-bookworm-arm64]
+    needs: [build-platform-utils-roborio-academic-cortexa9_vfpv3, build-platform-utils-bullseye-armhf, build-platform-utils-bullseye-arm64, build-platform-utils-raspi-bullseye-armhf, build-platform-utils-bookworm-armhf, build-platform-utils-bookworm-arm64, build-platform-utils-raspi-bookworm-armhf, build-platform-utils-raspi-bullseye-armhf-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-raspi-bullseye-armhf, build-platform-utils-bullseye-arm64-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-bullseye-arm64, build-platform-utils-raspi-bookworm-armhf-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-raspi-bookworm-armhf, build-platform-utils-bookworm-arm64-linux-x86_64, build-platform-utils-roborio-academic-cortexa9_vfpv3-bookworm-arm64]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:

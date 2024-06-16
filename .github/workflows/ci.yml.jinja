@@ -57,13 +57,13 @@ jobs:
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: true,
             },
             {
               os-cfg: macos_arm64,
-              runner: macos-latest,
+              runner: macos-13,
               container: "",
               testable: false,
             },
@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Prep MacOS
         if: contains(matrix.host.runner, 'macos')
-        run: brew install rsync xz gmp mpfr libmpc isl
+        run: brew install rsync xz gmp mpfr libmpc isl texinfo
       - uses: actions/download-artifact@v3
         with:
           name: {{ target.os }}-{{ target.port }}-sysroot

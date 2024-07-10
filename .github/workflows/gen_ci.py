@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
+from os import path
 from jinja2 import Environment, FileSystemLoader
 import json
 
-with open(f"targets.json") as f:
+workdir = path.dirname(__file__)
+with open(path.join(workdir, "targets.json")) as f:
     targets = json.load(f)
 
-env = Environment(loader=FileSystemLoader(f"."), autoescape=False)
+env = Environment(loader=FileSystemLoader(workdir), autoescape=False, keep_trailing_newline=True)
 template = env.get_template("ci.yml.jinja")
 contents = template.render(targets=targets)
-with open("ci.yml", "w") as f:
+with open(path.join(workdir, "ci.yml"), "w") as f:
     f.write(contents)

@@ -82,9 +82,9 @@ echo "[INFO]: Compiler Version: ${VERSION}"
 echo "[INFO]: Testing C Compiler"
 "$CC" "${TEST_DIR}/hello.c" -o a.out || exit
 echo "[INFO]: Testing C Compiler with libasan"
-"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=address || exit
+"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=address -latomic || exit
 echo "[INFO]: Testing C Compiler with libubsan"
-"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=undefined || exit
+"$CC" "${TEST_DIR}/hello.c" -o /dev/null -fsanitize=undefined -latomic || exit
 echo "[INFO]: Testing C Compiler with symbol visibility"
 "$CC" "${TEST_DIR}/hello.c" -o /dev/null -fvisibility=hidden -Werror || exit
 
@@ -92,9 +92,9 @@ if [ "${TARGET_ENABLE_CXX}" = "true" ]; then
     echo "[INFO]: Testing C++ Compiler"
     "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null || exit
     echo "[INFO]: Testing C++ Compiler with libasan"
-    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=address || exit
+    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=address -latomic || exit
     echo "[INFO]: Testing C++ Compiler with libubsan"
-    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=undefined || exit
+    "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fsanitize=undefined -latomic || exit
     echo "[INFO]: Testing C++ Compiler with symbol visibility"
     "$CXX" "${TEST_DIR}/hello.cpp" -o /dev/null -fvisibility=hidden -Werror || exit
 fi

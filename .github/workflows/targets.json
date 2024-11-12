@@ -15,6 +15,18 @@
         {
             "os": "raspi-bullseye",
             "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "arm64"
+        },
+        {
+            "os": "raspi-bookworm",
+            "port": "armhf"
         }
     ],
     "single_stage": [
@@ -32,6 +44,18 @@
         },
         {
             "os": "raspi-bullseye",
+            "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "armhf"
+        },
+        {
+            "os": "bookworm",
+            "port": "arm64"
+        },
+        {
+            "os": "raspi-bookworm",
             "port": "armhf"
         }
     ],
@@ -73,6 +97,46 @@
             },
             "host": {
                 "os": "bullseye",
+                "port": "arm64"
+            }
+        },
+        {
+            "target": {
+                "os": "raspi-bookworm",
+                "port": "armhf"
+            },
+            "host": {
+                "os": "linux",
+                "port": "x86_64"
+            }
+        },
+        {
+            "target": {
+                "os": "roborio-academic",
+                "port": "cortexa9_vfpv3"
+            },
+            "host": {
+                "os": "raspi-bookworm",
+                "port": "armhf"
+            }
+        },
+        {
+            "target": {
+                "os": "bookworm",
+                "port": "arm64"
+            },
+            "host": {
+                "os": "linux",
+                "port": "x86_64"
+            }
+        },
+        {
+            "target": {
+                "os": "roborio-academic",
+                "port": "cortexa9_vfpv3"
+            },
+            "host": {
+                "os": "bookworm",
                 "port": "arm64"
             }
         }

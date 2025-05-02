@@ -5,18 +5,6 @@
             "port": "cortexa9_vfpv3"
         },
         {
-            "os": "bullseye",
-            "port": "armhf"
-        },
-        {
-            "os": "bullseye",
-            "port": "arm64"
-        },
-        {
-            "os": "raspi-bullseye",
-            "port": "armhf"
-        },
-        {
             "os": "bookworm",
             "port": "armhf"
         },
@@ -35,18 +23,6 @@
             "port": "cortexa9_vfpv3"
         },
         {
-            "os": "bullseye",
-            "port": "armhf"
-        },
-        {
-            "os": "bullseye",
-            "port": "arm64"
-        },
-        {
-            "os": "raspi-bullseye",
-            "port": "armhf"
-        },
-        {
             "os": "bookworm",
             "port": "armhf"
         },
@@ -60,46 +36,6 @@
         }
     ],
     "two_stage": [
-        {
-            "target": {
-                "os": "raspi-bullseye",
-                "port": "armhf"
-            },
-            "host": {
-                "os": "linux",
-                "port": "x86_64"
-            }
-        },
-        {
-            "target": {
-                "os": "roborio-academic",
-                "port": "cortexa9_vfpv3"
-            },
-            "host": {
-                "os": "raspi-bullseye",
-                "port": "armhf"
-            }
-        },
-        {
-            "target": {
-                "os": "bullseye",
-                "port": "arm64"
-            },
-            "host": {
-                "os": "linux",
-                "port": "x86_64"
-            }
-        },
-        {
-            "target": {
-                "os": "roborio-academic",
-                "port": "cortexa9_vfpv3"
-            },
-            "host": {
-                "os": "bullseye",
-                "port": "arm64"
-            }
-        },
         {
             "target": {
                 "os": "raspi-bookworm",

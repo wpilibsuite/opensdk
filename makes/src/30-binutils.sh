@@ -40,6 +40,7 @@ CONFIGURE_BINUTILS=(
     "--disable-werror"                  # Allow host builds to be permissive
     "--disable-nls"                     # Disable localization
     "--disable-multilib"                # Disable multilib for 64-bit targets
+    "--enable-gold"
 
     "--with-sysroot=${SYSROOT_PATH}"
 )

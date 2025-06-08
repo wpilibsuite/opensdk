@@ -26,6 +26,8 @@ DOCKER_ARGS=(
     -v "/etc/group:/etc/group:ro"
     -v "/etc/passwd:/etc/passwd:ro"
     -w "/work"
+    --tmpfs "${HOME}/.cache"
+    --tmpfs "${HOME}/.local"
     -e CI="$CI"
     --platform "linux/amd64"
     --user "$(id -u):$(id -g)"

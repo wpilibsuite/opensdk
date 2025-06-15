@@ -68,6 +68,16 @@
         },
         {
             "target": {
+                "os": "bookworm",
+                "port": "arm64"
+            },
+            "host": {
+                "os": "bookworm",
+                "port": "arm64"
+            }
+        },
+        {
+            "target": {
                 "os": "roborio-academic",
                 "port": "cortexa9_vfpv3"
             },

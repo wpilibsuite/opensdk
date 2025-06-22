@@ -27,6 +27,10 @@ TO_DELETE = [
     "usr/libexec"
 ]
 
+SYSTEMCORE_TO_DELETE = [
+    "usr/local",
+]
+
 ROBORIO_TO_RENAME = [
     "usr/include/c++/{ver}",
     "usr/lib/gcc/{tuple}/{ver}",
@@ -57,13 +61,20 @@ class WorkEnvironment:
 
     def extract(self):
         for file in self.downloads.iterdir():
+            if self.distro == Distro.SYSTEMCORE:
+                subprocess.call(["tar", "--strip-components=3", "-xzf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/sysroot"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=2", "-C", "usr", "-xzf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/lib64"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=2", "-C", "usr", "-xzf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/include"], cwd=self.sysroot)
+                continue
             subprocess.call(["dpkg", "-x", str(file), str(self.sysroot)])
 
     def clean(self):
-        self._symlink()
-        self._delete()
+        self._delete(TO_DELETE)
         if self.distro is Distro.ROBORIO_STD:
             self._major_only()
+        if self.distro is Distro.SYSTEMCORE:
+            self._delete(SYSTEMCORE_TO_DELETE)
+        #self._symlink()
 
     def _major_only(self):
         ver = self.get_gcc_ver()
@@ -76,12 +87,15 @@ class WorkEnvironment:
             newname = Path(self.sysroot, newname)
             shutil.move(oldname, newname)
 
-    def _delete(self):
+    def _delete(self, paths):
         tuple = self.get_orig_tuple()
-        for subpath in TO_DELETE:
+        for subpath in paths:
             xdir = Path(self.sysroot, subpath.format(tuple=tuple))
             if xdir.exists():
-                shutil.rmtree(xdir)
+                if xdir.is_symlink():
+                    xdir.unlink()
+                else:
+                    shutil.rmtree(xdir)
 
     def _symlink(self):
         for file in self.sysroot.glob("**/*"):

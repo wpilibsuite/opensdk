@@ -7,7 +7,7 @@ class Release(Enum):
     BULLSEYE = "bullseye"
     BOOKWORK = "bookworm"
     SID = "sid"
-    
+
     # Ubuntu
     BIONIC = "bionic"
     FOCAL = "focal"
@@ -16,6 +16,9 @@ class Release(Enum):
     # NI Real-Time Linux
     NI2021 = "2021.8"
     NI2023 = "2023"
+
+    # SystemCore
+    RELEASE_155 = "155"
 
     def __str__(self):
         return self.value

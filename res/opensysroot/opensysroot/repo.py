@@ -15,9 +15,13 @@ def get_repo_url(distro: Distro, arch: Arch):
 
 def get_repo_url_adv(distro: Distro, arch: Arch, release: Release):
     repo = get_repo_url(distro, arch)
+    if distro == Distro.SYSTEMCORE:
+        return "{}/Limelight_SYSTEMCORE-{}".format(repo, release)
     if distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
         return "{}/{}/arm/main/cortexa9-vfpv3".format(repo, release)
     return "{}/dists/{}/main/binary-{}".format(repo, release, arch)
 
 def get_repo_packages_url(distro: Distro, arch: Arch, release: Release):
+    if distro == Distro.SYSTEMCORE:
+        return None
     return "{}/Packages.gz".format(get_repo_url_adv(distro, arch, release))

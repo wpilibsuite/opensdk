@@ -111,6 +111,8 @@ class Database:
         self.con = sqlite3.connect(db)
         self.cur = self.con.cursor()
         self.cur.executescript(_DB_INIT)
+        if package_url is None:
+            return
         data = requests.get(package_url)
         if data.status_code != 200:
             raise IOError("Could not download package lists from {}".format(package_url))

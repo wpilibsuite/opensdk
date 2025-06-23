@@ -100,7 +100,10 @@ class WorkEnvironment:
             if resolved.is_dir():
                 shutil.copytree(resolved, file)
             elif resolved.exists():
-                shutil.copy2(resolved, file)
+                if ".so" in file.suffixes:
+                    file.write_text(f"INPUT({resolved.name})\n")
+                else:
+                    shutil.copy2(resolved, file)
 
     def get_orig_tuple(self):
         if self.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):

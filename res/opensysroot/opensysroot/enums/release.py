@@ -18,7 +18,7 @@ class Release(Enum):
     NI2023 = "2023"
 
     # SystemCore
-    RELEASE_155 = "155"
+    RELEASE_157 = "157"
 
     def __str__(self):
         return self.value

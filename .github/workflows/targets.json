@@ -1,90 +1,16 @@
 {
     "sysroots": [
         {
-            "os": "roborio-academic",
-            "port": "cortexa9_vfpv3"
-        },
-        {
-            "os": "bookworm",
-            "port": "armhf"
-        },
-        {
-            "os": "bookworm",
+            "os": "systemcore",
             "port": "arm64"
-        },
-        {
-            "os": "raspi-bookworm",
-            "port": "armhf"
         }
     ],
     "single_stage": [
         {
-            "os": "roborio-academic",
-            "port": "cortexa9_vfpv3"
-        },
-        {
-            "os": "bookworm",
-            "port": "armhf"
-        },
-        {
-            "os": "bookworm",
+            "os": "systemcore",
             "port": "arm64"
-        },
-        {
-            "os": "raspi-bookworm",
-            "port": "armhf"
         }
     ],
     "two_stage": [
-        {
-            "target": {
-                "os": "raspi-bookworm",
-                "port": "armhf"
-            },
-            "host": {
-                "os": "linux",
-                "port": "x86_64"
-            }
-        },
-        {
-            "target": {
-                "os": "roborio-academic",
-                "port": "cortexa9_vfpv3"
-            },
-            "host": {
-                "os": "raspi-bookworm",
-                "port": "armhf"
-            }
-        },
-        {
-            "target": {
-                "os": "bookworm",
-                "port": "arm64"
-            },
-            "host": {
-                "os": "linux",
-                "port": "x86_64"
-            }
-        },
-        {
-            "target": {
-                "os": "bookworm",
-                "port": "arm64"
-            },
-            "host": {
-                "os": "bookworm",
-                "port": "arm64"
-            }
-        },
-        {
-            "target": {
-                "os": "roborio-academic",
-                "port": "cortexa9_vfpv3"
-            },
-            "host": {
-                "os": "bookworm",
-                "port": "arm64"
-            }
-        }
     ]
 }

@@ -43,11 +43,13 @@ python3 -m opensysroot \
 SYSROOT_DIR="${PWD}/${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}"
 
 # Remove all executables from sysroot
-xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
-find . -type f -or -type l \
-    -exec /usr/bin/test -x {} \; \
-    -exec /bin/rm {} \;
-xpopd
+if [ -d "${SYSROOT_DIR}/sysroot/usr/lib/gcc" ]; then
+    xpushd "${SYSROOT_DIR}/sysroot/usr/lib/gcc"
+    find . -type f -or -type l \
+        -exec /usr/bin/test -x {} \; \
+        -exec /bin/rm {} \;
+    xpopd
+fi
 
 rsync -a \
     "${SYSROOT_DIR}/sysroot/" \

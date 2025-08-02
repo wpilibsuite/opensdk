@@ -24,8 +24,11 @@ mkdir -p "${BUILD_DIR}/cmake-install/${WPI_HOST_PREFIX}"
 xcd "${BUILD_DIR}/cmake-install/${WPI_HOST_PREFIX}"
 
 case "${TARGET_TUPLE}" in
-arm* | aarch64*)
+arm*)
     PROCESSOR=arm
+    ;;
+aarch64*)
+    PROCESSOR=aarch64
     ;;
 x86_64*)
     PROCESSOR=AMD64

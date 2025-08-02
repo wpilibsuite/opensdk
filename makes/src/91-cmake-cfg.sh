@@ -27,7 +27,7 @@ case "${TARGET_TUPLE}" in
 arm*)
     PROCESSOR=arm
     ;;
-arach64*)
+aarch64*)
     PROCESSOR=aarch64
     ;;
 x86_64*)

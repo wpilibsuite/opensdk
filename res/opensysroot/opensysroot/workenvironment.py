@@ -9,7 +9,16 @@ from .enums.distro import Distro
 from .enums.release import Release
 
 TO_DELETE = [
+    "dev",
     "etc",
+    "media",
+    "mnt",
+    "opt",
+    "proc",
+    "root",
+    "run",
+    "sys",
+    "tmp",
     "var",
     "bin",
     "sbin",
@@ -25,6 +34,52 @@ TO_DELETE = [
     "usr/lib/compat-ld",
     "usr/lib/gold-ld",
     "usr/libexec"
+]
+
+SYSTEMCORE_TO_DELETE = [
+    "lib",
+    "lib64",
+    "usr/lib64",
+    "usr/build",
+    "usr/build-1",
+    "usr/cgi-bin",
+    "usr/error",
+    "usr/htdocs",
+    "usr/icons",
+    "usr/local",
+    "usr/man",
+    "usr/manual",
+    "usr/modules",
+    "usr/include/wpiutil",
+    "usr/include/wpinet",
+    "usr/include/ntcore",
+    "usr/lib/avahi",
+    "usr/lib/binfmt.d",
+    "usr/lib/credstore",
+    "usr/lib/cryptsetup",
+    "usr/lib/cups",
+    "usr/lib/dri",
+    "usr/lib/girepository-1.0",
+    "usr/lib/gobject-introspection",
+    "usr/lib/libntcore.so",
+    "usr/lib/libtraceevent",
+    "usr/lib/modprobe.d",
+    "usr/lib/modules-load.d",
+    "usr/lib/pam.d",
+    "usr/lib/polkit-1",
+    "usr/lib/python3.11",
+    "usr/lib/rpm",
+    "usr/lib/security",
+    "usr/lib/sysctl.d",
+    "usr/lib/systemd",
+    "usr/lib/sysusers.d",
+    "usr/lib/terminfo",
+    "usr/lib/tmpfiles.d",
+    "usr/lib/udev",
+]
+
+SYSTEMCORE_TO_RENAME = [
+    "usr/include/c++/{ver}",
 ]
 
 ROBORIO_TO_RENAME = [
@@ -57,31 +112,44 @@ class WorkEnvironment:
 
     def extract(self):
         for file in self.downloads.iterdir():
+            if self.distro is Distro.SYSTEMCORE:
+                subprocess.call(["tar", "--strip-components=3", "-xzf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/sysroot"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=3", "-C", "usr/lib", "-xzf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/lib64"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=2", "-C", "usr", "-xzf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/include"], cwd=self.sysroot)
+                continue
             subprocess.call(["dpkg", "-x", str(file), str(self.sysroot)])
 
     def clean(self):
-        self._symlink()
-        self._delete()
+        self._delete(TO_DELETE)
         if self.distro is Distro.ROBORIO_STD:
-            self._major_only()
+            self._major_only(ROBORIO_TO_RENAME)
+        if self.distro is Distro.SYSTEMCORE:
+            self._major_only(SYSTEMCORE_TO_RENAME)
+            self._delete(SYSTEMCORE_TO_DELETE)
+        self._symlink()
 
-    def _major_only(self):
+    def _major_only(self, paths):
         ver = self.get_gcc_ver()
         ver_major = ver.split(".")[0]
         tuple = self.get_orig_tuple()
-        for dir in ROBORIO_TO_RENAME:
+        for dir in paths:
             oldname = dir.format(ver=ver, tuple=tuple)
             newname = dir.format(ver=ver_major, tuple=tuple)
             oldname = Path(self.sysroot, oldname)
             newname = Path(self.sysroot, newname)
             shutil.move(oldname, newname)
 
-    def _delete(self):
+    def _delete(self, paths):
         tuple = self.get_orig_tuple()
-        for subpath in TO_DELETE:
+        for subpath in paths:
             xdir = Path(self.sysroot, subpath.format(tuple=tuple))
-            if xdir.exists():
-                shutil.rmtree(xdir)
+            if xdir.is_symlink():
+                xdir.unlink()
+            elif xdir.exists():
+                if xdir.is_file():
+                    xdir.unlink()
+                else:
+                    shutil.rmtree(xdir)
 
     def _symlink(self):
         for file in self.sysroot.glob("**/*"):
@@ -100,7 +168,10 @@ class WorkEnvironment:
             if resolved.is_dir():
                 shutil.copytree(resolved, file)
             elif resolved.exists():
-                shutil.copy2(resolved, file)
+                if ".so" in file.suffixes:
+                    file.write_text(f"INPUT({resolved.name})\n")
+                else:
+                    shutil.copy2(resolved, file)
 
     def get_orig_tuple(self):
         if self.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
@@ -116,7 +187,7 @@ class WorkEnvironment:
             raise RuntimeError("Unknown System")
 
     def get_gcc_ver(self):
-        assert self.distro is Distro.ROBORIO_STD, "GCC check only works on roborio"
+        assert self.distro in (Distro.ROBORIO_STD, Distro.SYSTEMCORE), "GCC check only works on roborio/SC"
         cxx_headers = Path(self.sysroot, "usr/include/c++")
         assert cxx_headers.is_dir()
         children = list(cxx_headers.iterdir())

@@ -26,7 +26,7 @@ def arg_info():
 
 def main():
     args = arg_info()
-    if args.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
+    if args.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC, Distro.SYSTEMCORE):
         repo_url = repo.get_repo_url_adv(args.distro, args.arch, args.release)
     else:
         repo_url = repo.get_repo_url(args.distro, args.arch)
@@ -48,6 +48,8 @@ def main():
         db.add_package("libc6-dbg")
         db.add_package("libgcc-s-dbg")
         db.add_package("gcc-runtime-dbg")
+    elif args.distro == Distro.SYSTEMCORE:
+        db.PACKAGES_TO_INSTALL['toolchain'] = {"name": "toolchain", "filename": "systemcore-aarch64-toolchain.tar.gz"}
     else:
         assert args.arch is not Arch.CORTEXA9
         db.add_package("gcc")

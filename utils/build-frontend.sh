@@ -46,8 +46,14 @@ if [ "$WPI_BUILD_TUPLE" != "$WPI_HOST_TUPLE" ]; then
     esac
 
     case "$(uname -m)" in
-    x86_64) _arch="x86_64" ;;
-    aarch64) _arch="arm64" ;;
+    x86_64)
+        _arch="x86_64"
+        _file_arch="x86[-_]64"
+    ;;
+    arm64)
+        _arch="arm64"
+        _file_arch="arm64"
+    ;;
     *)
         die "Unsupported canadian build architecture"
         ;;
@@ -62,9 +68,10 @@ if [ "$WPI_BUILD_TUPLE" != "$WPI_HOST_TUPLE" ]; then
         echo "[ERROR]: /tmp/frc/bin/${TARGET_TUPLE} missing"
         bash
         exit 1
-    elif ! [[ "$(file "/tmp/frc/bin/${TARGET_TUPLE}-gcc")" =~ x86[-_]64 ]]; then
-        echo "[ERROR]: /tmp/frc/bin/${TARGET_TUPLE} is built incorrectly"
-        exit 1
+    elif ! [[ "$(file "/tmp/frc/bin/${TARGET_TUPLE}-gcc")" =~ $_file_arch ]]; then
+        echo "[ERROR]: /tmp/frc/bin/${TARGET_TUPLE} is built incorrectly:"
+        file "/tmp/frc/bin/${TARGET_TUPLE}-gcc"
+       exit 1
     fi
 fi
 

@@ -32,22 +32,31 @@ die() {
 }
 
 if [ "$WPI_BUILD_TUPLE" != "$WPI_HOST_TUPLE" ]; then
-    # Check if system is a x86_64 system
-    if [ "$(uname -m)" != "x86_64" ]; then
-        die "Currently canadian builds require a x86_64 build system"
-    fi
+    # # Check if system is a x86_64 system
+    # if [ "$(uname -m)" != "x86_64" ]; then
+    #     die "Currently canadian builds require a x86_64 build system"
+    # fi
 
     case "$(uname)" in
     Linux) _os="linux" ;;
     Darwin) _os="macos" ;;
     *)
-        die "Unsupported build system"
+        die "Unsupported canadian build os"
         ;;
     esac
+
+    case "$(uname -m)" in
+    x86_64) _arch="x86_64" ;;
+    aarch64) _arch="arm64" ;;
+    *)
+        die "Unsupported canadian build architecture"
+        ;;
+    esac
+
     # Recursivly build to setup host to help the canadian build
     CANADIAN_STAGE_ONE=true bash \
         "utils/build-frontend-tiny.sh" \
-        "hosts/${_os}_x86_64.env" "$2" "$3" || exit
+        "hosts/${_os}_${_arch}.env" "$2" "$3" || exit
     unset _os
     if ! [ -x "/tmp/frc/bin/${TARGET_TUPLE}-gcc" ]; then
         echo "[ERROR]: /tmp/frc/bin/${TARGET_TUPLE} missing"

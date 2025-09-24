@@ -65,7 +65,7 @@ jobs:
               os-cfg: macos_arm64,
               runner: macos-14,
               container: "",
-              testable: false,
+              testable: true,
             },
           ]
     name: Build {{ target.os }}-{{ target.port }} for ${{ '{{' }} matrix.host.os-cfg }}

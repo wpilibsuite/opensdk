@@ -127,7 +127,7 @@ jobs:
               os-cfg: macos_arm64,
               runner: macos-14,
               container: "",
-              testable: false,
+              testable: true,
             },
           ]
     name: Build roborio-academic-cortexa9_vfpv3 for ${{ matrix.host.os-cfg }}
@@ -203,7 +203,7 @@ jobs:
               os-cfg: macos_arm64,
               runner: macos-14,
               container: "",
-              testable: false,
+              testable: true,
             },
           ]
     name: Build bookworm-armhf for ${{ matrix.host.os-cfg }}
@@ -273,7 +273,7 @@ jobs:
               os-cfg: macos_arm64,
               runner: macos-14,
               container: "",
-              testable: false,
+              testable: true,
             },
           ]
     name: Build bookworm-arm64 for ${{ matrix.host.os-cfg }}
@@ -343,7 +343,7 @@ jobs:
               os-cfg: macos_arm64,
               runner: macos-14,
               container: "",
-              testable: false,
+              testable: true,
             },
           ]
     name: Build raspi-bookworm-armhf for ${{ matrix.host.os-cfg }}

@@ -78,6 +78,8 @@ VERSION="$("${CC}" -dumpversion)"
 
 echo "[INFO]: Compiler Target: ${MACHINE}"
 echo "[INFO]: Compiler Version: ${VERSION}"
+echo "[INFO]: Logging compiler file info"
+file $CC
 
 echo "[INFO]: Testing C Compiler"
 "$CC" "${TEST_DIR}/hello.c" -o a.out || exit

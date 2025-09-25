@@ -32,11 +32,6 @@ die() {
 }
 
 if [ "$WPI_BUILD_TUPLE" != "$WPI_HOST_TUPLE" ]; then
-    # # Check if system is a x86_64 system
-    # if [ "$(uname -m)" != "x86_64" ]; then
-    #     die "Currently canadian builds require a x86_64 build system"
-    # fi
-
     case "$(uname)" in
     Linux) _os="linux" ;;
     Darwin) _os="macos" ;;

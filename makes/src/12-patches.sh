@@ -47,6 +47,11 @@ function patch_project() {
         src="binutils-${V_BIN}"
         ver="${V_BIN}"
         ;;
+    gdb)
+        proj="gdb"
+        src="gdb-${V_GDB}"
+        ver="${V_GDB}"
+        ;;
     *) die "Unknown config" ;;
     esac
 
@@ -82,6 +87,7 @@ function patch_project() {
 
 patch_project gcc
 patch_project bin
+patch_project gdb
 
 if [ -d "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}" ]; then
     xpushd "${PATCH_DIR}/targets/consts/${TOOLCHAIN_NAME}"

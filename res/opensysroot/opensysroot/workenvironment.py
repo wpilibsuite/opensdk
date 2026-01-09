@@ -24,6 +24,7 @@ TO_DELETE = [
     "usr/lib/bfd-plugins",
     "usr/lib/compat-ld",
     "usr/lib/gold-ld",
+    "usr/lib/{tuple}/dri",
     "usr/libexec"
 ]
 

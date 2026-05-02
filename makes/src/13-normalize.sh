@@ -18,50 +18,57 @@
 # along with OpenSDK; see the file COPYING. If not see
 # <http://www.gnu.org/licenses/>.
 
-# This script is only to cleanup the sysroot and normalize
-# and differences in the filesystem layout that exist between
-# Debian and NI Linux. The goal is to have everyone follow a
-# layout similar to NI Linux as it is easier to navigate.
-
-# We do however modify the NI Linux layout to have libgcc_s
-# in /usr/lib instead of /lib out of convenience. While we
-# could move individual files to the correct location, it
-# would be easier to cleanup and rebuild as the libgcc
-# startup files (crt*.o) are in the wrong location.
-
-# The Debian filesystem is better for multilib environments
-# but this causes issues with a more vanilla version of
-# binutils and GCC. So by using the NI Linux layout, we can
-# avoid patching/hacking the build tools.
+# This script is only to cleanup the sysroot and relocate files in
+# the filesystem layout in order to ensure GCC picks up everything
+# correctly. Debian and Systemcore/Buildroot both have completed the
+# usr merge, which extensively uses symlinks to ensure everything is
+# in the right location, but our environments prevent the usage of
+# symlinks, so we need to manually relocate libraries to ensure they
+# can be found by the toolchain. We also want to mimimize the number
+# of relocations to avoid future maintainence issues and to minimize
+# the risk of error.
 
 source "$(dirname "$0")/common.sh"
 
 xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
-if [ "${TARGET_DISTRO}" = "roborio" ] ||
-    [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
-    # Force rebuild of libgcc and its startup files
-    rm -rf lib/libgcc*
-    rm -rf usr/lib/crtbegin*.o
-    rm -rf usr/lib/crtend*.o
-    rm -rf usr/lib/crtfastmath*.o
-    rm -rf usr/lib/gcc
+# libc.so, libm.a, libm.so all use linker scripts that use absolute
+# paths to refer to libraries. The libraries specified inside must be
+# relocated for the toolchain to work.
+relocate_core_libraries() {
+    mkdir -p $2
+    mv $1/libm-2.42.a $2/libm-2.42.a
+    mv $1/libmvec.a $2/libmvec.a
+    mv $1/libc_nonshared.a $2/libc_nonshared.a
+}
 
-    # Why is this here on the rio?
-    rm -rf lib/cpp
-
-    # Quirk with the academic branch where the headers have the full version
-    # number, but the rest of the project expects this to be the major number.
-    if [ -d "usr/include/c++/${V_GCC}" ]; then
-        mv "usr/include/c++/${V_GCC}" "usr/include/c++/${V_GCC/.*/}"
-    fi
-
+if [ "${TARGET_DISTRO}" = "systemcore" ]; then
+    # Required for <bits/c++config.h> to be in the right spot
+    mv "usr/include/c++/${V_GCC/.*/}/aarch64-buildroot-linux-gnu/bits"/* "usr/include/c++/14/bits/"
+    mv "usr/include/c++/${V_GCC/.*/}/aarch64-buildroot-linux-gnu/ext"/* "usr/include/c++/14/ext/"
+    # We want to minimize library relocations, so it would be good to
+    # move everything one time to a place that will require the least
+    # number of relocations afterwards. Of the libraries in the
+    # linker scripts, /lib64 and /usr/lib64 show up the most
+    # (3 times). We will choose move the majority of libraries to
+    # /lib64 due to the path being shorter, which may help with
+    # Windows path length later.
+    relocate_core_libraries usr/lib usr/lib64
+    mkdir -p lib
+    mv usr/lib/ld-linux-aarch64.so.1 lib/ld-linux-aarch64.so.1
+    # Relocate everything
+    mv usr/lib lib64
+    # Move gcc/aarch64-linux-gnu directory back
+    mkdir -p usr/lib
+    mv lib64/gcc usr/lib/gcc
 else
     mv usr/lib lib
-    mkdir -p usr/lib/aarch64-linux-gnu
-    mv lib/aarch64-linux-gnu/libm-2.42.a usr/lib/aarch64-linux-gnu/libm-2.42.a
-    mv lib/aarch64-linux-gnu/libmvec.a usr/lib/aarch64-linux-gnu/libmvec.a
-    mv lib/aarch64-linux-gnu/libc_nonshared.a usr/lib/aarch64-linux-gnu/libc_nonshared.a
+    # For Debian, /lib shows up more often (the scale is tipped by
+    # /lib/ld-linux-aarch64.so.1), so move everything there. This
+    # means the order of moves is different, as we are moving some
+    # libraries back to their original locations.
+    relocate_core_libraries lib/aarch64-linux-gnu usr/lib/aarch64-linux-gnu
+    # Move gcc/aarch64-linux-gnu directory back
     mv lib/gcc usr/lib/gcc
     rm -rf usr/lib/audit
     rm -rf usr/lib/bfd-plugins

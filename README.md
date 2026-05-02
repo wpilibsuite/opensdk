@@ -30,7 +30,6 @@ Tier 2 is used for select targets on an as needed basis.
 
 | OS    | Arch  | Known to work on          | Note                     |
 | ----- | ----- | ------------------------- | ------------------------ |
-| Linux | ARMv7 | Debian/Raspberry Pi OS 12 | Only for roboRIO targets |
 | Linux | ARMv8 | Debian/Raspberry Pi OS 12 | Only for roboRIO targets |
 
 ### Tier 3
@@ -39,18 +38,12 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 
 | OS      | Arch  | Known to work on |
 | ------- | ----- | ---------------- |
-| Windows | i686  | Windows XP       |
-| Linux   | i686  | Ubuntu 20.04     |
-| Linux   | ARMv7 | Ubuntu 20.04     |
 | Linux   | ARMv8 | Ubuntu 20.04     |
 
 ## Supported Targets
 
 | Architecture   | Operating System              | Version  | Release Download Name                    |
 | -------------- | ----------------------------- | -------- | ---------------------------------------- |
-| ARMv7 (softfp) | N.I. Linux (roboRIO) Academic | GCC 12.1 | `cortexa9_vfpv3-roborio-academic-2025-*` |
-| ARMv6          | Raspberry Pi OS 12            | GCC 12.2 | `armhf-raspi-bookworm-2025-*`            |
-| ARMv7          | Debian/Raspberry Pi OS 12     | GCC 12.2 | `armhf-bookworm-2025-*`                  |
 | ARMv8          | Debian/Raspberry Pi OS 12     | GCC 12.2 | `arm64-bookworm-2025-*`                  |
 
 -----

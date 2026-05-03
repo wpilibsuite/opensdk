@@ -21,7 +21,7 @@ jobs:
       WPI_TARGET_PORT: {{ target.port }}
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install opensysroot
         run: |
           cd res/opensysroot
@@ -77,11 +77,11 @@ jobs:
       WPI_TARGET_PORT: {{ target.port }}
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Prep MacOS
         if: contains(matrix.host.runner, 'macos')
         run: brew install rsync texinfo
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: {{ target.os }}-{{ target.port }}-sysroot
           path: output/
@@ -125,13 +125,13 @@ jobs:
       WPI_TARGET_PORT: {{ task.target.port }}
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v5
         with:
           name: {{ task.target.os }}-{{ task.target.port }}-sysroot
           path: output/
 {% if task.host.os != "linux" or task.host.port != "x86_64" %}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: {{ task.host.os }}-{{ task.host.port }}-linux_x86_64
           path: cross/
@@ -162,11 +162,11 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
       - name: Remove sysroots
         run: find -name "*.tar" -delete
       - name: Release
-        uses: ncipollo/release-action@v1.14.0
+        uses: ncipollo/release-action@v1.20.0
         with:
           allowUpdates: true
           artifacts: "**/*"

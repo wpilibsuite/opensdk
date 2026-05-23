@@ -30,7 +30,6 @@ Tier 2 is used for select targets on an as needed basis.
 
 | OS    | Arch  | Known to work on          | Note                     |
 | ----- | ----- | ------------------------- | ------------------------ |
-| Linux | ARMv8 | Debian/Raspberry Pi OS 12 | Only for roboRIO targets |
 
 ### Tier 3
 

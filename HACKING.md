@@ -16,8 +16,8 @@ build system. If you do not want this, set `USE_DOCKER` to `false`
 [here](https://github.com/wpilibsuite/docker-images/blob/main/opensdk-ubuntu/Dockerfile.22.04)
 for packages needed on the host.
 
-## Example to build a roboRIO toolchain for Windows hosts
+## Example to build a Systemcore toolchain for Windows hosts
 ```sh
-make backend WPI_TARGET=roborio
-make frontend WPI_TARGET=roborio WPI_HOST=windows_x86_64
+make backend WPI_TARGET=systemcore
+make frontend WPI_TARGET=systemcore WPI_HOST=windows_x86_64
 ```

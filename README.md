@@ -3,7 +3,7 @@
 ## Supported Languages
   * C
   * C++
-  * Fortran (roboRIO only)
+  * Fortran (Systemcore only)
     * To power the [RobotPy](https://github.com/robotpy) project
 
 ## Supported Hosts

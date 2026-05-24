@@ -63,9 +63,8 @@ function patch_project() {
                 # builds
                 continue
             fi
-            if [[ "$_patch" =~ debian ]] && [ "$TARGET_DISTRO" != "debian" ] &&
-                [ "$TARGET_DISTRO" != "raspbian" ]; then
-                # Do not apply debian patches to roborio targets
+            if [[ "$_patch" =~ debian ]] && [ "$TARGET_DISTRO" != "debian" ]; then
+                # Do not apply debian patches to non-debian targets
                 continue
             fi
             _patch="${PWD}/$_patch"

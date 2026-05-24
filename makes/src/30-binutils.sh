@@ -27,7 +27,7 @@ if is_step_backend && ! is_lib_rebuild_required; then
     exit 0
 fi
 
-# This is a part of the debian specific patch. This is no-op for the roborio.
+# This is a part of the debian specific patch. This is a no-op for non-debian platforms.
 export APPEND_TOOLLIBDIR=yes
 export DEB_TARGET_MULTIARCH="${TARGET_TUPLE}"
 

@@ -3,11 +3,10 @@
 ## Introduction
 
 This project is a tool to function as a way for building sysroots of popular debian based
-distributions, aswell as for the National Instruments RoboRIOs firmware. The latter is chosen to
-support projects of the FIRST Robotics Competition such as the
+distributions, as well as for Systemcore. The latter is chosen to support the
 [WPILib project](https://github.com/wpilibsuite/).
 
-The purpous for creating this project is to help relieve the gap that exists in creating sysroots
+The purpose for creating this project is to help relieve the gap that exists in creating sysroots
 for cross-compiling in various use cases or projects.
 
 ## Install

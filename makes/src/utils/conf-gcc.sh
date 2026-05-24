@@ -78,49 +78,28 @@ if [ "$TARGET_FPU" ]; then
     CONFIGURE_GCC+=("--with-fpu=${TARGET_FPU}")
 fi
 
-if [ "${TARGET_DISTRO}" = "roborio" ] ||
-    [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
-    # Pulled by running gcc -v on target device
-    CONFIGURE_GCC+=(
-        "--disable-libmudflap"
-        "--enable-c99"
-        "--enable-symvers=gnu"
-        "--enable-long-long"
-        "--enable-libstdcxx-pch"
-        "--enable-libssp"
-        "--enable-libitm"
-        "--enable-initfini-array"
-        "--without-long-double-128"
-    )
-else
-    # Pulled by running gcc -v on target devices
-    CONFIGURE_GCC+=(
-        # Debian specific flags
-        "--enable-clocal=gnu"
-        "--without-included-gettext"
-        "--enable-libstdcxx-debug"
-        "--enable-libstdcxx-time=yes"
-        "--with-default-libstdcxx-abi=new"
-        "--enable-gnu-unique-object"
-    )
-    case "${TARGET_PORT}" in
-    # Debian Port specific flags
-    amd64) CONFIGURE_GCC+=(
-        "--disable-vtable-verify"
-        "--disable-multilib"
-        "--enable-libmpx"
-    ) ;;
-    armhf) CONFIGURE_GCC+=(
-        "--disable-libitm"
-        "--disable-libquadmath"
-        "--disable-libquadmath-support"
-    ) ;;
-    arm64) CONFIGURE_GCC+=(
-        "--disable-libquadmath"
-        "--disable-libquadmath-support"
-    ) ;;
-    esac
-fi
+# Pulled by running gcc -v on target devices
+CONFIGURE_GCC+=(
+    # Debian specific flags
+    "--enable-clocal=gnu"
+    "--without-included-gettext"
+    "--enable-libstdcxx-debug"
+    "--enable-libstdcxx-time=yes"
+    "--with-default-libstdcxx-abi=new"
+    "--enable-gnu-unique-object"
+)
+case "${TARGET_PORT}" in
+# Debian Port specific flags
+amd64) CONFIGURE_GCC+=(
+    "--disable-vtable-verify"
+    "--disable-multilib"
+    "--enable-libmpx"
+) ;;
+arm64) CONFIGURE_GCC+=(
+    "--disable-libquadmath"
+    "--disable-libquadmath-support"
+) ;;
+esac
 
 enabled_languages="--enable-languages=c"
 if [ "${TARGET_ENABLE_CXX}" = "true" ]; then

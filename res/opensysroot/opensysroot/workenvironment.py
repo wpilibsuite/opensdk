@@ -128,12 +128,6 @@ SYSTEMCORE_TO_RENAME = [
     "usr/lib/gcc/{tuple}/{ver}",
 ]
 
-ROBORIO_TO_RENAME = [
-    "usr/include/c++/{ver}",
-    "usr/lib/gcc/{tuple}/{ver}",
-]
-
-
 class WorkEnvironment:
     base: Path
     sysroot: Path
@@ -170,8 +164,6 @@ class WorkEnvironment:
 
     def clean(self):
         self._delete(TO_DELETE)
-        if self.distro is Distro.ROBORIO_STD:
-            self._major_only(ROBORIO_TO_RENAME)
         if self.distro is Distro.SYSTEMCORE:
             self._major_only(SYSTEMCORE_TO_RENAME)
             self._delete(SYSTEMCORE_TO_DELETE)
@@ -226,20 +218,14 @@ class WorkEnvironment:
                 shutil.copy2(resolved, file)
 
     def get_orig_tuple(self):
-        if self.distro in (Distro.ROBORIO_STD, Distro.ROBORIO_ACADEMIC):
-            assert self.arch is Arch.CORTEXA9
-            return "arm-nilrt-linux-gnueabi"
-        else:
-            if self.arch is Arch.ARMHF:
-                return "arm-linux-gnueabihf"
-            if self.arch is Arch.ARM64:
-                return "aarch64-linux-gnu"
-            if self.arch is Arch.AMD64:
-                return "x86_64-linux-gnu"
-            raise RuntimeError("Unknown System")
+        if self.arch is Arch.ARM64:
+            return "aarch64-linux-gnu"
+        if self.arch is Arch.AMD64:
+            return "x86_64-linux-gnu"
+        raise RuntimeError("Unknown System")
 
     def get_gcc_ver(self):
-        assert self.distro in (Distro.ROBORIO_STD, Distro.SYSTEMCORE), "GCC check only works on roborio/SC"
+        assert self.distro is Distro.SYSTEMCORE, "GCC check only works on Systemcore"
         cxx_headers = Path(self.sysroot, "usr/include/c++")
         assert cxx_headers.is_dir()
         children = list(cxx_headers.iterdir())

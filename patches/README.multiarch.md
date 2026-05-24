@@ -1,9 +1,9 @@
 # Debian sysroot enablement
 
-The Debian filesystem is different from the simple NI Linux layout. Debian chose
-to use a design which allowed for the same development packages to be installed 
-with differing architectures. This can make Debian-to-Debian development quite
-easy but it requires further patching to work with a third-party toolchain.
+Debian chose to use a design which allowed for the same development packages to
+be installed with differing architectures. This can make Debian-to-Debian
+development quite easy but it requires further patching to work with a
+third-party toolchain.
 
 ## GCC
 * https://salsa.debian.org/toolchain-team/gcc/-/blob/gcc-14-debian/debian/patches/gcc-multiarch.diff

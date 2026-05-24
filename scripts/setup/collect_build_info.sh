@@ -21,7 +21,7 @@
 source "${HOST_CFG}"
 # shellcheck source=consts.env
 source "${ROOT_DIR}/consts.env"
-# shellcheck source=targets/roborio/info.env
+# shellcheck source=targets/systemcore/info.env
 source "${TARGET_CFG}/info.${TARGET_PORT}.env"
 source "${TARGET_CFG}/info.env"
 source "${TARGET_CFG}/version.env"

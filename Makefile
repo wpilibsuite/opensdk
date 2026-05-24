@@ -18,8 +18,8 @@
 
 mk_file_dir := $(abspath $(shell dirname $(MAKE)))
 
-WPI_TARGET ?= roborio
-WPI_TARGET_PORT ?= cortexa9_vfpv3
+WPI_TARGET ?= systemcore
+WPI_TARGET_PORT ?= arm64
 WPI_HOST ?= $(shell sh $(mk_file_dir)/utils/extra/guess-host.sh)
 USE_DOCKER ?= $(shell sh $(mk_file_dir)/utils/extra/guess-docker.sh)
 
@@ -39,7 +39,7 @@ any:
 	@/bin/false
 
 # Do note that the current implementations of frontend and backend could have
-# name collisions if the tuple is the same. (roborio sumo vs. roborio-hardknott)
+# name collisions if the tuple is the same.
 
 frontend:
 	$(runner) bash ./utils/build-frontend.sh \

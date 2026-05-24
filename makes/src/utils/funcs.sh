@@ -92,13 +92,7 @@ gcc_update_target_list() {
     env_exists SYSROOT_BUILD_PATH
     gcc_need_lib_build() {
         local lib
-
-        if [ "${TARGET_DISTRO}" = "roborio" ] ||
-            [ "${TARGET_DISTRO}" = "roborio-academic" ]; then
-            lib="${SYSROOT_BUILD_PATH}/usr/lib/$1"
-        else
-            lib="${SYSROOT_BUILD_PATH}/usr/lib/gcc/${TARGET_TUPLE}/${V_GCC/.*/}/$1"
-        fi
+        lib="${SYSROOT_BUILD_PATH}/usr/lib/gcc/${TARGET_TUPLE}/${V_GCC/.*/}/$1"
 
         if compgen -G "${lib}.so*" >/dev/null; then
             return 1

@@ -3,11 +3,19 @@
         {
             "os": "trixie",
             "port": "arm64"
+        },
+        {
+            "os": "systemcore",
+            "port": "arm64"
         }
     ],
     "single_stage": [
         {
             "os": "trixie",
+            "port": "arm64"
+        },
+        {
+            "os": "systemcore",
             "port": "arm64"
         }
     ],
@@ -25,6 +33,26 @@
         {
             "target": {
                 "os": "trixie",
+                "port": "arm64"
+            },
+            "host": {
+                "os": "trixie",
+                "port": "arm64"
+            }
+        },
+        {
+            "target": {
+                "os": "systemcore",
+                "port": "arm64"
+            },
+            "host": {
+                "os": "linux",
+                "port": "x86_64"
+            }
+        },
+        {
+            "target": {
+                "os": "systemcore",
                 "port": "arm64"
             },
             "host": {

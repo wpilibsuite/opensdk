@@ -41,7 +41,7 @@ jobs:
       matrix:
         host:
           [
-{%- if not (target.os in ["trixie"] and target.port == "arm64") %}
+{%- if not (target.os in ["trixie", "systemcore"] and target.port == "arm64") %}
             {
               os-cfg: linux_x86_64,
               runner: ubuntu-latest,

@@ -94,4 +94,8 @@ ${MAKE} \
     task/91-cmake-cfg \
     task/99-tree
 
+if [ "$WPI_TARGET" == "systemcore" ]; then
+    export SUFFIX="-debug"
+    export STRIP="/usr/bin/aarch64-linux-gnu-strip"
+fi
 ${MAKE} pkg

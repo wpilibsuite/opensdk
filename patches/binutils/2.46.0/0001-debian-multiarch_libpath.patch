@@ -1,88 +1,8 @@
 # DP: Add multiarch directories to linker search path for ld and gold.
 
---- a/gold/configure
-+++ b/gold/configure
-@@ -625,6 +625,7 @@ LTLIBOBJS
- MAINT
- MAINTAINER_MODE_FALSE
- MAINTAINER_MODE_TRUE
-+MULTIARCH_DIRNAME
- DLOPEN_LIBS
- CXXCPP
- HAVE_NO_USE_LINKER_PLUGIN_FALSE
-@@ -10310,6 +10311,14 @@ $as_echo "#define HAVE_LC_MESSAGES 1" >>
-   fi
- 
- 
-+if test x$DEB_TARGET_MULTIARCH != x; then
-+  multiarch=$DEB_TARGET_MULTIARCH
-+  if test -n "$multiarch"; then
-+    MULTIARCH_DIRNAME='-DMULTIARCH_DIRNAME=\"'$multiarch'\"'
-+  fi
-+fi
-+
-+
- 
- { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable maintainer-specific portions of Makefiles" >&5
- $as_echo_n "checking whether to enable maintainer-specific portions of Makefiles... " >&6; }
---- a/gold/configure.ac
-+++ b/gold/configure.ac
-@@ -706,6 +706,14 @@ AC_CHECK_HEADERS(locale.h)
- AC_CHECK_FUNCS(setlocale)
- AM_LC_MESSAGES
- 
-+if test x$DEB_TARGET_MULTIARCH != x; then
-+  multiarch=$DEB_TARGET_MULTIARCH
-+  if test -n "$multiarch"; then
-+    MULTIARCH_DIRNAME='-DMULTIARCH_DIRNAME=\"'$multiarch'\"'
-+  fi
-+fi
-+AC_SUBST(MULTIARCH_DIRNAME)
-+
- AM_MAINTAINER_MODE
- 
- AC_OUTPUT(Makefile testsuite/Makefile po/Makefile.in:po/Make-in)
---- a/gold/Makefile.am
-+++ b/gold/Makefile.am
-@@ -42,6 +42,7 @@ AM_CPPFLAGS = \
- 	-I$(srcdir) -I$(srcdir)/../include -I$(srcdir)/../elfcpp \
- 	-DLOCALEDIR="\"$(datadir)/locale\"" \
- 	-DBINDIR="\"$(bindir)\"" -DTOOLBINDIR="\"$(tooldir)/bin\"" \
-+	@MULTIARCH_DIRNAME@ $(if $(APPEND_TOOLLIBDIR),-DAPPEND_TOOLLIBDIR) \
- 	-DTOOLLIBDIR="\"$(tooldir)/lib\"" @INCINTL@
- 
- LIBIBERTY = ../libiberty/libiberty.a
---- a/gold/Makefile.in
-+++ b/gold/Makefile.in
-@@ -674,6 +674,7 @@ AM_CPPFLAGS = \
- 	-I$(srcdir) -I$(srcdir)/../include -I$(srcdir)/../elfcpp \
- 	-DLOCALEDIR="\"$(datadir)/locale\"" \
- 	-DBINDIR="\"$(bindir)\"" -DTOOLBINDIR="\"$(tooldir)/bin\"" \
-+	@MULTIARCH_DIRNAME@ $(if $(APPEND_TOOLLIBDIR),-DAPPEND_TOOLLIBDIR) \
- 	-DTOOLLIBDIR="\"$(tooldir)/lib\"" @INCINTL@
- 
- LIBIBERTY = ../libiberty/libiberty.a
---- a/gold/options.cc
-+++ b/gold/options.cc
-@@ -1297,8 +1297,15 @@ General_options::finalize()
- 	       || this->user_set_sysroot()
- 	       || *TARGET_SYSTEM_ROOT != '\0')
- 	{
-+#ifdef MULTIARCH_DIRNAME
-+	  this->add_to_library_path_with_sysroot("/lib/" MULTIARCH_DIRNAME);
-+	  this->add_to_library_path_with_sysroot("/usr/lib/" MULTIARCH_DIRNAME);
-+#endif
- 	  this->add_to_library_path_with_sysroot("/lib");
- 	  this->add_to_library_path_with_sysroot("/usr/lib");
-+#ifdef APPEND_TOOLLIBDIR
-+	  this->add_to_library_path_with_sysroot(TOOLLIBDIR);
-+#endif
- 	}
-       else
- 	this->add_to_library_path_with_sysroot(TOOLLIBDIR);
 --- a/ld/genscripts.sh
 +++ b/ld/genscripts.sh
-@@ -235,6 +235,104 @@ append_to_lib_path()
+@@ -245,6 +245,104 @@ append_to_lib_path()
    fi
  }
  
@@ -185,9 +105,9 @@
 +lib_path2=
 +
  # Always search $(tooldir)/lib, aka /usr/local/TARGET/lib when native
- # except when LIBPATH=":".
+ # except when LIB_PATH=":".
  if [ "${LIB_PATH}" != ":" ] ; then
-@@ -253,6 +351,13 @@ if [ "${LIB_PATH}" != ":" ] ; then
+@@ -263,6 +361,13 @@ if [ "${LIB_PATH}" != ":" ] ; then
        case "${NATIVE}:${libpath_suffix}:${TOOL_LIB}" in
  	:* | *::* | *:*:*${libpath_suffix}) ;;
  	*) libs="${exec_prefix}/${target_alias}/lib${libpath_suffix}" ;;
@@ -201,7 +121,7 @@
        esac
      done
      libs="${exec_prefix}/${TOOL_LIB}/lib ${libs}"
-@@ -260,24 +365,124 @@ if [ "${LIB_PATH}" != ":" ] ; then
+@@ -270,24 +375,124 @@ if [ "${LIB_PATH}" != ":" ] ; then
    append_to_lib_path ${libs}
  fi
  

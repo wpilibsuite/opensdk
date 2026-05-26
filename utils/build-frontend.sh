@@ -86,6 +86,7 @@ ${MAKE} \
     task/30-binutils \
     task/20-expat \
     task/21-gmp \
+    task/22-mpfr \
     task/40-gcc-configure \
     task/41-gcc-tools \
     task/50-gdb \

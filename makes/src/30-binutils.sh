@@ -31,8 +31,6 @@ fi
 export APPEND_TOOLLIBDIR=yes
 export DEB_TARGET_MULTIARCH="${TARGET_TUPLE}"
 
-export CXXFLAGS="-std=c++11 -Wno-c++11-narrowing"
-
 CONFIGURE_BINUTILS=(
     "--build=${BUILD_TUPLE}"            # Build machine
     "--host=${HOST_TUPLE}"              # Host machine
@@ -42,7 +40,7 @@ CONFIGURE_BINUTILS=(
     "--disable-werror"                  # Allow host builds to be permissive
     "--disable-nls"                     # Disable localization
     "--disable-multilib"                # Disable multilib for 64-bit targets
-    "--enable-gold"
+    "--with-zstd=no"
 
     "--with-sysroot=${SYSROOT_PATH}"
 )

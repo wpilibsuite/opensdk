@@ -20,30 +20,23 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
-if [ "$CANADIAN_STAGE_ONE" = "true" ]; then
+if ! is_final_toolchain; then
     exit 0
 fi
 
-rm -rf "${BUILD_DIR}/gdb-build"
-mkdir "${BUILD_DIR}/gdb-build"
+rm -rf "${BUILD_DIR}/mpfr-build" "${BUILD_DIR}/mpfr-install"
+mkdir "${BUILD_DIR}/mpfr-build" "${BUILD_DIR}/mpfr-install"
 
-xpushd "${BUILD_DIR}/gdb-build"
-process_background "Configuring GDB" \
-    "$DOWNLOAD_DIR/gdb-${V_GDB}/configure" \
-    "${CONFIGURE_COMMON[@]}" \
-    --with-expat \
-    --with-libexpat-prefix="${BUILD_DIR}/expat-install/${WPI_HOST_PREFIX}" \
+xcd "${BUILD_DIR}/mpfr-build"
+process_background "Configuring mpfr" \
+    "$DOWNLOAD_DIR/gcc-${V_GCC}/mpfr/configure" \
+    "${CONFIGURE_COMMON_LITE[@]}" \
     --with-gmp="${BUILD_DIR}/gmp-install/${WPI_HOST_PREFIX}" \
-    --with-mpfr="${BUILD_DIR}/mpfr-install/${WPI_HOST_PREFIX}" \
-    --with-zstd=no \
-    --disable-debug \
-    --disable-python \
-    --disable-sim ||
-    die "gdb configure failed"
-process_background "Building GDB" \
-    make -j"$JOBS" || die "gdb build failed"
-# make is having issues with strip for GDB install
-process_background "Installing GDB" \
-    make DESTDIR="${BUILD_DIR}/gdb-install" \
-    install || die "gdb install failed"
-xpopd
+    --enable-static \
+    --disable-shared ||
+    die "mpfr configure failed"
+process_background "Building mpfr" \
+    make -j"$JOBS" || die "mpfr build failed"
+process_background "Installing mpfr" \
+    make DESTDIR="${BUILD_DIR}/mpfr-install" \
+    install-strip || die "mpfr install failed"

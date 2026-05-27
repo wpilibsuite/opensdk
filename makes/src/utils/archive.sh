@@ -32,9 +32,8 @@ strip_toolchain() {
     elif [ -e "/usr/bin/llvm-strip" ]; then
         # LLVM strip is architecture agnostic
         STRIP_CMD="/usr/bin/llvm-strip"
-    elif [ "${WPI_HOST_NAME}" = "Mac" ]; then
-        # Xcode strip is just LLVM strip
-        STRIP_CMD="strip"
+    elif [ -x "${TREEIN_DIR}/${TOOLCHAIN_NAME}/${TARGET_TUPLE}/bin/strip" ]; then
+        STRIP_CMD="${TREEIN_DIR}/${TOOLCHAIN_NAME}/${TARGET_TUPLE}/bin/strip"
     else
         warn "Cannot find proper strip command"
     fi
@@ -57,13 +56,7 @@ nondeterministic() {
     strip-nondeterminism -T "$EPOCH" "$1"
 }
 
-archive_win() {
-    rm -f "${OUTPUT_DIR}/$TREEOUT_TEMPLATE.zip"
-    zip -r -9 "${OUTPUT_DIR}/$TREEOUT_TEMPLATE.zip" .
-    nondeterministic "${OUTPUT_DIR}/$TREEOUT_TEMPLATE.zip"
-}
-
-archive_nix() {
+_archive() {
     rm -f "${OUTPUT_DIR}/$TREEOUT_TEMPLATE.tgz"
     tar -cf "${OUTPUT_DIR}/$TREEOUT_TEMPLATE.tar" .
     nondeterministic "${OUTPUT_DIR}/$TREEOUT_TEMPLATE.tar"
@@ -74,22 +67,14 @@ archive_nix() {
 archive() {
     xcd "${TREEIN_DIR}"
     echo "[INFO]: Archiving toolchain"
-    if [ "${WPI_HOST_NAME}" = Windows ]; then
-        archive_win || return
-    else
-        archive_nix || return
-    fi
+    _archive || return
     if [ "${TARGET_DISTRO}" != systemcore ]; then
         return
     fi
     echo "[INFO]: Stripping toolchain"
     strip_toolchain
     echo "[INFO]: Archiving stripped toolchain"
-    if [ "${WPI_HOST_NAME}" = Windows ]; then
-        archive_win || return
-    else
-        archive_nix || return
-    fi
+    _archive || return
 }
 
 argparse() {
@@ -108,11 +93,7 @@ argparse() {
             exit
             ;;
         --print-pkg)
-            if [ "${WPI_HOST_NAME}" = Windows ]; then
-                echo "${TREEOUT_TEMPLATE}.zip"
-            else
-                echo "${TREEOUT_TEMPLATE}.tgz"
-            fi
+            echo "${TREEOUT_TEMPLATE}.tgz"
             exit
             ;;
         esac

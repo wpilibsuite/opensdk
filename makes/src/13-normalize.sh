@@ -57,6 +57,12 @@ if [ "${TARGET_DISTRO}" = "roborio" ] ||
     fi
 
 else
+    mv usr/lib lib
+    mkdir -p usr/lib/aarch64-linux-gnu
+    mv lib/aarch64-linux-gnu/libm-2.42.a usr/lib/aarch64-linux-gnu/libm-2.42.a
+    mv lib/aarch64-linux-gnu/libmvec.a usr/lib/aarch64-linux-gnu/libmvec.a
+    mv lib/aarch64-linux-gnu/libc_nonshared.a usr/lib/aarch64-linux-gnu/libc_nonshared.a
+    mv lib/gcc usr/lib/gcc
     rm -rf usr/lib/audit
     rm -rf usr/lib/bfd-plugins
     rm -rf usr/lib/compat-ld

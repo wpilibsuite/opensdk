@@ -43,7 +43,7 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 
 | Architecture   | Operating System              | Version  | Release Download Name                    |
 | -------------- | ----------------------------- | -------- | ---------------------------------------- |
-| ARMv8          | Debian/Raspberry Pi OS 12     | GCC 12.2 | `arm64-bookworm-2025-*`                  |
+| ARMv8          | Debian/Raspberry Pi OS 13     | GCC 14.3 | `arm64-trixie-2025-*`                  |
 
 -----
 

@@ -7,7 +7,8 @@ class Release(Enum):
     BULLSEYE = "bullseye"
     BOOKWORK = "bookworm"
     SID = "sid"
-    
+    TRIXIE = "trixie"
+
     # Ubuntu
     BIONIC = "bionic"
     FOCAL = "focal"

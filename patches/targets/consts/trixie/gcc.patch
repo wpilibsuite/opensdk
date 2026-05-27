@@ -1,4 +1,4 @@
-Description: Set __FRC_ROBORIO_ in platform config
+Description: Set __CROSS_TRIXIE__ in platform config
 Author: WPILib Developers <wpilib@wpi.edu>
 
 ---
@@ -9,7 +9,7 @@ Author: WPILib Developers <wpilib@wpi.edu>
      do {							\
  	if (OPTION_GLIBC)					\
  	  builtin_define ("__gnu_linux__");			\
-+	builtin_define ("__CROSS_BOOKWORM__=12");	\
++	builtin_define ("__CROSS_TRIXIE__=13");	\
  	builtin_define_std ("linux");				\
  	builtin_define_std ("unix");				\
  	builtin_assert ("system=linux");			\

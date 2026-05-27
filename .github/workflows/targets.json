@@ -1,20 +1,20 @@
 {
     "sysroots": [
         {
-            "os": "bookworm",
+            "os": "trixie",
             "port": "arm64"
         }
     ],
     "single_stage": [
         {
-            "os": "bookworm",
+            "os": "trixie",
             "port": "arm64"
         }
     ],
     "two_stage": [
         {
             "target": {
-                "os": "bookworm",
+                "os": "trixie",
                 "port": "arm64"
             },
             "host": {
@@ -24,11 +24,11 @@
         },
         {
             "target": {
-                "os": "bookworm",
+                "os": "trixie",
                 "port": "arm64"
             },
             "host": {
-                "os": "bookworm",
+                "os": "trixie",
                 "port": "arm64"
             }
         }

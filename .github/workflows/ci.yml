@@ -14,7 +14,7 @@ jobs:
   build-sysroot-trixie-arm64:
     name: Build sysroot for trixie-arm64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
     env:
       WPI_TARGET: trixie
       WPI_TARGET_PORT: arm64
@@ -42,18 +42,18 @@ jobs:
             {
               os-cfg: windows_x86_64,
               runner: ubuntu-latest,
-              container: "docker.io/wpilib/opensdk-ubuntu:20.04",
+              container: "docker.io/wpilib/opensdk-ubuntu:22.04",
               testable: false,
             },
             {
               os-cfg: macos_x86_64,
-              runner: macos-14,
+              runner: macos-26,
               container: "",
               testable: true,
             },
             {
               os-cfg: macos_arm64,
-              runner: macos-14,
+              runner: macos-26,
               container: "",
               testable: true,
             },
@@ -107,7 +107,7 @@ jobs:
     needs: [build-sysroot-trixie-arm64]
     name: Build trixie-arm64 for linux_x86_64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
     env:
       WPI_HOST: linux_x86_64
       WPI_TARGET: trixie
@@ -135,7 +135,7 @@ jobs:
     needs: [build-sysroot-trixie-arm64, build-platform-utils-trixie-arm64-linux-x86_64]
     name: Build trixie-arm64 for trixie_arm64
     runs-on: ubuntu-latest
-    container: "docker.io/wpilib/opensdk-ubuntu:20.04"
+    container: "docker.io/wpilib/opensdk-ubuntu:22.04"
     env:
       WPI_HOST: trixie_arm64
       WPI_TARGET: trixie

@@ -20,7 +20,7 @@ for macOS and Ubuntu.
 | OS      | Arch   | Known to work on |
 | ------- | ------ | ---------------- |
 | Windows | x86_64 | Windows XP       |
-| Linux   | x86_64 | Ubuntu 20.04     |
+| Linux   | x86_64 | Ubuntu 22.04     |
 | Mac     | x86_64 | macOS 10.9       |
 | Mac     | ARMv8  | macOS 11.0       |
 
@@ -37,7 +37,7 @@ Tier 3 is not built in CI nor is tested, but bugs or merge requests will be addr
 
 | OS      | Arch  | Known to work on |
 | ------- | ----- | ---------------- |
-| Linux   | ARMv8 | Ubuntu 20.04     |
+| Linux   | ARMv8 | Ubuntu 22.04     |
 
 ## Supported Targets
 

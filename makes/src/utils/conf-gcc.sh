@@ -40,6 +40,7 @@ CONFIGURE_GCC=(
     "--disable-werror"
     "--disable-nls"
     "--disable-multilib"
+    "--enable-multiarch"
 
     "--libdir=${SYSROOT_PATH}/usr/lib"
     "--with-sysroot=${SYSROOT_PATH}"

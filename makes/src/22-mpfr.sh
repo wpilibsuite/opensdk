@@ -40,3 +40,4 @@ process_background "Building mpfr" \
 process_background "Installing mpfr" \
     make DESTDIR="${BUILD_DIR}/mpfr-install" \
     install-strip || die "mpfr install failed"
+find "${BUILD_DIR}/mpfr-install" -name '*.la' -delete

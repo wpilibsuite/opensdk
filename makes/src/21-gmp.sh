@@ -48,3 +48,4 @@ process_background "Building GMP" \
 process_background "Installing GMP" \
     make DESTDIR="${BUILD_DIR}/gmp-install" \
     install-strip || die "GMP install failed"
+find "${BUILD_DIR}/gmp-install" -name '*.la' -delete

@@ -24,9 +24,9 @@ FUNC_ONLY=true
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
-rm -rf "${BUILD_DIR}/sysroot-build"
+rm -rf "${BUILD_DIR}/sysroot-build/${TARGET_DISTRO}/${TARGET_DISTRO_RELEASE}/${TARGET_PORT}/sysroot"
 rm -rf "${BUILD_DIR}/sysroot-install"
-mkdir "${BUILD_DIR}/sysroot-build"
+mkdir -p "${BUILD_DIR}/sysroot-build"
 mkdir -p "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 
 ARGS=(

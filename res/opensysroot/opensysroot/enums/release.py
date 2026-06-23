@@ -6,7 +6,7 @@ class Release(Enum):
     TRIXIE = "trixie"
 
     # SystemCore
-    RELEASE_308 = "308"
+    RELEASE_150 = "150"
 
     def __str__(self):
         return self.value

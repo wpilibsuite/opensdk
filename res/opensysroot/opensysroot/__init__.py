@@ -38,7 +38,7 @@ def main():
 
     db = Database(repo_packages_url)
     if args.distro == Distro.SYSTEMCORE:
-        db.PACKAGES_TO_INSTALL['toolchain'] = {"name": "toolchain", "filename": "systemcore-aarch64-toolchain.tar.gz"}
+        db.PACKAGES_TO_INSTALL['toolchain'] = {"name": "toolchain", "filename": "systemcorebeta-aarch64-toolchain.tar.gz"}
     else:
         db.add_package("gcc")
         db.add_package("g++")

@@ -39,16 +39,16 @@ SYSTEMCORE_TO_DELETE = [
     "usr/htdocs",
     "usr/include/absl",
     "usr/include/cairo",
-    "usr/include/freetype2",
     "usr/include/fmt",
+    "usr/include/freetype2",
     "usr/include/eigen3",
     "usr/include/google",
     "usr/include/harfbuzz",
     "usr/include/json-c",
+    "usr/include/librealsense2",
     "usr/include/ntcore",
     "usr/include/opencv4",
     "usr/include/pango-1.0",
-    "usr/include/python3.13",
     "usr/include/upb",
     "usr/include/upb_generator",
     "usr/include/uv",
@@ -57,15 +57,15 @@ SYSTEMCORE_TO_DELETE = [
     "usr/include/wpiutil",
     "usr/lib/avahi",
     "usr/lib/binfmt.d",
-    "usr/lib/credstore",
     "usr/lib/cmake/absl",
     "usr/lib/cmake/fmt",
-    "usr/lib/cmake/opencv4",
     "usr/lib/cmake/harfbuzz",
     "usr/lib/cmake/json-c",
+    "usr/lib/cmake/opencv4",
     "usr/lib/cmake/protobuf",
     "usr/lib/cmake/realsense2",
     "usr/lib/cmake/utf8_range", # upb dep
+    "usr/lib/credstore",
     "usr/lib/environment.d/99-environment.conf",
     "usr/lib/girepository-1.0",
     "usr/lib/gobject-introspection",
@@ -82,10 +82,11 @@ SYSTEMCORE_TO_DELETE = [
     "usr/lib/pkgconfig/fmt.pc",
     "usr/lib/pkgconfig/freetype2.pc",
     "usr/lib/pkgconfig/json-c.pc",
+    "usr/lib/pkgconfig/libuv.pc",
+    "usr/lib/pkgconfig/opencv4.pc",
     "usr/lib/pkgconfig/realsense2.pc",
     "usr/lib/pkgconfig/upb.pc",
     "usr/lib/pkgconfig/utf8_range.pc",
-    "usr/lib/python3.13",
     "usr/lib/rpm",
     "usr/lib/security",
     "usr/lib/sysctl.d",
@@ -99,8 +100,8 @@ SYSTEMCORE_TO_DELETE = [
 ]
 
 SYSTEMCORE_GLOBS_TO_DELETE = [
+    "usr/include/python*",
     "usr/include/libutf8*", # upb dep
-    "usr/lib/go*",
     "usr/lib/libabsl*",
     "usr/lib/libcairo*",
     "usr/lib/libfmt*",
@@ -121,6 +122,7 @@ SYSTEMCORE_GLOBS_TO_DELETE = [
     "usr/lib/pkgconfig/pango*",
     "usr/lib/pkgconfig/protobuf*",
     "usr/lib/pkgconfig/python*",
+    "usr/lib/python*",
 ]
 
 SYSTEMCORE_TO_RENAME = [
@@ -153,12 +155,12 @@ class WorkEnvironment:
     def extract(self):
         for file in self.downloads.iterdir():
             if self.distro is Distro.SYSTEMCORE:
-                subprocess.call(["tar", "--strip-components=3", "-xf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/sysroot"], cwd=self.sysroot)
-                subprocess.call(["tar", "--strip-components=2", "-C", "usr", "-xf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/include"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=3", "-xf", str(file.absolute()), "systemcorebeta-aarch64-toolchain/aarch64-buildroot-linux-gnu/sysroot"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=2", "-C", "usr", "-xf", str(file.absolute()), "systemcorebeta-aarch64-toolchain/aarch64-buildroot-linux-gnu/include"], cwd=self.sysroot)
                 path = "usr/lib/gcc/aarch64-linux-gnu/{}".format(self.get_gcc_ver())
                 (self.sysroot / path).mkdir(parents=True, exist_ok=True)
-                subprocess.call(["tar", "--strip-components=4", "-C", "usr/lib/gcc/aarch64-linux-gnu", "-xf", str(file.absolute()), "systemcore-aarch64-toolchain/lib/gcc/aarch64-buildroot-linux-gnu"], cwd=self.sysroot)
-                subprocess.call(["tar", "--strip-components=3", "-C", path, "-xf", str(file.absolute()), "systemcore-aarch64-toolchain/aarch64-buildroot-linux-gnu/lib64"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=4", "-C", "usr/lib/gcc/aarch64-linux-gnu", "-xf", str(file.absolute()), "systemcorebeta-aarch64-toolchain/lib/gcc/aarch64-buildroot-linux-gnu"], cwd=self.sysroot)
+                subprocess.call(["tar", "--strip-components=3", "-C", path, "-xf", str(file.absolute()), "systemcorebeta-aarch64-toolchain/aarch64-buildroot-linux-gnu/lib64"], cwd=self.sysroot)
                 continue
             subprocess.call(["dpkg", "-x", str(file), str(self.sysroot)])
 

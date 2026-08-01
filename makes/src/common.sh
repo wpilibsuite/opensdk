@@ -26,6 +26,10 @@ export FFLAGS_FOR_TARGET="-g -O2"
 export CFLAGS_FOR_TARGET="-g -O2"
 export CXXFLAGS_FOR_TARGET="-g -O2"
 
+BUILD_TUPLE="${WPI_BUILD_TUPLE}"
+HOST_TUPLE="${WPI_HOST_TUPLE}"
+SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
+SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"
 source "$(dirname "$0")/utils/funcs.sh"
 
 if [ "${FUNC_ONLY}" = "true" ]; then
@@ -39,10 +43,6 @@ env_exists V_GCC
 env_exists WPI_HOST_PREFIX
 env_exists DOWNLOAD_DIR
 
-BUILD_TUPLE="${WPI_BUILD_TUPLE}"
-HOST_TUPLE="${WPI_HOST_TUPLE}"
-SYSROOT_PATH="${WPI_HOST_PREFIX}/${TARGET_TUPLE}/sysroot"
-SYSROOT_BUILD_PATH="$BUILD_DIR/sysroot-install/${TARGET_TUPLE}/sysroot"
 
 CONFIGURE_COMMON_LITE=(
     "--build=${BUILD_TUPLE}"

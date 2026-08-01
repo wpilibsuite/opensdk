@@ -23,6 +23,10 @@
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
 
+if is_step_backend && ! is_lib_rebuild_required; then
+    exit 0
+fi
+
 function patch_or_die() {
     if ! [ -e "${1}" ]; then
         die "${1} does not exist"

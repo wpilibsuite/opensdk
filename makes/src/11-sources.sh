@@ -19,11 +19,12 @@
 # <http://www.gnu.org/licenses/>.
 
 # shellcheck disable=SC2010
-
-FUNC_ONLY=true
-
 # shellcheck source=./common.sh
 source "$(dirname "$0")/common.sh"
+
+if is_step_backend && ! is_lib_rebuild_required; then
+    exit 0
+fi
 
 function download_or_die() {
     echo "[INFO] Downloading from $1"
@@ -34,10 +35,10 @@ function download_or_die() {
 
 function download_extract() {
     download_or_die "$1"
+    echo "[INFO] Extracting ${1/*\//}"
     tar -xf "${1/*\//}" || die "${1/*\//} extract failed"
 }
 
-rm -rf "${DOWNLOAD_DIR}"
 mkdir -p "${DOWNLOAD_DIR}"
 
 xpushd "${DOWNLOAD_DIR}"

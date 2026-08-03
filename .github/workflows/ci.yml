@@ -20,7 +20,7 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install opensysroot
         run: |
           cd res/opensysroot
@@ -28,7 +28,7 @@ jobs:
       - name: Build sysroot
         run: |
           make backend
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: trixie-arm64-sysroot
           path: output/*
@@ -42,7 +42,7 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install opensysroot
         run: |
           cd res/opensysroot
@@ -50,7 +50,7 @@ jobs:
       - name: Build sysroot
         run: |
           make backend
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: systemcore-arm64-sysroot
           path: output/*
@@ -89,11 +89,11 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Prep MacOS
         if: contains(matrix.host.runner, 'macos')
         run: brew install rsync texinfo
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: trixie-arm64-sysroot
           path: output/
@@ -108,7 +108,7 @@ jobs:
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
           (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-        uses: wpilibsuite/import-signing-certificate@v2
+        uses: wpilibsuite/import-signing-certificate@v3
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
           certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -120,7 +120,7 @@ jobs:
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
         run: make sign
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: trixie-arm64-${{matrix.host.os-cfg }}
           path: output/*
@@ -159,11 +159,11 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Prep MacOS
         if: contains(matrix.host.runner, 'macos')
         run: brew install rsync texinfo
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: systemcore-arm64-sysroot
           path: output/
@@ -178,7 +178,7 @@ jobs:
         if: contains(matrix.host.os-cfg, 'macos') &&
           github.repository_owner == 'wpilibsuite' &&
           (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-        uses: wpilibsuite/import-signing-certificate@v2
+        uses: wpilibsuite/import-signing-certificate@v3
         with:
           certificate-data: ${{ secrets.APPLE_CERTIFICATE_DATA }}
           certificate-passphrase: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -190,7 +190,7 @@ jobs:
         env:
           APPLE_DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
         run: make sign
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: systemcore-arm64-${{matrix.host.os-cfg }}
           path: output/*
@@ -206,8 +206,8 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: trixie-arm64-sysroot
           path: output/
@@ -218,7 +218,7 @@ jobs:
           rm output/*.tar
       - name: Test
         run: make test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: trixie-arm64-linux_x86_64
           path: output/*
@@ -234,13 +234,13 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: trixie-arm64-sysroot
           path: output/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: trixie-arm64-linux_x86_64
           path: cross/
@@ -255,7 +255,7 @@ jobs:
         run: |
           make frontend
           rm output/*.tar
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: trixie-arm64-trixie_arm64
           path: output/*
@@ -271,8 +271,8 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: systemcore-arm64-sysroot
           path: output/
@@ -283,7 +283,7 @@ jobs:
           rm output/*.tar
       - name: Test
         run: make test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: systemcore-arm64-linux_x86_64
           path: output/*
@@ -299,13 +299,13 @@ jobs:
       WPI_TARGET_PORT: arm64
       WPI_USE_THREADS: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: systemcore-arm64-sysroot
           path: output/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: trixie-arm64-linux_x86_64
           path: cross/
@@ -320,7 +320,7 @@ jobs:
         run: |
           make frontend
           rm output/*.tar
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: systemcore-arm64-trixie_arm64
           path: output/*
@@ -331,11 +331,11 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
       - name: Remove sysroots
         run: find -name "*.tar" -delete
       - name: Release
-        uses: ncipollo/release-action@v1.14.0
+        uses: ncipollo/release-action@v1.21.0
         with:
           allowUpdates: true
           artifacts: "**/*"

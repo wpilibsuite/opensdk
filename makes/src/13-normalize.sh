@@ -37,9 +37,9 @@ xcd "${BUILD_DIR}/sysroot-install/${TARGET_TUPLE}/sysroot"
 # relocated for the toolchain to work.
 relocate_core_libraries() {
     mkdir -p $2
-    mv $1/libm-2.*.a $2/libm-2.*.a || die "Couldn't move libm archive"
-    mv $1/libmvec.a $2/libmvec.a || die "Couldn't move libmvec archive"
-    mv $1/libc_nonshared.a $2/libc_nonshared.a || die "Couldn't move libc_nonshared archive"
+    mv $1/libm-2.*.a $2/ || die "Couldn't move libm archive"
+    mv $1/libmvec.a $2/ || die "Couldn't move libmvec archive"
+    mv $1/libc_nonshared.a $2/ || die "Couldn't move libc_nonshared archive"
 }
 
 if [ "${TARGET_DISTRO}" = "systemcore" ]; then
@@ -55,7 +55,7 @@ if [ "${TARGET_DISTRO}" = "systemcore" ]; then
     # Windows path length later.
     relocate_core_libraries usr/lib usr/lib64
     mkdir -p lib
-    mv usr/lib/ld-linux-aarch64.so.1 lib/ld-linux-aarch64.so.1 || die "Couldn't move ld-linux-aarch64.so.1"
+    mv usr/lib/ld-linux-aarch64.so.1 lib/ || die "Couldn't move ld-linux-aarch64.so.1"
     # Relocate everything
     mv usr/lib lib64
     # Move gcc/aarch64-linux-gnu directory back

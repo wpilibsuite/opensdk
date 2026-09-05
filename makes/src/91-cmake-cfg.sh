@@ -59,7 +59,15 @@ set(CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -Wno-psabi")
 
 set(CMAKE_C_COMPILER \${TOOLCHAIN_BASE_DIR}/bin/${TARGET_PREFIX}gcc${HOST_SUFFIX})
 set(CMAKE_CXX_COMPILER \${TOOLCHAIN_BASE_DIR}/bin/${TARGET_PREFIX}g++${HOST_SUFFIX})
+EOF
+
+if [ "${TARGET_ENABLE_FORTRAN}" = "true" ]; then
+    cat <<EOF >>toolchain-config.cmake
 set(CMAKE_Fortran_COMPILER \${TOOLCHAIN_BASE_DIR}/bin/${TARGET_PREFIX}gfortran${HOST_SUFFIX})
+EOF
+fi
+
+cat <<EOF >>toolchain-config.cmake
 
 set(CMAKE_AR \${TOOLCHAIN_BASE_DIR}/bin/${TARGET_PREFIX}ar${HOST_SUFFIX})
 set(CMAKE_AS \${TOOLCHAIN_BASE_DIR}/bin/${TARGET_PREFIX}as${HOST_SUFFIX})
